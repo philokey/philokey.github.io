@@ -11,6 +11,7 @@ TIMEZONE = 'Asia/Shanghai'
 DEFAULT_LANG = u'zh'
 
 #THEME = 'bootstrap'
+
 THEME = 'tuxlite_tbs'
 DISQUS_SITENAME = 'philokeygithubio'
 GOOGLE_ANALYTICS = 'UA-53439918-1'
@@ -55,6 +56,7 @@ DEFAULT_PAGINATION = 10
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
+ARCHIVES_URL = 'archives.html'
 ARTICLE_URL = 'pages/{date:%Y}/{date:%m}/{date:%d}/{slug}.html'
 ARTICLE_SAVE_AS = 'pages/{date:%Y}/{date:%m}/{date:%d}/{slug}.html'
 
