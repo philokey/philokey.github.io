@@ -21,10 +21,7 @@ CATEGORY_FEED_RSS = 'feeds/%s.rss.xml'
 GOOGLE_ANALYTICS = 'UA-53439918-1'
 DEFAULT_DATE_FORMAT = '%Y-%m-%d'
 
-# Feed generation is usually not desired when developing
-#FEED_ALL_ATOM = None
-#CATEGORY_FEED_ATOM = None
-#TRANSLATION_FEED_ATOM = None
+
 
 #plugins
 
