@@ -1,104 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="zh">
+<head>
     <meta charset="utf-8">
     <title>philokey的笔记</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="philokey">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Le styles -->
-    <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-      .tag-1 {
-        font-size: 13pt;
-      }
-      .tag-2 {
-        font-size: 10pt;
-      }
-      .tag-2 {
-        font-size: 8pt;
-      }
-      .tag-4 {
-        font-size: 6pt;
-     }
-    </style>
-    <link href="/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
-        <link href="/theme/css/font-awesome.css" rel="stylesheet">
-
-    <link href="/theme/css/pygments.css" rel="stylesheet">
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
-      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="/theme/html5.js"></script>
     <![endif]-->
 
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/theme/images/favicon.ico">
-    <link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+    <!-- Le styles -->
+    <link href="/theme/bootstrap.min.css" rel="stylesheet">
+    <link href="/theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="/theme/local.css" rel="stylesheet">
+    <link href="/theme/pygments.css" rel="stylesheet">
 
-    <link href="/" type="application/atom+xml" rel="alternate" title="philokey的笔记 ATOM Feed" />
+</head>
 
-  </head>
+<body>
 
-  <body>
+<div class="navbar">
+    <div class="navbar-inner">
+    <div class="container">
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="/index.html">philokey的笔记 </a>
-          <div class="nav-collapse">
-            <ul class="nav">
-                          <li class="divider-vertical"></li>
-                  <li >
-                    <a href="/category/za.html">
-						<i class="icon-folder-open icon-large"></i>杂
-					</a>
-                  </li>
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </a>
 
-                          <ul class="nav pull-right">
-                                <li><a href="/archives.html"><i class="icon-th-list"></i>Archives</a></li>
-                          </ul>
+        <a class="brand" href="">philokey的笔记</a>
 
-            </ul>
-            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
-          </div><!--/.nav-collapse -->
+        <div class="nav-collapse">
+        <ul class="nav">
+            
+        </ul>
         </div>
-      </div>
+        
     </div>
+    </div>
+</div>
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="span9" id="content">
-        <div class="article">
-                <h1><a href="/pages/2014/08/01/bo-ke-da-jian-ji-lu.html">博客搭建记录</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2014-08-01T21:20:00">
-        <i class="icon-calendar"></i>2014-08-01
-</abbr>
-<span class="label">By</span>
-<a href="/author/philokey.html"><i class="icon-user"></i>philokey</a>
-<span class="label">Category</span>
-<a href="/category/za.html"><i class="icon-folder-open"></i>杂</a>.
+<div class="container">
+    <div class="content">
+    <div class="row">
+
+        <div class="span9">
+        
+
+        
 
 
-</footer><!-- /.post-info --></div>
-                <div class="summary"><p>厌倦了一次又一次去搜相同问题的答案，写个博客把一些东西记录下来吧。
+    <div class='article'>
+        <div class="content-title">
+            <a href="/pages/2014/08/01/bo-ke-da-jian-ji-lu.html"><h1>博客搭建记录</h1></a>
+2014-08-01
+
+by <a class="url fn" href="/author/philokey.html">philokey</a>
+ 
+
+
+ 
+        </div>
+        
+        <div><p>厌倦了一次又一次去搜相同问题的答案，写个博客把一些东西记录下来吧。
 出于黑客精神，决定自己搭建博客。</p>
 <p>Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelican。
 由于github有免费的300M空间，所以博客托管再github上。github还有一个好处就是对markdown的支持不错。</p>
@@ -126,26 +94,147 @@
 </pre></div>
 
 
-<div class="highlight"><pre>    <span class="err">├──</span> <span class="nb">content</span>             <span class="err">#存放 ...</span></pre></div>
-                        <a class="btn primary xsmall" href="/pages/2014/08/01/bo-ke-da-jian-ji-lu.html">more ...</a>
-                </div>
-        </div>
+<div class="highlight"><pre>    <span class="err">├──</span> <span class="nb">content</span>             <span class="err">#存放</span><span class="bp">.</span><span class="nx">mdn</span><span class="err">文件</span>
+        <span class="err">├──</span> <span class="nx">develop_server.sh</span>   <span class="err">#方便开启测试服务器</span>
+        <span class="err">├──</span> <span class="nx">fabfile.py</span>          <span class="err">#配置文件</span>
+        <span class="err">├──</span> <span class="nx">Makefile</span>            <span class="err">#方便管理博客的</span><span class="nx">Makefile</span>
+        <span class="err">├──</span> <span class="nb">output</span>              <span class="err">#生成的输出文件</span>
+        <span class="err">├──</span> <span class="nx">pelicanconf.py</span>      <span class="err">#主配置文件</span>
+        <span class="err">└──</span> <span class="nx">publishconf.py</span>      <span class="err">#主发布文件，可删除</span>
+<span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">cstdio</span><span class="o">&gt;</span>
+<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">string</span> <span class="n">str</span> <span class="o">=</span> <span class="s1">&#39;aaa&#39;</span>
+    <span class="nx">printf</span><span class="p">(</span><span class="s2">&quot;Hello World</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h4>尝试写博文</h4>
+<p>和普通的markdown文件稍有不同，在顶部要有</p>
+<div class="highlight"><pre><span class="n">Title</span><span class="o">:</span> <span class="n">My</span> <span class="kd">super</span> <span class="n">title</span>
+<span class="n">Date</span><span class="o">:</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">01</span> <span class="mi">10</span><span class="o">:</span><span class="mi">20</span>
+<span class="n">Category</span><span class="o">:</span> <span class="n">Python</span>
+<span class="n">Tags</span><span class="o">:</span> <span class="n">tag1</span><span class="o">,</span> <span class="n">tag2</span>
+<span class="n">Slug</span><span class="o">:</span> <span class="n">my</span><span class="o">-</span><span class="kd">super</span><span class="o">-</span><span class="n">post</span>
+<span class="n">Author</span><span class="o">:</span> <span class="n">Philokey</span>
+<span class="n">Summary</span><span class="o">:</span> <span class="n">Short</span> <span class="n">version</span> <span class="k">for</span> <span class="n">index</span> <span class="n">and</span> <span class="n">feeds</span>
+</pre></div>
+
+
+<p>前两项必填</p>
+<h4>本地运行</h4>
+<p>在博客根目录下</p>
+<div class="highlight"><pre><span class="n">make</span> <span class="n">html</span>
+<span class="n">make</span> <span class="n">serve</span>
+</pre></div>
+
+
+<p>到 http://127.0.0.1:8000/ 可以查看。</p>
+<h4>组织文件结构</h4>
+<p>默认所有都再output里,可以按照日期组织生成的html
+在pelicanconf.py里配置:</p>
+<div class="highlight"><pre><span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">pages</span><span class="o">/</span><span class="p">{</span><span class="n">date</span><span class="o">:%</span><span class="n">Y</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">date</span><span class="o">:%</span><span class="n">m</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">date</span><span class="o">:%</span><span class="n">d</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">slug</span><span class="p">}.</span><span class="n">html</span><span class="err">&#39;</span>
+<span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">pages</span><span class="o">/</span><span class="p">{</span><span class="n">date</span><span class="o">:%</span><span class="n">Y</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">date</span><span class="o">:%</span><span class="n">m</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">date</span><span class="o">:%</span><span class="n">d</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">slug</span><span class="p">}.</span><span class="n">html</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<h4>修改主题</h4>
+<p>默认主题好丑，可以安装自己喜欢的主题</p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="o">:</span><span class="c1">//github.com/getpelican/pelican-themes.git</span>
+<span class="n">cd</span> <span class="n">pelican</span><span class="o">-</span><span class="n">themes</span>
+<span class="n">pelican</span><span class="o">-</span><span class="n">themes</span> <span class="o">-</span><span class="n">i</span> <span class="n">bootstrap2</span>
+</pre></div>
+
+
+<p>选择主题，在pelicanconf.py中添加</p>
+<div class="highlight"><pre><span class="n">THEME</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">bootstrap2</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<h4>安装第三方评论系统</h4>
+<p>在Disqus上申请一个站点，记牢Shortname。 在pelicanconf.py添加</p>
+<div class="highlight"><pre><span class="n">DISQUS_SITENAME</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Shortname</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<h4>添加Google Analytics</h4>
+<p>去Google Analytics申请账号，记下跟踪ID。 在pelicanconf.py添加</p>
+<div class="highlight"><pre><span class="n">GOOGLE_ANALYTICS</span> <span class="o">=</span> <span class="err">跟踪</span><span class="n">ID</span>
+</pre></div>
+
+
+<p>听说Google Analytics极其强悍，我没用过，试试吧</p>
+<p>至此，本地的部分就差不多搭建完毕了</p>
+<h3>使用GitHub Pages</h3>
+<p>在github上创建一个repository,名字为 username.github.io 并再setting里并再setting里面生成GitHub面生成GitHub Pages，几分钟后，页面会自动生成.</p>
+<p>到output里把</p>
+<div class="highlight"><pre><span class="n">cd</span> <span class="n">output</span>
+<span class="n">git</span> <span class="n">init</span>
+<span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">origin</span> <span class="n">git</span><span class="err">@</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">:</span><span class="n">username</span><span class="o">/</span><span class="n">username</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">git</span>
+<span class="n">git</span> <span class="n">pull</span> <span class="n">origin</span> <span class="n">master</span>
+<span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="n">git</span> <span class="n">commit</span>
+<span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">master</span> 
+</pre></div>
+
+
+<p>这样在username.github.io里面就可以查看博客</p>
+<h4>一键上传</h4>
+<p>修改Makefile文件</p>
+<div class="highlight"><pre><span class="nl">publish:</span>
+    <span class="err">$</span><span class="p">(</span><span class="n">PELICAN</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">INPUTDIR</span><span class="p">)</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">OUTPUTDIR</span><span class="p">)</span> <span class="o">-</span><span class="n">s</span> <span class="err">$</span><span class="p">(</span><span class="n">CONFFILE</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">PELICANOPTS</span><span class="p">)</span>
+
+<span class="nl">github:</span> <span class="n">publish</span>
+    <span class="n">cd</span> <span class="err">$</span><span class="p">(</span><span class="n">OUTPUTDIR</span><span class="p">)</span> <span class="p">;</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span> <span class="p">;</span>  <span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">am</span> <span class="err">&#39;</span><span class="n">update</span><span class="err">&#39;</span> <span class="p">;</span> <span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">master</span>
+</pre></div>
+
+
+<p>这样</p>
+<div class="highlight"><pre><span class="n">make</span> <span class="n">github</span>
+</pre></div>
+
+
+<p>就可以实现一键上传</p>
+<h3>申请独立域名</h3>
+<h4>Godaddy</h4>
+<p>在<a href="http://godaddy.com/">godaddy</a>购买域名，并在Manage My Domains里修改Nameservers为这两个地址：</p>
+<div class="highlight"><pre><span class="n">f1g1ns1</span><span class="p">.</span><span class="n">dnspod</span><span class="p">.</span><span class="n">net</span>
+<span class="n">f1g1ns2</span><span class="p">.</span><span class="n">dnspod</span><span class="p">.</span><span class="n">net</span>
+</pre></div>
+
+
+<p>使用godaddy自己的DNS服务器会被墙的样子</p>
+<h4>Dnspod</h4>
+<p>在<a href="https://www.dnspod.cn/">Dnspod</a>注册账号, 并添加刚申请的域名.
+添加到 207.97.227.245 的A记录
+并把CNAME的记录值改为 username.github.io.</p>
+<h4>Github</h4>
+<p>在output目录下添加CNAME文件，里面填入</p>
+<div class="highlight"><pre><span class="n">www</span><span class="p">.</span><span class="err">申请的域名</span>
+</pre></div>
+
+
+<p>这样，博客主题就完成了。其他小功能自己探索吧</p></div>
         <hr />
-        <div class="article">
-                <h1><a href="/pages/2014/08/01/hello-world.html">hello world</a></h1>
-                <div class="well small"><footer class="post-info">
-<span class="label">Date</span>
-<abbr class="published" title="2014-08-01T00:00:00">
-        <i class="icon-calendar"></i>2014-08-01
-</abbr>
-<span class="label">By</span>
-<a href="/author/philokey.html"><i class="icon-user"></i>philokey</a>
-<span class="label">Category</span>
-<a href="/category/za.html"><i class="icon-folder-open"></i>杂</a>.
+    </div>
+		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="/pages/2014/08/01/hello-world.html"><h2>hello world</h2></a>
+        <div class= "well small"> 2014-08-01
+
+by <a class="url fn" href="/author/philokey.html">philokey</a>
+ 
 
 
-</footer><!-- /.post-info --></div>
-                <div class="summary"><h3>Hello World</h3>
+ </div>
+        <div class="summary"><h3>Hello World</h3>
 <div class="highlight"><pre><span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">cstdio</span><span class="o">&gt;</span>
 <span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="kt">string</span> <span class="n">str</span> <span class="o">=</span> <span class="s1">&#39;aaa&#39;</span>
@@ -155,77 +244,88 @@
 </pre></div>
 
 
-<p><img alt="测试图片" src="https://lh4.googleusercontent.com/-mPNwHFX9qac/UQOGgQHjkcI/AAAAAAAAABA/YU7VaS0I2fs/s149/1131410.png" /></p>
-                        <a class="btn primary xsmall" href="/pages/2014/08/01/hello-world.html">more ...</a>
-                </div>
+<p><img alt="测试图片" src="https://lh4.googleusercontent.com/-mPNwHFX9qac/UQOGgQHjkcI/AAAAAAAAABA/YU7VaS0I2fs/s149/1131410.png" /></p> <a class="btn btn-info xsmall" href="/pages/2014/08/01/hello-world.html">read more</a></div>
+    </div>	
+				
+<div class="pagination">
+<ul>
+    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
+
+    <li class="active"><a href="/index.html">1</a></li>
+
+    <li class="next disabled"><a href="#">&rarr; Next</a></li>
+
+</ul>
+</div>
+ 
+  
         </div>
-        <hr />
+        
+        <div class="span3">
 
-        </div><!--/span-->
-
-                <div class="span3 well sidebar-nav" id="sidebar">
-<ul class="nav nav-list">
-<li class="nav-header"><h4><i class="icon-external-link"></i>blogroll</h4></li>
-    <li><a href="http://getpelican.com/"><i class="icon-external-link"></i>Pelican</a></li>
-    <li><a href="http://python.org/"><i class="icon-external-link"></i>Python.org</a></li>
-    <li><a href="http://jinja.pocoo.org/"><i class="icon-external-link"></i>Jinja2</a></li>
-    <li><a href="#"><i class="icon-external-link"></i>You can modify those links in your config file</a></li>
-<li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
-<li><a href="/" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
-    <li><a href="#"><i class="icon-You can add links in your config file-sign icon-large"></i>You can add links in your config file</a></li>
-    <li><a href="#"><i class="icon-Another social link-sign icon-large"></i>Another social link</a></li>
-
-<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
-<li>
-<a href="/category/za.html">
-    <i class="icon-folder-open icon-large"></i>杂
-</a>
-</li>
-
-<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Site
+                </li>
+            
+                <li><a href="/">Archives</a>
+                <li><a href="/tags.html">Tags</a>
+                <li><a href="/" rel="alternate">Atom feed</a></li>
+            </ul>
+            </div>
 
 
-</ul>        </div><!--/.well -->
-
-      </div><!--/row-->
-
-      <hr>
-
-      <footer>
-        <address id="about">
-                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
-                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
-        </address><!-- /#about -->
-
-        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
-                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
-      </footer>
-
-    </div><!--/.fluid-container-->
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Categories
+                </li>
+                
+                <li><a href="/category/za.html">杂</a></li>
+                   
+            </ul>
+            </div>
 
 
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-	var pageTracker = _gat._getTracker("UA-53439918-1");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-<script type="text/javascript">
-    var disqus_shortname = 'philokeygithubio';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Links
+                </li>
+            
+                <li><a href="http://getpelican.com/">Pelican</a></li>
+                <li><a href="http://python.org/">Python.org</a></li>
+                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                <li><a href="#">You can modify those links in your config file</a></li>
+            </ul>
+            </div>
 
-    <!-- Le javascript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/theme/js/jquery-1.7.2.min.js"></script>
-    <script src="/theme/js/bootstrap.min.js"></script>
-  </body>
+
+            <div class="social">
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Social
+                </li>
+           
+                <li><a href="#">You can add links in your config file</a></li>
+                <li><a href="#">Another social link</a></li>
+            </ul>
+            </div>
+            </div>
+
+        </div>  
+    </div>     </div> 
+<footer>
+<br />
+<p><a href="">philokey的笔记</a> &copy; philokey 2012</p>
+</footer>
+
+</div> <!-- /container -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+<script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+ 
+</body>
 </html>
