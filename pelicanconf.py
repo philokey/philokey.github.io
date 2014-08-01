@@ -10,8 +10,8 @@ TIMEZONE = 'Asia/Shanghai'
 
 DEFAULT_LANG = u'zh'
 
-#THEME = 'bootstrap2'
-THEME = 'tuxlite_tbs'
+THEME = 'bootstrap2'
+#THEME = 'tuxlite_tbs'
 DISQUS_SITENAME = 'philokeygithubio'
 GOOGLE_ANALYTICS = 'UA-53439918-1'
 DEFAULT_DATE_FORMAT = '%Y-%m-%d'

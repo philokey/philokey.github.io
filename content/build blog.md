@@ -19,7 +19,7 @@ Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelic
     pelican-quickstart
 目录树如下
 
-    ├── content             #存放.mdn文件
+    ├── content             #存放.md文件
     ├── develop_server.sh   #方便开启测试服务器
     ├── fabfile.py          #配置文件
     ├── Makefile            #方便管理博客的Makefile
