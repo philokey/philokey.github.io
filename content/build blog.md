@@ -18,15 +18,15 @@ Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelic
 ####启动工程
     pelican-quickstart
 目录树如下
-```
-├── content             #存放.mdn文件
-├── develop_server.sh   #方便开启测试服务器
-├── fabfile.py          #配置文件
-├── Makefile            #方便管理博客的Makefile
-├── output              #生成的输出文件
-├── pelicanconf.py      #主配置文件
-└── publishconf.py      #主发布文件，可删除
-```
+
+    ├── content             #存放.mdn文件
+    ├── develop_server.sh   #方便开启测试服务器
+    ├── fabfile.py          #配置文件
+    ├── Makefile            #方便管理博客的Makefile
+    ├── output              #生成的输出文件
+    ├── pelicanconf.py      #主配置文件
+    └── publishconf.py      #主发布文件，可删除
+
 ####尝试写博文
 和普通的markdown文件稍有不同，在顶部要有
 
@@ -49,10 +49,10 @@ make serve
 ####组织文件结构
 默认所有都再output里,可以按照日期组织生成的html
 在pelicanconf.py里配置:
-```
-ARTICLE_URL = 'pages/{date:%Y}/{date:%m}/{date:%d}/{slug}.html'
-ARTICLE_SAVE_AS = 'pages/{date:%Y}/{date:%m}/{date:%d}/{slug}.html'
-```
+    
+    ARTICLE_URL = 'pages/{date:%Y}/{date:%m}/{date:%d}/{slug}.html'
+    ARTICLE_SAVE_AS = 'pages/{date:%Y}/{date:%m}/{date:%d}/{slug}.html'
+
 
 ####修改主题
 默认主题好丑，可以安装自己喜欢的主题
@@ -63,20 +63,20 @@ pelican-themes -i bootstrap2
 ```
 
 选择主题，在pelicanconf.py中添加
-```
-THEME = 'bootstrap2'
-```
+
+    THEME = 'bootstrap2'
+
 ####安装第三方评论系统
 在Disqus上申请一个站点，记牢Shortname。 在pelicanconf.py添加
-```
-DISQUS_SITENAME = Shortname
-```
+
+    DISQUS_SITENAME = 'Shortname'
+
 ####添加Google Analytics
 
 去Google Analytics申请账号，记下跟踪ID。 在pelicanconf.py添加
-```
-GOOGLE_ANALYTICS = 跟踪ID
-```
+
+    GOOGLE_ANALYTICS = 跟踪ID
+
 听说Google Analytics极其强悍，我没用过，试试吧
 
 至此，本地的部分就差不多搭建完毕了
@@ -97,13 +97,13 @@ git push origin master
 
 ####一键上传
 修改Makefile文件
-```
-publish:
-	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
 
-github: publish
-	cd $(OUTPUTDIR) ; git add . ;  git commit -am 'update' ; git push origin master
-```
+    publish:
+    	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
+    
+    github: publish
+    	cd $(OUTPUTDIR) ; git add . ;  git commit -am 'update' ; git push origin master
+
 这样
 
     make github 
