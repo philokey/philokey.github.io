@@ -14,13 +14,17 @@ DEFAULT_LANG = u'zh'
 
 THEME = 'tuxlite_tbs'
 DISQUS_SITENAME = 'philokeygithubio'
+
+FEED_RSS = 'feeds/all.rss.xml'
+CATEGORY_FEED_RSS = 'feeds/%s.rss.xml'
+
 GOOGLE_ANALYTICS = 'UA-53439918-1'
 DEFAULT_DATE_FORMAT = '%Y-%m-%d'
 
 # Feed generation is usually not desired when developing
-FEED_ALL_ATOM = None
-CATEGORY_FEED_ATOM = None
-TRANSLATION_FEED_ATOM = None
+#FEED_ALL_ATOM = None
+#CATEGORY_FEED_ATOM = None
+#TRANSLATION_FEED_ATOM = None
 
 #plugins
 
@@ -54,7 +58,8 @@ SOCIAL = (('Github', 'https://github.com/philokey'),
 DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+
+RELATIVE_URLS = True
 
 ARCHIVES_URL = 'archives.html'
 ARTICLE_URL = 'pages/{date:%Y}/{date:%m}/{date:%d}/{slug}.html'
