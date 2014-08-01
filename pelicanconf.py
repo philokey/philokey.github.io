@@ -21,15 +21,34 @@ FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
+#plugins
+
+PLUGIN_PATH = u"/usr/local/lib/python2.7/site-packages/pelican/pelican-plugins"
+PLUGINS = ["sitemap"]
+
+## 配置sitemap 插件
+SITEMAP = {
+    "format": "xml",
+    "priorities": {
+        "articles": 0.7,
+        "indexes": 0.5,
+        "pages": 0.3,
+    },
+    "changefreqs": {
+        "articles": "monthly",
+        "indexes": "daily",
+        "pages": "monthly",
+    }
+}
+
 # Blogroll
 LINKS =  (('Pelican', 'http://getpelican.com/'),
           ('Python.org', 'http://python.org/'),
-          ('Jinja2', 'http://jinja.pocoo.org/'),
-          ('You can modify those links in your config file', '#'),)
+          ('Google', 'https://www.google.com/ncr'),)
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('Github', 'https://github.com/philokey'),
+		  (u'微博', 'http://weibo.com/u/1690959514/'),)
 
 DEFAULT_PAGINATION = 10
 
