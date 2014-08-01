@@ -1,7 +1,7 @@
 Title: 博客搭建记录
 Date: 2014-08-01 21:20
 Category: 杂
-Tag: Pelican github
+Tags: Pelican github
 厌倦了一次又一次去搜相同问题的答案，写个博客把一些东西记录下来吧。
 出于黑客精神，决定自己搭建博客。
 
