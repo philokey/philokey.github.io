@@ -28,13 +28,7 @@ Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelic
     └── publishconf.py      #主发布文件，可删除
 
 ```
-	├── content             #存放.mdn文件
-		├── develop_server.sh   #方便开启测试服务器
-		├── fabfile.py          #配置文件
-		├── Makefile            #方便管理博客的Makefile
-		├── output              #生成的输出文件
-		├── pelicanconf.py      #主配置文件
-		└── publishconf.py      #主发布文件，可删除
+'aaa'
 #include <cstdio>
 int main() {
 	string str = 'aaa'
