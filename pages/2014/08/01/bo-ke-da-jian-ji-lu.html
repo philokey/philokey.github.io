@@ -127,23 +127,13 @@
 
 
 <p>目录树如下</p>
-<div class="highlight"><pre><span class="err">├──</span> <span class="n">content</span>             <span class="err">#存放</span><span class="p">.</span><span class="n">md</span><span class="err">文件</span>
+<div class="highlight"><pre><span class="err">├──</span> <span class="n">content</span>             <span class="err">#存放</span><span class="p">.</span><span class="n">mdn</span><span class="err">文件</span>
 <span class="err">├──</span> <span class="n">develop_server</span><span class="p">.</span><span class="n">sh</span>   <span class="err">#方便开启测试服务器</span>
 <span class="err">├──</span> <span class="n">fabfile</span><span class="p">.</span><span class="n">py</span>          <span class="err">#配置文件</span>
 <span class="err">├──</span> <span class="n">Makefile</span>            <span class="err">#方便管理博客的</span><span class="n">Makefile</span>
 <span class="err">├──</span> <span class="n">output</span>              <span class="err">#生成的输出文件</span>
 <span class="err">├──</span> <span class="n">pelicanconf</span><span class="p">.</span><span class="n">py</span>      <span class="err">#主配置文件</span>
 <span class="err">└──</span> <span class="n">publishconf</span><span class="p">.</span><span class="n">py</span>      <span class="err">#主发布文件，可删除</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span class="s1">&#39;aaa&#39;</span>
-<span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">cstdio</span><span class="o">&gt;</span>
-<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kt">string</span> <span class="n">str</span> <span class="o">=</span> <span class="s1">&#39;aaa&#39;</span>
-    <span class="nx">printf</span><span class="p">(</span><span class="s2">&quot;Hello World</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
 </pre></div>
 
 
@@ -253,6 +243,14 @@
 
 
 <p>这样，博客主题就完成了。其他小功能自己探索吧</p>
+<h3>补充</h3>
+<h4>红框问题</h4>
+<p>发布之后发现代码里面有奇怪的红框，审查元素得知是css 里面有一个.err的class，如果代码被判断有语法错误就会产生红框，而大部分红框都是误伤，所以把pygments.css里面的</p>
+<div class="highlight"><pre><span class="p">.</span><span class="n">highlight</span> <span class="p">.</span><span class="n">err</span>
+</pre></div>
+
+
+<p>去掉就好了</p>
                 </div><!-- /.entry-content -->
                 <div class="comments">
                 <h2>Comments !</h2>

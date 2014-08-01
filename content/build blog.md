@@ -19,23 +19,13 @@ Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelic
     pelican-quickstart
 目录树如下
 
-    ├── content             #存放.md文件
+    ├── content             #存放.mdn文件
     ├── develop_server.sh   #方便开启测试服务器
     ├── fabfile.py          #配置文件
     ├── Makefile            #方便管理博客的Makefile
     ├── output              #生成的输出文件
     ├── pelicanconf.py      #主配置文件
     └── publishconf.py      #主发布文件，可删除
-
-```
-'aaa'
-#include <cstdio>
-int main() {
-	string str = 'aaa'
-	printf("Hello World\n");
-	return 0;
-}
-```
 
 ####尝试写博文
 和普通的markdown文件稍有不同，在顶部要有
@@ -138,7 +128,12 @@ git push origin master
 
 这样，博客主题就完成了。其他小功能自己探索吧
 
-
+###补充
+####红框问题
+发布之后发现代码里面有奇怪的红框，审查元素得知是css 里面有一个.err的class，如果代码被判断有语法错误就会产生红框，而大部分红框都是误伤，所以把pygments.css里面的
+    
+    .highlight .err
+去掉就好了
 
   [1]: http://godaddy.com/
   [2]: https://www.dnspod.cn/
