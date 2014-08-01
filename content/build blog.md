@@ -27,6 +27,15 @@ Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelic
     ├── pelicanconf.py      #主配置文件
     └── publishconf.py      #主发布文件，可删除
 
+```
+#include <cstdio>
+int main() {
+	string str = 'aaa'
+	printf("Hello World\n");
+	return 0;
+}
+```
+
 ####尝试写博文
 和普通的markdown文件稍有不同，在顶部要有
 

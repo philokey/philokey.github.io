@@ -5,7 +5,6 @@ Category: 杂
 ```
 #include <cstdio>
 int main() {
-	THEME = 'bootstrap2'
 	string str = 'aaa'
 	printf("Hello World\n");
 	return 0;
