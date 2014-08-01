@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = u'philokey'
 SITENAME = u'philokey\u7684\u7b14\u8bb0'
-SITEURL = ''
+SITEURL = 'http://www.philokey.com'
 
 TIMEZONE = 'Asia/Shanghai'
 

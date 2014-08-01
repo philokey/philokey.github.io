@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>philokey的笔记</title><link href="/" rel="alternate"></link><link href="/feeds/all-zh.atom.xml" rel="self"></link><id>/</id><updated>2014-08-01T21:20:00+08:00</updated><entry><title>博客搭建记录</title><link href="/pages/2014/08/01/bo-ke-da-jian-ji-lu.html" rel="alternate"></link><updated>2014-08-01T21:20:00+08:00</updated><author><name>philokey</name></author><id>tag:,2014-08-01:pages/2014/08/01/bo-ke-da-jian-ji-lu.html</id><summary type="html">&lt;p&gt;厌倦了一次又一次去搜相同问题的答案，写个博客把一些东西记录下来吧。
+<feed xmlns="http://www.w3.org/2005/Atom"><title>philokey的笔记</title><link href="http://www.philokey.com/" rel="alternate"></link><link href="http://www.philokey.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://www.philokey.com/</id><updated>2014-08-01T21:20:00+08:00</updated><entry><title>博客搭建记录</title><link href="http://www.philokey.com/pages/2014/08/01/bo-ke-da-jian-ji-lu.html" rel="alternate"></link><updated>2014-08-01T21:20:00+08:00</updated><author><name>philokey</name></author><id>tag:www.philokey.com,2014-08-01:pages/2014/08/01/bo-ke-da-jian-ji-lu.html</id><summary type="html">&lt;p&gt;厌倦了一次又一次去搜相同问题的答案，写个博客把一些东西记录下来吧。
 出于黑客精神，决定自己搭建博客。&lt;/p&gt;
 &lt;p&gt;Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelican。
 由于github有免费的300M空间，所以博客托管再github上。github还有一个好处就是对markdown的支持不错。&lt;/p&gt;
@@ -146,7 +146,7 @@
 
 
 &lt;p&gt;去掉&lt;/p&gt;
-&lt;p&gt;再重新安装主题&lt;/p&gt;</summary><category term="Pelican"></category><category term="Blog"></category><category term="Python"></category></entry><entry><title>hello world</title><link href="/pages/2014/08/01/hello-world.html" rel="alternate"></link><updated>2014-08-01T00:00:00+08:00</updated><author><name>philokey</name></author><id>tag:,2014-08-01:pages/2014/08/01/hello-world.html</id><summary type="html">&lt;h3&gt;Hello World&lt;/h3&gt;
+&lt;p&gt;再重新安装主题&lt;/p&gt;</summary><category term="Pelican"></category><category term="Blog"></category><category term="Python"></category></entry><entry><title>hello world</title><link href="http://www.philokey.com/pages/2014/08/01/hello-world.html" rel="alternate"></link><updated>2014-08-01T00:00:00+08:00</updated><author><name>philokey</name></author><id>tag:www.philokey.com,2014-08-01:pages/2014/08/01/hello-world.html</id><summary type="html">&lt;h3&gt;Hello World&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;cstdio&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;aaa&amp;#39;&lt;/span&gt;
