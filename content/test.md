@@ -1,6 +1,6 @@
 Title: Test
 Date: 2014-07-31
-Category: test
+
 
 ##Test
 ```
