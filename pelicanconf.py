@@ -12,6 +12,7 @@ DEFAULT_LANG = u'zh'
 
 THEME = 'bootstrap2'
 #THEME = 'tuxlite_tbs'
+DISQUS_SITENAME = 'philokeygithubio'
 
 DEFAULT_DATE_FORMAT = '%Y-%m-%d'
 
