@@ -59,7 +59,7 @@ make serve
 ```
 git clone https://github.com/getpelican/pelican-themes.git
 cd pelican-themes
-pelican-themes -i bootstrap2
+sudo pelican-themes -i bootstrap2
 ```
 
 选择主题，在pelicanconf.py中添加
@@ -130,10 +130,17 @@ git push origin master
 
 ###补充
 ####红框问题
-发布之后发现代码里面有奇怪的红框，审查元素得知是css 里面有一个.err的class，如果代码被判断有语法错误就会产生红框，而大部分红框都是误伤，所以把pygments.css里面的
+发布之后发现代码里面有奇怪的红框，审查元素得知是css 里面有一个.err的class，如果代码被判断有语法错误就会产生红框，而大部分红框都是误伤。由于每次make html时主题的css都会重新根据安装的主题重新生成一边，所以要先卸载主题
+
+    sudo pelican-themes -i bootstrap2
     
-    .highlight .err
-去掉就好了
+把pygments.css里面的
+```
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+```
+去掉
+
+再重新安装主题
 
   [1]: http://godaddy.com/
   [2]: https://www.dnspod.cn/

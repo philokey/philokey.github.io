@@ -170,7 +170,7 @@
 <p>默认主题好丑，可以安装自己喜欢的主题</p>
 <div class="highlight"><pre><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="o">:</span><span class="c1">//github.com/getpelican/pelican-themes.git</span>
 <span class="n">cd</span> <span class="n">pelican</span><span class="o">-</span><span class="n">themes</span>
-<span class="n">pelican</span><span class="o">-</span><span class="n">themes</span> <span class="o">-</span><span class="n">i</span> <span class="n">bootstrap2</span>
+<span class="n">sudo</span> <span class="n">pelican</span><span class="o">-</span><span class="n">themes</span> <span class="o">-</span><span class="n">i</span> <span class="n">bootstrap2</span>
 </pre></div>
 
 
@@ -245,12 +245,18 @@
 <p>这样，博客主题就完成了。其他小功能自己探索吧</p>
 <h3>补充</h3>
 <h4>红框问题</h4>
-<p>发布之后发现代码里面有奇怪的红框，审查元素得知是css 里面有一个.err的class，如果代码被判断有语法错误就会产生红框，而大部分红框都是误伤，所以把pygments.css里面的</p>
-<div class="highlight"><pre><span class="p">.</span><span class="n">highlight</span> <span class="p">.</span><span class="n">err</span>
+<p>发布之后发现代码里面有奇怪的红框，审查元素得知是css 里面有一个.err的class，如果代码被判断有语法错误就会产生红框，而大部分红框都是误伤。由于每次make html时主题的css都会重新根据安装的主题重新生成一边，所以要先卸载主题</p>
+<div class="highlight"><pre><span class="n">sudo</span> <span class="n">pelican</span><span class="o">-</span><span class="n">themes</span> <span class="o">-</span><span class="n">i</span> <span class="n">bootstrap2</span>
 </pre></div>
 
 
-<p>去掉就好了</p>
+<p>把pygments.css里面的</p>
+<div class="highlight"><pre><span class="p">.</span><span class="n">highlight</span> <span class="p">.</span><span class="n">err</span> <span class="p">{</span> <span class="n">border</span><span class="o">:</span> <span class="mi">1</span><span class="n">px</span> <span class="n">solid</span> <span class="err">#</span><span class="n">FF0000</span> <span class="p">}</span> <span class="cm">/* Error */</span>
+</pre></div>
+
+
+<p>去掉</p>
+<p>再重新安装主题</p>
                 </div><!-- /.entry-content -->
                 <div class="comments">
                 <h2>Comments !</h2>
