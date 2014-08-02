@@ -149,7 +149,6 @@
 &lt;p&gt;再重新安装主题&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">philokey</dc:creator><pubDate>Fri, 01 Aug 2014 21:20:00 +0800</pubDate><guid>tag:www.philokey.com,2014-08-01:pages/2014/08/01/bo-ke-da-jian-ji-lu.html</guid><category>Pelican</category><category>Blog</category><category>Python</category></item><item><title>hello world</title><link>http://www.philokey.com/pages/2014/08/01/hello-world.html</link><description>&lt;h3&gt;Hello World&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="vi"&gt;#include&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;cstdio&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
 &lt;span class="nx"&gt;int&lt;/span&gt; &lt;span class="nx"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;aaa&amp;#39;&lt;/span&gt;
     &lt;span class="nx"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Hello World&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
