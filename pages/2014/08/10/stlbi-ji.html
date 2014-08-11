@@ -51,8 +51,8 @@
         <div class="span9">
     <div class='article'>
         <div class="content-title">
-            <h1>hello world</h1>
-2014-08-01
+            <h1>STL笔记</h1>
+2014-08-10
 
 by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
  
@@ -60,16 +60,33 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
 
         </div>
 	
-        <div><h3>Hello World</h3>
-<div class="highlight"><pre><span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">cstdio</span><span class="o">&gt;</span>
-<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">printf</span><span class="p">(</span><span class="s2">&quot;Hello World</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
+        <div><h2>priority_queue自定义比较函数</h2>
+<p>模板声明带有三个参数</p>
+<div class="highlight"><pre><span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">Type</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="n">Functional</span><span class="o">&gt;</span>
 </pre></div>
 
 
-<p><img alt="测试图片" src="https://lh4.googleusercontent.com/-mPNwHFX9qac/UQOGgQHjkcI/AAAAAAAAABA/YU7VaS0I2fs/s149/1131410.png" /></p></div>
+<p>Type 为数据类型， Container 为保存数据的容器，Functional 为元素比较方式。
+Container 必须是用数组实现的容器，比如 vector, deque 但不能用 list.
+STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默认为小根堆。</p>
+<div class="highlight"><pre><span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">iostream</span> <span class="o">&gt;</span>
+<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">queue</span> <span class="o">&gt;</span>
+<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">functional</span> <span class="o">&gt;</span>
+
+<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
+
+<span class="kr">class</span> <span class="nx">cmp</span> <span class="p">{</span>
+<span class="kr">public</span><span class="o">:</span>
+    <span class="nx">bool</span> <span class="nx">operator</span><span class="p">()</span> <span class="p">(</span><span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">a</span><span class="p">,</span> <span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kr">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">priority_queue</span><span class="o">&lt;</span> <span class="kr">int</span><span class="p">,</span> <span class="nx">vector</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span><span class="p">,</span> <span class="nx">greater</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="nx">heap</span><span class="p">;</span> <span class="c1">//大根堆</span>
+    <span class="nx">priority_queue</span><span class="o">&lt;</span> <span class="kr">int</span><span class="p">,</span> <span class="nx">vector</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span><span class="p">,</span> <span class="nx">cmp</span><span class="o">&gt;</span> <span class="nx">heap2</span><span class="p">;</span> <span class="c1">//自定义比较类</span>
+<span class="p">}</span>
+</pre></div></div>
 	
         <hr>
 
@@ -77,7 +94,7 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'philokeygithubio'; 
-    var disqus_title = 'hello world';
+    var disqus_title = 'STL笔记';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
