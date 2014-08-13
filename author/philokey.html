@@ -56,8 +56,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="../pages/2014/08/13/unique-binary-search-trees-leetcode.html"><h1>Unique Binary Search Trees @ LeetCode</h1></a>
-2014-08-13
+            <a href="../pages/2014/08/14/unique-paths-ii-leetcode.html"><h1>Unique Paths II @ LeetCode</h1></a>
+2014-08-14
 
 by <a class="url fn" href="../author/philokey.html">philokey</a>
  
@@ -66,7 +66,48 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
  
         </div>
         
-        <div><p>题意：给定 1-n 共n个数， 问可以组成多少种不同的二分查找树。
+        <div><p>题意：给n*m的格子，1有障碍物，0表示没有障碍物，问从左上角到右下角有几种走法，其中有障碍物的格子不能通过。
+解法：
+动态规划。
+初始化第一行和第一列时遇到障碍物就停止
+dp[i][j] = dp[i-1][j] + dp[i][j-1], 如果grid[i][j]有障碍物, dp[i][j] = 0</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
+    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">obstacleGrid</span><span class="p">,</span> <span class="n">a</span> <span class="n">list</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">of</span> <span class="n">integers</span>
+    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
+    <span class="n">def</span> <span class="n">uniquePathsWithObstacles</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">obstacleGrid</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">obstacleGrid</span><span class="p">),</span> <span class="n">len</span><span class="p">(</span><span class="n">obstacleGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">dp</span> <span class="o">=</span><span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">if</span> <span class="n">obstacleGrid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="o">:</span> <span class="k">break</span>
+            <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">if</span> <span class="n">obstacleGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="o">:</span> <span class="k">break</span>
+            <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">m</span><span class="p">)</span><span class="o">:</span>
+                <span class="k">if</span> <span class="n">obstacleGrid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="o">:</span>
+                    <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div></div>
+        <hr />
+    </div>
+		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="../pages/2014/08/13/unique-binary-search-trees-leetcode.html"><h2>Unique Binary Search Trees @ LeetCode</h2></a>
+        <div class= "well small"> 2014-08-13
+
+by <a class="url fn" href="../author/philokey.html">philokey</a>
+ 
+
+
+ </div>
+        <div class="summary"><p>题意：给定 1-n 共n个数， 问可以组成多少种不同的二分查找树。
 动态规划。
 dp[n] 表示有n个数时，构成不同二分查找树的个数。
 转移方程为：
@@ -79,10 +120,7 @@ $$</p>
         <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
         <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">:</span>
-                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-</pre></div><script type= "text/javascript">
+            <span class="k">for</span> <span class="n">j ...</span></pre></div><script type= "text/javascript">
     if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
         var mathjaxscript = document.createElement('script');
         mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
@@ -112,10 +150,9 @@ $$</p>
         (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
     }
 </script>
-</div>
-        <hr />
-    </div>
-		
+ <a class="btn btn-info xsmall" href="../pages/2014/08/13/unique-binary-search-trees-leetcode.html">read more</a></div>
+    </div>	
+				
 
  
         
