@@ -56,8 +56,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="../pages/2014/08/10/stlbi-ji.html"><h1>STL笔记</h1></a>
-2014-08-10
+            <a href="../pages/2014/08/13/leetcode-unique-binary-search-trees.html"><h1>LeetCode Unique Binary Search Trees</h1></a>
+2014-08-13
 
 by <a class="url fn" href="../author/philokey.html">philokey</a>
  
@@ -66,32 +66,22 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
  
         </div>
         
-        <div><h2>priority_queue自定义比较函数</h2>
-<p>模板声明带有三个参数</p>
-<div class="highlight"><pre><span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">Type</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="n">Functional</span><span class="o">&gt;</span>
-</pre></div>
-
-
-<p>Type 为数据类型， Container 为保存数据的容器，Functional 为元素比较方式。
-Container 必须是用数组实现的容器，比如 vector, deque 但不能用 list.
-STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默认为小根堆。</p>
-<div class="highlight"><pre><span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">iostream</span> <span class="o">&gt;</span>
-<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">queue</span> <span class="o">&gt;</span>
-<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">functional</span> <span class="o">&gt;</span>
-
-<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
-
-<span class="kr">class</span> <span class="nx">cmp</span> <span class="p">{</span>
-<span class="kr">public</span><span class="o">:</span>
-    <span class="nx">bool</span> <span class="nx">operator</span><span class="p">()</span> <span class="p">(</span><span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">a</span><span class="p">,</span> <span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="kr">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">priority_queue</span><span class="o">&lt;</span> <span class="kr">int</span><span class="p">,</span> <span class="nx">vector</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span><span class="p">,</span> <span class="nx">greater</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="nx">heap</span><span class="p">;</span> <span class="c1">//大根堆</span>
-    <span class="nx">priority_queue</span><span class="o">&lt;</span> <span class="kr">int</span><span class="p">,</span> <span class="nx">vector</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span><span class="p">,</span> <span class="nx">cmp</span><span class="o">&gt;</span> <span class="nx">heap2</span><span class="p">;</span> <span class="c1">//自定义比较类</span>
-<span class="p">}</span>
+        <div><p>题意：给定 1-n 共n个数， 问可以组成多少种不同的二分查找树。
+动态规划。
+dp[n] 表示有n个数时，构成不同二分查找树的个数。
+转移方程为：
+$$
+dp[n] = \sum_{i=0}^{n-1}dp[i]*dp[n-i-1]
+$$</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
+    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
+    <span class="n">def</span> <span class="n">numTrees</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">:</span>
+                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
 </pre></div></div>
         <hr />
     </div>
@@ -100,7 +90,7 @@ STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默�
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
 
-    <li class="active"><a href="../tag/stl.html">1</a></li>
+    <li class="active"><a href="../category/leetcode.html">1</a></li>
 
     <li class="next disabled"><a href="#">&rarr; Next</a></li>
 

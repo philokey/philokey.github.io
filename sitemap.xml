@@ -5,30 +5,37 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.philokey.com/index.html</loc>
-<lastmod>2014-08-13T16:21:16-00:00</lastmod>
+<lastmod>2014-08-13T23:29:11-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.philokey.com/archives.html</loc>
-<lastmod>2014-08-13T16:21:16-00:00</lastmod>
+<lastmod>2014-08-13T23:29:11-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.philokey.com/tags.html</loc>
-<lastmod>2014-08-13T16:21:16-00:00</lastmod>
+<lastmod>2014-08-13T23:29:11-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.philokey.com/categories.html</loc>
-<lastmod>2014-08-13T16:21:16-00:00</lastmod>
+<lastmod>2014-08-13T23:29:11-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.philokey.com/pages/2014/08/13/leetcode-unique-binary-search-trees.html</loc>
+<lastmod>2014-08-13T23:20:00-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -67,6 +74,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://www.philokey.com/category/leetcode.html</loc>
+<lastmod>2014-08-13T23:20:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://www.philokey.com/category/python.html</loc>
 <lastmod>2014-08-13T15:40:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -75,13 +89,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.philokey.com/category/za.html</loc>
-<lastmod>2014-08-01T21:20:00-00:00</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://www.philokey.com/tag/blog.html</loc>
 <lastmod>2014-08-01T21:20:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
@@ -109,6 +116,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://www.philokey.com/tag/blog.html</loc>
+<lastmod>2014-08-01T21:20:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://www.philokey.com/tag/python.html</loc>
 <lastmod>2014-08-13T15:40:00-00:00</lastmod>
 <changefreq>daily</changefreq>
@@ -116,8 +130,15 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://www.philokey.com/tag/dp.html</loc>
+<lastmod>2014-08-13T23:20:00-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>http://www.philokey.com/author/philokey.html</loc>
-<lastmod>2014-08-13T15:40:00-00:00</lastmod>
+<lastmod>2014-08-13T23:20:00-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

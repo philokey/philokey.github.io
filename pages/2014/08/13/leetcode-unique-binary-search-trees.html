@@ -51,8 +51,8 @@
         <div class="span9">
     <div class='article'>
         <div class="content-title">
-            <h1>hello world</h1>
-2014-08-01
+            <h1>LeetCode Unique Binary Search Trees</h1>
+2014-08-13
 
 by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
  
@@ -60,16 +60,23 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
 
         </div>
 	
-        <div><h3>Hello World</h3>
-<div class="highlight"><pre><span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">cstdio</span><span class="o">&gt;</span>
-<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">printf</span><span class="p">(</span><span class="s2">&quot;Hello World</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
-
-<p><img alt="测试图片" src="https://lh4.googleusercontent.com/-mPNwHFX9qac/UQOGgQHjkcI/AAAAAAAAABA/YU7VaS0I2fs/s149/1131410.png" /></p></div>
+        <div><p>题意：给定 1-n 共n个数， 问可以组成多少种不同的二分查找树。
+动态规划。
+dp[n] 表示有n个数时，构成不同二分查找树的个数。
+转移方程为：
+$$
+dp[n] = \sum_{i=0}^{n-1}dp[i]*dp[n-i-1]
+$$</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
+    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
+    <span class="n">def</span> <span class="n">numTrees</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">:</span>
+                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+</pre></div></div>
 	
         <hr>
 
@@ -77,7 +84,7 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'philokeygithubio'; 
-    var disqus_title = 'hello world';
+    var disqus_title = 'LeetCode Unique Binary Search Trees';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
