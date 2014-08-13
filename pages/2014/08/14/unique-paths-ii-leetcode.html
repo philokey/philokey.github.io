@@ -60,11 +60,11 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
 
         </div>
 	
-        <div><p>题意：给n*m的格子，1有障碍物，0表示没有障碍物，问从左上角到右下角有几种走法，其中有障碍物的格子不能通过。
-解法：
-动态规划。
-初始化第一行和第一列时遇到障碍物就停止
-dp[i][j] = dp[i-1][j] + dp[i][j-1], 如果grid[i][j]有障碍物, dp[i][j] = 0</p>
+        <div><p>题意：给n*m的格子，1有障碍物，0表示没有障碍物，问从左上角到右下角有几种走法，其中有障碍物的格子不能通过。</p>
+<p>解法：</p>
+<p>动态规划。</p>
+<p>初始化第一行和第一列时遇到障碍物就停止</p>
+<p>dp[i][j] = dp[i-1][j] + dp[i][j-1], 如果grid[i][j]有障碍物, dp[i][j] = 0</p>
 <div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
     <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">obstacleGrid</span><span class="p">,</span> <span class="n">a</span> <span class="n">list</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">of</span> <span class="n">integers</span>
     <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
