@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>philokey的笔记</title><link>http://www.philokey.com/</link><description></description><atom:link href="http://www.philokey.com/feeds/leetcode.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 13 Aug 2014 23:20:00 +0800</lastBuildDate><item><title>LeetCode Unique Binary Search Trees</title><link>http://www.philokey.com/pages/2014/08/13/leetcode-unique-binary-search-trees.html</link><description>&lt;p&gt;题意：给定 1-n 共n个数， 问可以组成多少种不同的二分查找树。
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>philokey的笔记</title><link>http://www.philokey.com/</link><description></description><atom:link href="http://www.philokey.com/feeds/leetcode.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 13 Aug 2014 23:20:00 +0800</lastBuildDate><item><title>Unique Binary Search Trees @ LeetCode</title><link>http://www.philokey.com/pages/2014/08/13/unique-binary-search-trees-leetcode.html</link><description>&lt;p&gt;题意：给定 1-n 共n个数， 问可以组成多少种不同的二分查找树。
 动态规划。
 dp[n] 表示有n个数时，构成不同二分查找树的个数。
 转移方程为：
@@ -45,4 +45,4 @@ $$&lt;/p&gt;
         (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
     }
 &lt;/script&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">philokey</dc:creator><pubDate>Wed, 13 Aug 2014 23:20:00 +0800</pubDate><guid>tag:www.philokey.com,2014-08-13:pages/2014/08/13/leetcode-unique-binary-search-trees.html</guid><category>dp</category></item></channel></rss>
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">philokey</dc:creator><pubDate>Wed, 13 Aug 2014 23:20:00 +0800</pubDate><guid>tag:www.philokey.com,2014-08-13:pages/2014/08/13/unique-binary-search-trees-leetcode.html</guid><category>dp</category></item></channel></rss>

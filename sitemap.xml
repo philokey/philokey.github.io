@@ -5,34 +5,34 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.philokey.com/index.html</loc>
-<lastmod>2014-08-13T23:44:51-00:00</lastmod>
+<lastmod>2014-08-13T23:46:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.philokey.com/archives.html</loc>
-<lastmod>2014-08-13T23:44:51-00:00</lastmod>
+<lastmod>2014-08-13T23:46:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.philokey.com/tags.html</loc>
-<lastmod>2014-08-13T23:44:51-00:00</lastmod>
+<lastmod>2014-08-13T23:46:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.philokey.com/categories.html</loc>
-<lastmod>2014-08-13T23:44:51-00:00</lastmod>
+<lastmod>2014-08-13T23:46:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://www.philokey.com/pages/2014/08/13/leetcode-unique-binary-search-trees.html</loc>
+<loc>http://www.philokey.com/pages/2014/08/13/unique-binary-search-trees-leetcode.html</loc>
 <lastmod>2014-08-13T23:20:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>

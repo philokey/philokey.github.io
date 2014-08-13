@@ -1,4 +1,4 @@
-Title: LeetCode Unique Binary Search Trees 
+Title: Unique Binary Search Trees @ LeetCode
 Date: 2014-08-13 23:20
 Category: LeetCode
 Tags: dp
