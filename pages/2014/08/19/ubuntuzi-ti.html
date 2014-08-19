@@ -51,8 +51,8 @@
         <div class="span9">
     <div class='article'>
         <div class="content-title">
-            <h1>Longest Valid Parentheses @ LeetCode</h1>
-2014-08-14
+            <h1>ubuntu字体</h1>
+2014-08-19
 
 by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
  
@@ -60,26 +60,32 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
 
         </div>
 	
-        <div><p>题意： 给出括号序列，问最长的连续合法括号子序列长度是多少</p>
-<p>解法：用一个栈记录左括号, 右括号和在数组中的下标, 如果当前括号是右括号且栈顶是左括号, 则弹栈并更新答案</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
-    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span> <span class="n">string</span>
-    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
-    <span class="n">def</span> <span class="n">longestValidParentheses</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="o">:</span>
-        <span class="n">sLen</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;)&#39;</span><span class="p">)],</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">sLen</span><span class="p">)</span><span class="o">:</span>
-            <span class="k">if</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;(&#39;</span> <span class="n">and</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;)&#39;</span><span class="o">:</span>
-                <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
-                <span class="n">ret</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-            <span class="k">else</span> <span class="o">:</span>
-                <span class="n">stack</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-        <span class="k">return</span> <span class="n">ret</span>
+        <div><h2>基础知识</h2>
+<p>Sans-serif=无衬线体=黑体：并不是具体一款字体，而是一类字体，选择它其实等于选择这类字体中优先级最高的那款字体。</p>
+<p>Serif=衬线体=白体：同上</p>
+<p>Monospace=等宽字体，用于终端下面以及编程使用。这类字体的要求是能区分 1 i l，o 0 O。：同上</p>
+<p>点阵字体=位图字体</p>
+<p>无衬线体更适合电脑屏幕阅读，衬线体适合打印。——因为衬线可以使得人视线平齐于一行。也就是说不会读破行。</p>
+<p>中文显示时有不同的方式，一方面因为中文本身拥有的横和同高度就可以导致这种平齐。行距对中文更重要。</p>
+<h2>Linux字体</h2>
+<h3>字体文件存放路径</h3>
+<div class="highlight"><pre><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span>  <span class="err">#系统字体</span>
+<span class="o">~/</span><span class="p">.</span><span class="n">fonts</span> <span class="err">#用户字体</span>
 </pre></div>
 
 
-<blockquote>
-<p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
-</blockquote></div>
+<h3>配置文件路径</h3>
+<div class="highlight"><pre><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#系统配置文件</span><span class="p">,</span><span class="err">每类字体下的第一种字体优先级最高</span>
+<span class="o">~/</span><span class="p">.</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#用户配置文件，只对当前用户运行的程序有效</span>
+</pre></div>
+
+
+<h3>命令</h3>
+<div class="highlight"><pre><span class="n">fc</span><span class="o">-</span><span class="n">cache</span> <span class="o">-</span><span class="n">fv</span> <span class="err">#通常复制字体进</span><span class="o">~/</span><span class="p">.</span><span class="n">fonts</span><span class="err">就会自动刷新字体，如果没有，用这个命令，如果复制进的是</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span><span class="err">，用</span><span class="n">sudo</span> <span class="n">fc</span><span class="o">-</span><span class="n">cache</span> <span class="o">-</span><span class="n">fv</span>
+<span class="n">fc</span><span class="o">-</span><span class="n">match</span> <span class="n">sans</span><span class="o">-</span><span class="n">serif</span> <span class="err">#抓取当前用户</span><span class="n">sans</span><span class="o">-</span><span class="n">serif</span><span class="err">类字体优先级最高的那款字体</span>
+<span class="n">fc</span><span class="o">-</span><span class="n">match</span> <span class="n">serif</span> <span class="err">#抓取当前用户</span><span class="n">serif</span><span class="err">类字体优先级最高的那款字体</span>
+<span class="n">fc</span><span class="o">-</span><span class="n">match</span> <span class="n">monospace</span> <span class="err">#抓取当前用户</span><span class="n">monospace</span><span class="err">类字体优先级最高的那款字体</span>
+</pre></div></div>
 	
         <hr>
 
@@ -87,7 +93,7 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'philokeygithubio'; 
-    var disqus_title = 'Longest Valid Parentheses @ LeetCode';
+    var disqus_title = 'ubuntu字体';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

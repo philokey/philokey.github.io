@@ -1,5 +1,5 @@
 Title: ubuntu字体
-Date: 2014-08-19 12：47
+Date: 2014-08-19 12:50
 Category: Linux
 
 ##基础知识

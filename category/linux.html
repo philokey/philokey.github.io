@@ -56,8 +56,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="../pages/2014/08/10/stlbi-ji.html"><h1>STL笔记</h1></a>
-2014-08-10
+            <a href="../pages/2014/08/19/ubuntuzi-ti.html"><h1>ubuntu字体</h1></a>
+2014-08-19
 
 by <a class="url fn" href="../author/philokey.html">philokey</a>
  
@@ -66,32 +66,31 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
  
         </div>
         
-        <div><h2>priority_queue自定义比较函数</h2>
-<p>模板声明带有三个参数</p>
-<div class="highlight"><pre><span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">Type</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="n">Functional</span><span class="o">&gt;</span>
+        <div><h2>基础知识</h2>
+<p>Sans-serif=无衬线体=黑体：并不是具体一款字体，而是一类字体，选择它其实等于选择这类字体中优先级最高的那款字体。</p>
+<p>Serif=衬线体=白体：同上</p>
+<p>Monospace=等宽字体，用于终端下面以及编程使用。这类字体的要求是能区分 1 i l，o 0 O。：同上</p>
+<p>点阵字体=位图字体</p>
+<p>无衬线体更适合电脑屏幕阅读，衬线体适合打印。——因为衬线可以使得人视线平齐于一行。也就是说不会读破行。</p>
+<p>中文显示时有不同的方式，一方面因为中文本身拥有的横和同高度就可以导致这种平齐。行距对中文更重要。</p>
+<h2>Linux字体</h2>
+<h3>字体文件存放路径</h3>
+<div class="highlight"><pre><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span>  <span class="err">#系统字体</span>
+<span class="o">~/</span><span class="p">.</span><span class="n">fonts</span> <span class="err">#用户字体</span>
 </pre></div>
 
 
-<p>Type 为数据类型， Container 为保存数据的容器，Functional 为元素比较方式。
-Container 必须是用数组实现的容器，比如 vector, deque 但不能用 list.
-STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默认为小根堆。</p>
-<div class="highlight"><pre><span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">iostream</span> <span class="o">&gt;</span>
-<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">queue</span> <span class="o">&gt;</span>
-<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">functional</span> <span class="o">&gt;</span>
+<h3>配置文件路径</h3>
+<div class="highlight"><pre><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#系统配置文件</span><span class="p">,</span><span class="err">每类字体下的第一种字体优先级最高</span>
+<span class="o">~/</span><span class="p">.</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#用户配置文件，只对当前用户运行的程序有效</span>
+</pre></div>
 
-<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
 
-<span class="kr">class</span> <span class="nx">cmp</span> <span class="p">{</span>
-<span class="kr">public</span><span class="o">:</span>
-    <span class="nx">bool</span> <span class="nx">operator</span><span class="p">()</span> <span class="p">(</span><span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">a</span><span class="p">,</span> <span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="kr">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">priority_queue</span><span class="o">&lt;</span> <span class="kr">int</span><span class="p">,</span> <span class="nx">vector</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span><span class="p">,</span> <span class="nx">greater</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="nx">heap</span><span class="p">;</span> <span class="c1">//大根堆</span>
-    <span class="nx">priority_queue</span><span class="o">&lt;</span> <span class="kr">int</span><span class="p">,</span> <span class="nx">vector</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span><span class="p">,</span> <span class="nx">cmp</span><span class="o">&gt;</span> <span class="nx">heap2</span><span class="p">;</span> <span class="c1">//自定义比较类</span>
-<span class="p">}</span>
+<h3>命令</h3>
+<div class="highlight"><pre><span class="n">fc</span><span class="o">-</span><span class="n">cache</span> <span class="o">-</span><span class="n">fv</span> <span class="err">#通常复制字体进</span><span class="o">~/</span><span class="p">.</span><span class="n">fonts</span><span class="err">就会自动刷新字体，如果没有，用这个命令，如果复制进的是</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span><span class="err">，用</span><span class="n">sudo</span> <span class="n">fc</span><span class="o">-</span><span class="n">cache</span> <span class="o">-</span><span class="n">fv</span>
+<span class="n">fc</span><span class="o">-</span><span class="n">match</span> <span class="n">sans</span><span class="o">-</span><span class="n">serif</span> <span class="err">#抓取当前用户</span><span class="n">sans</span><span class="o">-</span><span class="n">serif</span><span class="err">类字体优先级最高的那款字体</span>
+<span class="n">fc</span><span class="o">-</span><span class="n">match</span> <span class="n">serif</span> <span class="err">#抓取当前用户</span><span class="n">serif</span><span class="err">类字体优先级最高的那款字体</span>
+<span class="n">fc</span><span class="o">-</span><span class="n">match</span> <span class="n">monospace</span> <span class="err">#抓取当前用户</span><span class="n">monospace</span><span class="err">类字体优先级最高的那款字体</span>
 </pre></div></div>
         <hr />
     </div>
@@ -100,7 +99,7 @@ STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默�
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
 
-    <li class="active"><a href="../category/bi-ji.html">1</a></li>
+    <li class="active"><a href="../category/linux.html">1</a></li>
 
     <li class="next disabled"><a href="#">&rarr; Next</a></li>
 
