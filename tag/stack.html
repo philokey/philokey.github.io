@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>philokey的笔记</title>
+    <meta name="description" content="">
+    <meta name="author" content="philokey">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="../theme/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="../theme/bootstrap.min.css" rel="stylesheet">
+    <link href="../theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="../theme/local.css" rel="stylesheet">
+    <link href="../theme/pygments.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="navbar-inner">
+    <div class="container">
+
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </a>
+
+        <a class="brand" href="..">philokey的笔记</a>
+
+        <div class="nav-collapse">
+        <ul class="nav">
+            
+        </ul>
+        </div>
+        
+    </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="content">
+    <div class="row">
+
+        <div class="span9">
+        
+
+        
+
+
+    <div class='article'>
+        <div class="content-title">
+            <a href="../pages/2014/08/14/longest-valid-parentheses-leetcode.html"><h1>Longest Valid Parentheses @ LeetCode</h1></a>
+2014-08-14
+
+by <a class="url fn" href="../author/philokey.html">philokey</a>
+ 
+
+
+ 
+        </div>
+        
+        <div><p>题意： 给出括号序列，问最长的连续合法括号子序列长度是多少</p>
+<p>解法：用一个栈记录左括号, 右括号和在数组中的下标, 如果当前括号是右括号且栈顶是左括号, 则弹栈并更新答案</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
+    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span> <span class="n">string</span>
+    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
+    <span class="n">def</span> <span class="n">longestValidParentheses</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">sLen</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;)&#39;</span><span class="p">)],</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">sLen</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">if</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;(&#39;</span> <span class="n">and</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;)&#39;</span><span class="o">:</span>
+                <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span> <span class="o">:</span>
+                <span class="n">stack</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">ret</span>
+</pre></div>
+
+
+<blockquote>
+<p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
+</blockquote></div>
+        <hr />
+    </div>
+		
+<div class="pagination">
+<ul>
+    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
+
+    <li class="active"><a href="../tag/stack.html">1</a></li>
+
+    <li class="next disabled"><a href="#">&rarr; Next</a></li>
+
+</ul>
+</div>
+ 
+  
+        </div>
+        
+        <div class="span3">
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Site
+                </li>
+            
+                <li><a href="../archives.html">Archives</a>
+                <li><a href="../tags.html">Tags</a>
+                <li><a href="http://www.philokey.com/" rel="alternate">Atom feed</a></li>
+                <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+            </ul>
+            </div>
+
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Categories
+                </li>
+                
+                <li><a href="../category/bi-ji.html">笔记</a></li>
+                <li><a href="../category/leetcode.html">LeetCode</a></li>
+                <li><a href="../category/python.html">python</a></li>
+                <li><a href="../category/za.html">杂</a></li>
+                   
+            </ul>
+            </div>
+
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Links
+                </li>
+            
+                <li><a href="http://getpelican.com/">Pelican</a></li>
+                <li><a href="http://python.org/">Python.org</a></li>
+                <li><a href="https://www.google.com/ncr">Google</a></li>
+            </ul>
+            </div>
+
+
+            <div class="social">
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Social
+                </li>
+           
+                <li><a href="https://github.com/philokey">Github</a></li>
+                <li><a href="http://weibo.com/u/1690959514/">微博</a></li>
+            </ul>
+            </div>
+            </div>
+
+        </div>  
+    </div>     </div> 
+<footer>
+<br />
+<p><a href="..">philokey的笔记</a> &copy; philokey 2012</p>
+</footer>
+
+</div> <!-- /container -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+<script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+ 
+</body>
+</html>

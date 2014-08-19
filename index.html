@@ -56,8 +56,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="./pages/2014/08/14/unique-paths-ii-leetcode.html"><h1>Unique Paths II @ LeetCode</h1></a>
-2014-08-14
+            <a href="./pages/2014/08/16/search-in-rotated-sorted-array.html"><h1>Search in Rotated Sorted Array</h1></a>
+2014-08-16
 
 by <a class="url fn" href="./author/philokey.html">philokey</a>
  
@@ -66,7 +66,78 @@ by <a class="url fn" href="./author/philokey.html">philokey</a>
  
         </div>
         
-        <div><p>题意：给n*m的格子，1有障碍物，0表示没有障碍物，问从左上角到右下角有几种走法，其中有障碍物的格子不能通过。</p>
+        <div><p>解法：二分法，分别讨论左边单调递增还是右边单调递增。当有重复元素时， A[l] == A[m] 的情况要单独拿出来考虑， 因为有[l,m] =&gt; [1,3,1]这种情况</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
+    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">A</span> <span class="n">a</span> <span class="n">list</span> <span class="n">of</span> <span class="n">integers</span>
+    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">target</span> <span class="n">an</span> <span class="n">integer</span>
+    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">a</span> <span class="n">boolean</span>
+    <span class="n">def</span> <span class="n">search</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="o">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="o">:</span> <span class="k">return</span> <span class="n">True</span>
+            <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">:</span>
+                <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">target</span> <span class="o">&lt;</span> <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="nl">else:</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">elif</span> <span class="n">A</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">:</span>
+                <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">target</span> <span class="o">&lt;=</span> <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="o">:</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="nl">else:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">else</span> <span class="o">:</span>
+                <span class="n">l</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">False</span>
+</pre></div></div>
+        <hr />
+    </div>
+		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="./pages/2014/08/14/longest-valid-parentheses-leetcode.html"><h2>Longest Valid Parentheses @ LeetCode</h2></a>
+        <div class= "well small"> 2014-08-14
+
+by <a class="url fn" href="./author/philokey.html">philokey</a>
+ 
+
+
+ </div>
+        <div class="summary"><p>题意： 给出括号序列，问最长的连续合法括号子序列长度是多少</p>
+<p>解法：用一个栈记录左括号, 右括号和在数组中的下标, 如果当前括号是右括号且栈顶是左括号, 则弹栈并更新答案</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
+    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span> <span class="n">string</span>
+    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
+    <span class="n">def</span> <span class="n">longestValidParentheses</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">sLen</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;)&#39;</span><span class="p">)],</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">sLen</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">if</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;(&#39;</span> <span class="n">and</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;)&#39;</span><span class="o">:</span>
+                <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else ...</span></pre></div> <a class="btn btn-info xsmall" href="./pages/2014/08/14/longest-valid-parentheses-leetcode.html">read more</a></div>
+    </div>	
+				
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="./pages/2014/08/14/unique-paths-ii-leetcode.html"><h2>Unique Paths II @ LeetCode</h2></a>
+        <div class= "well small"> 2014-08-14
+
+by <a class="url fn" href="./author/philokey.html">philokey</a>
+ 
+
+
+ </div>
+        <div class="summary"><p>题意：给n*m的格子，1有障碍物，0表示没有障碍物，问从左上角到右下角有几种走法，其中有障碍物的格子不能通过。</p>
 <p>解法：</p>
 <p>动态规划。</p>
 <p>初始化第一行和第一列时遇到障碍物就停止</p>
@@ -75,23 +146,9 @@ by <a class="url fn" href="./author/philokey.html">philokey</a>
     <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">obstacleGrid</span><span class="p">,</span> <span class="n">a</span> <span class="n">list</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">of</span> <span class="n">integers</span>
     <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
     <span class="n">def</span> <span class="n">uniquePathsWithObstacles</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">obstacleGrid</span><span class="p">)</span><span class="o">:</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">obstacleGrid</span><span class="p">),</span> <span class="n">len</span><span class="p">(</span><span class="n">obstacleGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">dp</span> <span class="o">=</span><span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">:</span>
-            <span class="k">if</span> <span class="n">obstacleGrid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="o">:</span> <span class="k">break</span>
-            <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">:</span>
-            <span class="k">if</span> <span class="n">obstacleGrid</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="o">:</span> <span class="k">break</span>
-            <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="o">:</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">m</span><span class="p">)</span><span class="o">:</span>
-                <span class="k">if</span> <span class="n">obstacleGrid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="o">:</span>
-                    <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-</pre></div></div>
-        <hr />
-    </div>
-		
+        <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">obstacleGrid</span><span class="p">),</span> <span class="n">len</span><span class="p">(</span><span class="n">obstacleGrid ...</span></pre></div> <a class="btn btn-info xsmall" href="./pages/2014/08/14/unique-paths-ii-leetcode.html">read more</a></div>
+    </div>	
+				
 
  
         
