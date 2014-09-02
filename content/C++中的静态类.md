@@ -1,5 +1,5 @@
 Title: C++中的static
-Date: 2014-09-1
+Date: 2014-09-01
 Category: C++
 Tag: static, C++
 

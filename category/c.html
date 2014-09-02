@@ -56,8 +56,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="../pages/2014/08/10/stlbi-ji.html"><h1>STL笔记</h1></a>
-2014-08-10
+            <a href="../pages/2014/09/01/czhong-de-static.html"><h1>C++中的static</h1></a>
+2014-09-01
 
 by <a class="url fn" href="../author/philokey.html">philokey</a>
  
@@ -66,33 +66,57 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
  
         </div>
         
-        <div><h2>priority_queue自定义比较函数</h2>
-<p>模板声明带有三个参数</p>
-<div class="highlight"><pre><span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">Type</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="n">Functional</span><span class="o">&gt;</span>
-</pre></div>
-
-
-<p>Type 为数据类型， Container 为保存数据的容器，Functional 为元素比较方式。
-Container 必须是用数组实现的容器，比如 vector, deque 但不能用 list.
-STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默认为小根堆。</p>
-<div class="highlight"><pre><span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">iostream</span> <span class="o">&gt;</span>
-<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">queue</span> <span class="o">&gt;</span>
-<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">functional</span> <span class="o">&gt;</span>
-
-<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
-
-<span class="kr">class</span> <span class="nx">cmp</span> <span class="p">{</span>
-<span class="kr">public</span><span class="o">:</span>
-    <span class="nx">bool</span> <span class="nx">operator</span><span class="p">()</span> <span class="p">(</span><span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">a</span><span class="p">,</span> <span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="kr">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">priority_queue</span><span class="o">&lt;</span> <span class="kr">int</span><span class="p">,</span> <span class="nx">vector</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span><span class="p">,</span> <span class="nx">greater</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="nx">heap</span><span class="p">;</span> <span class="c1">//大根堆</span>
-    <span class="nx">priority_queue</span><span class="o">&lt;</span> <span class="kr">int</span><span class="p">,</span> <span class="nx">vector</span><span class="o">&lt;</span> <span class="kr">int</span> <span class="o">&gt;</span><span class="p">,</span> <span class="nx">cmp</span><span class="o">&gt;</span> <span class="nx">heap2</span><span class="p">;</span> <span class="c1">//自定义比较类</span>
-<span class="p">}</span>
-</pre></div></div>
+        <div><h2>静态全局变量</h2>
+<p>在全局变量前，加上关键字static，该变量就被定义成为一个静态全局变量,存放在全局数据区。</p>
+<h3>全局变量和全局静态变量的区别</h3>
+<ul>
+<li>全局变量是不显式用static修饰的全局变量，但全局变量默认是动态的，作用域是整个工程，在一个文件内定义的全局变量，在另一个文件中，通过extern 全局变量名的声明，就可以使用全局变量。</li>
+<li>全局静态变量是显式用static修饰的全局变量，作用域是声明此变量所在的文件，其他的文件即使用extern声明也不能使用。</li>
+</ul>
+<h2>静态局部变量</h2>
+<p>在局部变量前，加上关键字static，该变量就被定义成为一个静态局部变量。</p>
+<p>有时候需要在两次调用之间对变量的值进行保存。但是全局变量不易维护，所以可以使用静态局部变量。</p>
+<p>静态局部变量保存在全局数据区，而不是保存在栈中，每次的值保持到下一次调用，直到下次赋新值。其作用域为局部作用域，当定义它的函数或语句块结束时，其作用域随之结束。</p>
+<h3>静态函数</h3>
+<p>在函数的返回类型前加上static关键字，函数即被定义为静态函数。静态函数与普通函数不同，它只能在声明它的文件当中可见，不能被其它文件使用。</p>
+<p>定义静态函数的好处：</p>
+<ul>
+<li>静态函数不能被其它文件所用；</li>
+<li>其它文件中可以定义相同名字的函数，不会发生冲突；</li>
+</ul>
+<h2>class中的静态成员</h2>
+<h3>定义</h3>
+<p>对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。
+···
+class A {
+private:
+    char *str;
+    static int num;
+    static void output() ;<br />
+}；
+···
+每个对象都有自己的str，共享一个num</p>
+<h3>特点</h3>
+<p>···
+//通过类名可以调用静态成员函数
+A::output()</p>
+<p>//静态成员函数中不能引用非静态成员
+/<em>
+因为静态成员函数属于整个类，在类实例化对象之前就已经分配空间了，而类的非静态成员必须在类实例化对象后才有内存空间，所以这个调用就出错了，就好比没有声明一个变量却提前使用它一样。
+</em>/
+//output定义为
+static void output() {
+    cout&lt;&lt;str&lt;&lt;endl; //error!<br />
+}</p>
+<p>···</p>
+<h2>初始化</h2>
+<p>只有const static 的成员可以再类的声明中直接初始化。</p>
+<p>静态成员一般选择在类的实现文件中,用构造函数以进行初始化</p>
+<p>···
+int A::num = 0;
+//或者 <br />
+int A::num(0);
+···</p></div>
         <hr />
     </div>
 		
@@ -100,7 +124,7 @@ STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默�
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
 
-    <li class="active"><a href="../tag/stl.html">1</a></li>
+    <li class="active"><a href="../category/c.html">1</a></li>
 
     <li class="next disabled"><a href="#">&rarr; Next</a></li>
 

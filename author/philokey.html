@@ -56,8 +56,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="../pages/2014/08/19/ubuntuzi-ti.html"><h1>ubuntu字体</h1></a>
-2014-08-19
+            <a href="../pages/2014/09/01/czhong-de-static.html"><h1>C++中的static</h1></a>
+2014-09-01
 
 by <a class="url fn" href="../author/philokey.html">philokey</a>
  
@@ -66,7 +66,76 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
  
         </div>
         
-        <div><h2>基础知识</h2>
+        <div><h2>静态全局变量</h2>
+<p>在全局变量前，加上关键字static，该变量就被定义成为一个静态全局变量,存放在全局数据区。</p>
+<h3>全局变量和全局静态变量的区别</h3>
+<ul>
+<li>全局变量是不显式用static修饰的全局变量，但全局变量默认是动态的，作用域是整个工程，在一个文件内定义的全局变量，在另一个文件中，通过extern 全局变量名的声明，就可以使用全局变量。</li>
+<li>全局静态变量是显式用static修饰的全局变量，作用域是声明此变量所在的文件，其他的文件即使用extern声明也不能使用。</li>
+</ul>
+<h2>静态局部变量</h2>
+<p>在局部变量前，加上关键字static，该变量就被定义成为一个静态局部变量。</p>
+<p>有时候需要在两次调用之间对变量的值进行保存。但是全局变量不易维护，所以可以使用静态局部变量。</p>
+<p>静态局部变量保存在全局数据区，而不是保存在栈中，每次的值保持到下一次调用，直到下次赋新值。其作用域为局部作用域，当定义它的函数或语句块结束时，其作用域随之结束。</p>
+<h3>静态函数</h3>
+<p>在函数的返回类型前加上static关键字，函数即被定义为静态函数。静态函数与普通函数不同，它只能在声明它的文件当中可见，不能被其它文件使用。</p>
+<p>定义静态函数的好处：</p>
+<ul>
+<li>静态函数不能被其它文件所用；</li>
+<li>其它文件中可以定义相同名字的函数，不会发生冲突；</li>
+</ul>
+<h2>class中的静态成员</h2>
+<h3>定义</h3>
+<p>对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。
+···
+class A {
+private:
+    char *str;
+    static int num;
+    static void output() ;<br />
+}；
+···
+每个对象都有自己的str，共享一个num</p>
+<h3>特点</h3>
+<p>···
+//通过类名可以调用静态成员函数
+A::output()</p>
+<p>//静态成员函数中不能引用非静态成员
+/<em>
+因为静态成员函数属于整个类，在类实例化对象之前就已经分配空间了，而类的非静态成员必须在类实例化对象后才有内存空间，所以这个调用就出错了，就好比没有声明一个变量却提前使用它一样。
+</em>/
+//output定义为
+static void output() {
+    cout&lt;&lt;str&lt;&lt;endl; //error!<br />
+}</p>
+<p>···</p>
+<h2>初始化</h2>
+<p>只有const static 的成员可以再类的声明中直接初始化。</p>
+<p>静态成员一般选择在类的实现文件中,用构造函数以进行初始化</p>
+<p>···
+int A::num = 0;
+//或者 <br />
+int A::num(0);
+···</p></div>
+        <hr />
+    </div>
+		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="../pages/2014/08/19/ubuntuzi-ti.html"><h2>ubuntu字体</h2></a>
+        <div class= "well small"> 2014-08-19
+
+by <a class="url fn" href="../author/philokey.html">philokey</a>
+ 
+
+
+ </div>
+        <div class="summary"><h2>基础知识</h2>
 <p>Sans-serif=无衬线体=黑体：并不是具体一款字体，而是一类字体，选择它其实等于选择这类字体中优先级最高的那款字体。</p>
 <p>Serif=衬线体=白体：同上</p>
 <p>Monospace=等宽字体，用于终端下面以及编程使用。这类字体的要求是能区分 1 i l，o 0 O。：同上</p>
@@ -82,19 +151,9 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 
 <h3>配置文件路径</h3>
 <div class="highlight"><pre><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#系统配置文件</span><span class="p">,</span><span class="err">每类字体下的第一种字体优先级最高</span>
-<span class="o">~/</span><span class="p">.</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#用户配置文件，只对当前用户运行的程序有效</span>
-</pre></div>
-
-
-<h3>命令</h3>
-<div class="highlight"><pre><span class="n">fc</span><span class="o">-</span><span class="n">cache</span> <span class="o">-</span><span class="n">fv</span> <span class="err">#通常复制字体进</span><span class="o">~/</span><span class="p">.</span><span class="n">fonts</span><span class="err">就会自动刷新字体，如果没有，用这个命令，如果复制进的是</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span><span class="err">，用</span><span class="n">sudo</span> <span class="n">fc</span><span class="o">-</span><span class="n">cache</span> <span class="o">-</span><span class="n">fv</span>
-<span class="n">fc</span><span class="o">-</span><span class="n">match</span> <span class="n">sans</span><span class="o">-</span><span class="n">serif</span> <span class="err">#抓取当前用户</span><span class="n">sans</span><span class="o">-</span><span class="n">serif</span><span class="err">类字体优先级最高的那款字体</span>
-<span class="n">fc</span><span class="o">-</span><span class="n">match</span> <span class="n">serif</span> <span class="err">#抓取当前用户</span><span class="n">serif</span><span class="err">类字体优先级最高的那款字体</span>
-<span class="n">fc</span><span class="o">-</span><span class="n">match</span> <span class="n">monospace</span> <span class="err">#抓取当前用户</span><span class="n">monospace</span><span class="err">类字体优先级最高的那款字体</span>
-</pre></div></div>
-        <hr />
-    </div>
-		
+<span class="o">~/</span><span class="p">.</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#用户配置文件，只对当前用户运行的程序有效 ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/19/ubuntuzi-ti.html">read more</a></div>
+    </div>	
+				
 
  
         
@@ -424,6 +483,7 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
                 </li>
                 
                 <li><a href="../category/bi-ji.html">笔记</a></li>
+                <li><a href="../category/c.html">C++</a></li>
                 <li><a href="../category/leetcode.html">LeetCode</a></li>
                 <li><a href="../category/linux.html">Linux</a></li>
                 <li><a href="../category/python.html">python</a></li>
