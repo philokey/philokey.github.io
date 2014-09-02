@@ -19,37 +19,39 @@
 &lt;/ul&gt;
 &lt;h2&gt;class中的静态成员&lt;/h2&gt;
 &lt;h3&gt;定义&lt;/h3&gt;
-&lt;p&gt;对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。
-···
-class A {
-private:
-    char *str;
-    static int num;
-    static void output() ;&lt;br /&gt;
-}；
-···
-每个对象都有自己的str，共享一个num&lt;/p&gt;
+&lt;p&gt;对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="nl"&gt;private:&lt;/span&gt;
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;output&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="err"&gt;；&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;每个对象都有自己的str，共享一个num&lt;/p&gt;
 &lt;h3&gt;特点&lt;/h3&gt;
-&lt;p&gt;···
-//通过类名可以调用静态成员函数
-A::output()&lt;/p&gt;
-&lt;p&gt;//静态成员函数中不能引用非静态成员
-/&lt;em&gt;
-因为静态成员函数属于整个类，在类实例化对象之前就已经分配空间了，而类的非静态成员必须在类实例化对象后才有内存空间，所以这个调用就出错了，就好比没有声明一个变量却提前使用它一样。
-&lt;/em&gt;/
-//output定义为
-static void output() {
-    cout&amp;lt;&amp;lt;str&amp;lt;&amp;lt;endl; //error!&lt;br /&gt;
-}&lt;/p&gt;
-&lt;p&gt;···&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//通过类名可以调用静态成员函数&lt;/span&gt;
+&lt;span class="no"&gt;A&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;output&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="c1"&gt;//静态成员函数中不能引用非静态成员&lt;/span&gt;
+&lt;span class="cm"&gt;/*&lt;/span&gt;
+&lt;span class="cm"&gt;因为静态成员函数属于整个类，在类实例化对象之前就已经分配空间了，而类的非静态成员必须在类实例化对象后才有内存空间，所以这个调用就出错了，就好比没有声明一个变量却提前使用它一样。&lt;/span&gt;
+&lt;span class="cm"&gt;*/&lt;/span&gt;
+&lt;span class="c1"&gt;//output定义为&lt;/span&gt;
+&lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="k"&gt;output&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//error!  &lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;h2&gt;初始化&lt;/h2&gt;
 &lt;p&gt;只有const static 的成员可以再类的声明中直接初始化。&lt;/p&gt;
 &lt;p&gt;静态成员一般选择在类的实现文件中,用构造函数以进行初始化&lt;/p&gt;
-&lt;p&gt;···
-int A::num = 0;
-//或者 &lt;br /&gt;
-int A::num(0);
-···&lt;/p&gt;</summary></entry><entry><title>ubuntu字体</title><link href="http://www.philokey.com/pages/2014/08/19/ubuntuzi-ti.html" rel="alternate"></link><updated>2014-08-19T12:50:00+08:00</updated><author><name>philokey</name></author><id>tag:www.philokey.com,2014-08-19:pages/2014/08/19/ubuntuzi-ti.html</id><summary type="html">&lt;h2&gt;基础知识&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="c1"&gt;//或者   &lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>ubuntu字体</title><link href="http://www.philokey.com/pages/2014/08/19/ubuntuzi-ti.html" rel="alternate"></link><updated>2014-08-19T12:50:00+08:00</updated><author><name>philokey</name></author><id>tag:www.philokey.com,2014-08-19:pages/2014/08/19/ubuntuzi-ti.html</id><summary type="html">&lt;h2&gt;基础知识&lt;/h2&gt;
 &lt;p&gt;Sans-serif=无衬线体=黑体：并不是具体一款字体，而是一类字体，选择它其实等于选择这类字体中优先级最高的那款字体。&lt;/p&gt;
 &lt;p&gt;Serif=衬线体=白体：同上&lt;/p&gt;
 &lt;p&gt;Monospace=等宽字体，用于终端下面以及编程使用。这类字体的要求是能区分 1 i l，o 0 O。：同上&lt;/p&gt;

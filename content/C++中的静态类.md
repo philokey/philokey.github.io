@@ -34,19 +34,21 @@ Tag: static, C++
 ###定义
 
 对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。
-···
+
+```
 class A {
 private:
 	char *str;
 	static int num;
 	static void output() ;  
 }；
-···
+```
+
 每个对象都有自己的str，共享一个num
 
 ###特点
 
-···
+```
 //通过类名可以调用静态成员函数
 A::output()
 
@@ -59,7 +61,7 @@ static void output() {
 	cout<<str<<endl; //error!  
 }
 
-···
+```
 
 ##初始化
 
@@ -67,8 +69,8 @@ static void output() {
 
 静态成员一般选择在类的实现文件中,用构造函数以进行初始化
 
-···
+```
 int A::num = 0;
 //或者   
 int A::num(0);
-···
+```

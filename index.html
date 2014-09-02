@@ -86,37 +86,39 @@ by <a class="url fn" href="./author/philokey.html">philokey</a>
 </ul>
 <h2>class中的静态成员</h2>
 <h3>定义</h3>
-<p>对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。
-···
-class A {
-private:
-    char *str;
-    static int num;
-    static void output() ;<br />
-}；
-···
-每个对象都有自己的str，共享一个num</p>
+<p>对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">A</span> <span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">num</span><span class="p">;</span>
+    <span class="k">static</span> <span class="kt">void</span> <span class="nf">output</span><span class="p">()</span> <span class="p">;</span>  
+<span class="p">}</span><span class="err">；</span>
+</pre></div>
+
+
+<p>每个对象都有自己的str，共享一个num</p>
 <h3>特点</h3>
-<p>···
-//通过类名可以调用静态成员函数
-A::output()</p>
-<p>//静态成员函数中不能引用非静态成员
-/<em>
-因为静态成员函数属于整个类，在类实例化对象之前就已经分配空间了，而类的非静态成员必须在类实例化对象后才有内存空间，所以这个调用就出错了，就好比没有声明一个变量却提前使用它一样。
-</em>/
-//output定义为
-static void output() {
-    cout&lt;&lt;str&lt;&lt;endl; //error!<br />
-}</p>
-<p>···</p>
+<div class="highlight"><pre><span class="c1">//通过类名可以调用静态成员函数</span>
+<span class="no">A</span><span class="o">::</span><span class="k">output</span><span class="p">()</span>
+
+<span class="c1">//静态成员函数中不能引用非静态成员</span>
+<span class="cm">/*</span>
+<span class="cm">因为静态成员函数属于整个类，在类实例化对象之前就已经分配空间了，而类的非静态成员必须在类实例化对象后才有内存空间，所以这个调用就出错了，就好比没有声明一个变量却提前使用它一样。</span>
+<span class="cm">*/</span>
+<span class="c1">//output定义为</span>
+<span class="k">static</span> <span class="k">void</span> <span class="k">output</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">str</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> <span class="c1">//error!  </span>
+<span class="p">}</span>
+</pre></div>
+
+
 <h2>初始化</h2>
 <p>只有const static 的成员可以再类的声明中直接初始化。</p>
 <p>静态成员一般选择在类的实现文件中,用构造函数以进行初始化</p>
-<p>···
-int A::num = 0;
-//或者 <br />
-int A::num(0);
-···</p></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">A</span><span class="o">::</span><span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="c1">//或者   </span>
+<span class="kt">int</span> <span class="n">A</span><span class="o">::</span><span class="n">num</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</pre></div></div>
         <hr />
     </div>
 		
