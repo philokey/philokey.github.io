@@ -9,14 +9,14 @@
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
-    <script src="../theme/html5.js"></script>
+    <script src="../../../../theme/html5.js"></script>
     <![endif]-->
 
     <!-- Le styles -->
-    <link href="../theme/bootstrap.min.css" rel="stylesheet">
-    <link href="../theme/bootstrap.min.responsive.css" rel="stylesheet">
-    <link href="../theme/local.css" rel="stylesheet">
-    <link href="../theme/pygments.css" rel="stylesheet">
+    <link href="../../../../theme/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../../theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="../../../../theme/local.css" rel="stylesheet">
+    <link href="../../../../theme/pygments.css" rel="stylesheet">
 
 </head>
 
@@ -32,7 +32,7 @@
              <span class="icon-bar"></span>
          </a>
 
-        <a class="brand" href="..">philokey的笔记</a>
+        <a class="brand" href="../../../..">philokey的笔记</a>
 
         <div class="nav-collapse">
         <ul class="nav">
@@ -49,23 +49,17 @@
     <div class="row">
 
         <div class="span9">
-        
-
-        
-
-
     <div class='article'>
         <div class="content-title">
-            <a href="../pages/2014/10/15/czhong-de-lei.html"><h1>C++中的类</h1></a>
+            <h1>C++中的类</h1>
 2014-10-15
 
-by <a class="url fn" href="../author/philokey.html">philokey</a>
+by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
  
 
 
- 
         </div>
-        
+	
         <div><h2>公有继承</h2>
 <p>通过 is-a 的方式进行继承</p>
 <ul>
@@ -195,61 +189,23 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 
 
 <p>抽象类：一个类可以抽象出不同的对象来表达一个抽象的概念和通用的接口，这个类不能实例化(创造)对象。有纯虚函数的类是抽象类.</p></div>
-        <hr />
+	
+        <hr>
+
+        <h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'philokeygithubio'; 
+    var disqus_title = 'C++中的类';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
-		
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/09/01/czhong-de-static.html"><h2>C++中的static</h2></a>
-        <div class= "well small"> 2014-09-01
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><h2>静态全局变量</h2>
-<p>在全局变量前，加上关键字static，该变量就被定义成为一个静态全局变量,存放在全局数据区。</p>
-<h3>全局变量和全局静态变量的区别</h3>
-<ul>
-<li>全局变量是不显式用static修饰的全局变量，但全局变量默认是动态的，作用域是整个工程，在一个文件内定义的全局变量，在另一个文件中，通过extern 全局变量名的声明，就可以使用全局变量。</li>
-<li>全局静态变量是显式用static修饰的全局变量，作用域是声明此变量所在的文件，其他的文件即使用extern声明也不能使用。</li>
-</ul>
-<h2>静态局部变量</h2>
-<p>在局部变量前，加上关键字static，该变量就被定义成为一个静态局部变量。</p>
-<p>有时候需要在两次调用之间对变量的值进行保存。但是全局变量不易维护，所以可以使用静态局部变量。</p>
-<p>静态局部变量保存在全局数据区，而不是保存在栈中，每次的值保持到下一次调用，直到下次赋新值。其作用域为局部作用域，当定义它的函数或语句块结束时，其作用域随之结束。</p>
-<h3>静态函数</h3>
-<p>在函数的返回类型前加上static关键字，函数即被定义为静态函数。静态函数与普通函数不同，它只能在声明它的文件当中可见，不能被其它文件使用。</p>
-<p>定义静态函数的好处：</p>
-<ul>
-<li>静态函数不能被其它文件所用；</li>
-<li>其它文件中可以定义相同名字的函数，不会发生冲突；</li>
-</ul>
-<h2>class中的静态成员</h2>
-<h3>定义</h3>
-<p>对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">private ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/09/01/czhong-de-static.html">read more</a></div>
-    </div>	
-				
-<div class="pagination">
-<ul>
-    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
-
-    <li class="active"><a href="../category/c.html">1</a></li>
-
-    <li class="next disabled"><a href="#">&rarr; Next</a></li>
-
-</ul>
-</div>
- 
-  
         </div>
         
         <div class="span3">
@@ -260,8 +216,8 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
                 Site
                 </li>
             
-                <li><a href="../archives.html">Archives</a>
-                <li><a href="../tags.html">Tags</a>
+                <li><a href="../../../../archives.html">Archives</a>
+                <li><a href="../../../../tags.html">Tags</a>
                 <li><a href="http://www.philokey.com/" rel="alternate">Atom feed</a></li>
                 <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
             </ul>
@@ -274,12 +230,12 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
                 Categories
                 </li>
                 
-                <li><a href="../category/bi-ji.html">笔记</a></li>
-                <li><a href="../category/c.html">C++</a></li>
-                <li><a href="../category/leetcode.html">LeetCode</a></li>
-                <li><a href="../category/linux.html">Linux</a></li>
-                <li><a href="../category/python.html">python</a></li>
-                <li><a href="../category/za.html">杂</a></li>
+                <li><a href="../../../../category/bi-ji.html">笔记</a></li>
+                <li><a href="../../../../category/c.html">C++</a></li>
+                <li><a href="../../../../category/leetcode.html">LeetCode</a></li>
+                <li><a href="../../../../category/linux.html">Linux</a></li>
+                <li><a href="../../../../category/python.html">python</a></li>
+                <li><a href="../../../../category/za.html">杂</a></li>
                    
             </ul>
             </div>
@@ -315,7 +271,7 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
     </div>     </div> 
 <footer>
 <br />
-<p><a href="..">philokey的笔记</a> &copy; philokey 2012</p>
+<p><a href="../../../..">philokey的笔记</a> &copy; philokey 2012</p>
 </footer>
 
 </div> <!-- /container -->
