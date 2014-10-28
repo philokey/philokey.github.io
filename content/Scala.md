@@ -100,7 +100,7 @@ The type A => B is the type of a function that takes an argument of type A and r
 
 So, Int => Int is the type of functions that map integers to integers.
 
-```
+```scala
 //Let’s define:
 def sum(f: Int => Int, a: Int, b: Int): Int =
 	if (a > b) 0
@@ -119,7 +119,7 @@ def fact(x: Int): Int = if (x == 0) 1 else fact(x - 1)
 
 ***Anonymous Function***: a function without giving it a name.
 
-```
+```scala
 def sumInts(a: Int, b: Int) = sum(x => x, a, b)
 def sumCubes(a: Int, b: Int) = sum(x => x * x * x, a, b)
 ```
@@ -130,7 +130,7 @@ def sumCubes(a: Int, b: Int) = sum(x => x * x * x, a, b)
 
 ##Functions Returning Functions
 
-```
+```scala
 def sum(f: Int => Int): (Int, Int) => Int = {
 	def sumF(a: Int, b: Int): Int =
 		if (a > b) 0
@@ -163,7 +163,7 @@ is shown to be equivalent to
 
 In Scala, we do this by defining a class:
 
-```
+```scala
 class Rational(x: Int, y: Int) {
 	def numer = x
 	def denom = y
@@ -192,7 +192,7 @@ Objects of the class Rational have two members, numer and denom .
 We select the members of an object with the infix operator ‘.’ (like in Java).
 
 **Example**
-```
+```scala
 val x = new Rational(1, 2)   > x: Rational = Rational@2abe0e27
 x.numer                      > 1
 x.denom                      > 2
@@ -204,9 +204,9 @@ x.denom                      > 2
 
 It is therefore possible to write
 
-r add s                                             r.add(s)
-r less s           /* in place of */          r.less(s)
-r max s                                             r.max(s)
+	r add s                                             r.add(s)
+	r less s           /* in place of */          r.less(s)
+	r max s                                             r.max(s)
 
 **2.Operators can be used as identifiers.**
 
@@ -218,7 +218,7 @@ r max s                                             r.max(s)
 
 Consider the task of writing a class for sets of integers with the
 following operations.
-```
+```scala
 abstract class IntSet {
 	def incl(x: Int): IntSet
 	def contains(x: Int): Boolean
@@ -233,7 +233,7 @@ Consequently, no instances of an abstract class can be created with the operator
 Let’s consider implementing sets as binary trees.
 There are two types of possible trees: a tree for the empty set, and a tree consisting of an integer and two sub-trees.
 Here are their implementations:
-```
+```scala
 //这是可持久化的二叉搜索树
 //IntSet is called the superclass of Empty and NonEmpty .(C中的基类)
 //Empty and NonEmpty are subclasses of IntSet .
@@ -259,7 +259,7 @@ class NonEmpty(elem: Int, left: IntSet, right: IntSet) extends IntSet {
 The definitions of contains and incl in the classes Empty and NonEmpty implement the abstract functions in the base trait IntSet .
 It is also possible to redefine an existing, non-abstract definition in a
 subclass by using override .
-```
+```scala
 abstract class Base {
 	def foo = 1
 	def bar: Int
@@ -275,7 +275,7 @@ class Sub extends Base {
 Create standalone applications in Scala.
 Each such application contains an object with a **main method**.
 For instance, here is the “Hello World!” program in Scala.
-```
+```scala
 object Hello {
 	def main(args: Array[String]) = println(”hello world!”)
 }
@@ -288,7 +288,7 @@ But what if a class has several natural supertypes to which it conforms or from 
 Here, you could use ***traits***.
 A trait is declared like an abstract class, just with trait instead of abstract class .
 
-```
+```scala
 trait Planar {
 	def height: Int
 	def width: Int
@@ -320,7 +320,7 @@ This defines at the same time parameters and fields of a class.
 
 It is equivalent to:
 
-```
+```scala
 class Cons(_head: Int, _tail: IntList) extends IntList {
 	val head = _head
 	val tail = _tail
@@ -346,13 +346,13 @@ class Nil[T] extends List[T] {
 ```
 We can then write:
 
-```
+```scala
 singleton[Int](1)
 singleton[Boolean](true)
 ```
 scala 编译器可以自动判断类型,所以可以简写成
 
-```
+```scala
 singleton(1)
 singleton(true)
 ```
@@ -366,3 +366,4 @@ In programming it means that
 - the type can have instances of many types
 
 
+> Written with [StackEdit](https://stackedit.io/).
