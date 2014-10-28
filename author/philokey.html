@@ -362,18 +362,18 @@ class Nil extends IntList ...
 
 <h2>Type Parameters</h2>
 <p>类似于template吧</p>
-<div class="highlight"><pre>trait List[T] {
-    def isEmpty: Boolean
-    def head: T
-    def tail: List[T]
-class Cons[T](val head: T, val tail: List[T]) extends List[T] {
-    def isEmpty = false
-}
-class Nil[T] extends List[T] {
-    def isEmpty = true
-    def head = throw new NoSuchElementException(&quot;Nil.head&quot;)
-    def tail = throw new NoSuchElementException(&quot;Nil.tail&quot;)
-}
+<div class="highlight"><pre><span class="k">trait</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">isEmpty</span><span class="k">:</span> <span class="kt">Boolean</span>
+    <span class="k">def</span> <span class="n">head</span><span class="k">:</span> <span class="kt">T</span>
+    <span class="k">def</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">class</span> <span class="nc">Cons</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="k">val</span> <span class="n">head</span><span class="k">:</span> <span class="kt">T</span><span class="o">,</span> <span class="k">val</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">isEmpty</span> <span class="k">=</span> <span class="kc">false</span>
+<span class="o">}</span>
+<span class="k">class</span> <span class="nc">Nil</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">isEmpty</span> <span class="k">=</span> <span class="kc">true</span>
+    <span class="k">def</span> <span class="n">head</span> <span class="k">=</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">NoSuchElementException</span><span class="o">(</span><span class="s">&quot;Nil.head&quot;</span><span class="o">)</span>
+    <span class="k">def</span> <span class="n">tail</span> <span class="k">=</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">NoSuchElementException</span><span class="o">(</span><span class="s">&quot;Nil.tail&quot;</span><span class="o">)</span>
+<span class="o">}</span>
 </pre></div>
 
 

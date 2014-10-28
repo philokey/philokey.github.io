@@ -330,7 +330,7 @@ class Cons(_head: Int, _tail: IntList) extends IntList {
 ##Type Parameters
 
 类似于template吧
-```
+```scala
 trait List[T] {
 	def isEmpty: Boolean
 	def head: T
