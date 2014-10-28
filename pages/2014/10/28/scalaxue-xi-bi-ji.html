@@ -9,14 +9,14 @@
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
-    <script src="../theme/html5.js"></script>
+    <script src="../../../../theme/html5.js"></script>
     <![endif]-->
 
     <!-- Le styles -->
-    <link href="../theme/bootstrap.min.css" rel="stylesheet">
-    <link href="../theme/bootstrap.min.responsive.css" rel="stylesheet">
-    <link href="../theme/local.css" rel="stylesheet">
-    <link href="../theme/pygments.css" rel="stylesheet">
+    <link href="../../../../theme/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../../theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="../../../../theme/local.css" rel="stylesheet">
+    <link href="../../../../theme/pygments.css" rel="stylesheet">
 
 </head>
 
@@ -32,7 +32,7 @@
              <span class="icon-bar"></span>
          </a>
 
-        <a class="brand" href="..">philokey的笔记</a>
+        <a class="brand" href="../../../..">philokey的笔记</a>
 
         <div class="nav-collapse">
         <ul class="nav">
@@ -49,23 +49,17 @@
     <div class="row">
 
         <div class="span9">
-        
-
-        
-
-
     <div class='article'>
         <div class="content-title">
-            <a href="../pages/2014/10/28/scalaxue-xi-bi-ji.html"><h1>Scala学习笔记</h1></a>
+            <h1>Scala学习笔记</h1>
 2014-10-28
 
-by <a class="url fn" href="../author/philokey.html">philokey</a>
+by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
  
 
 
- 
         </div>
-        
+	
         <div><h1>Functional Programming Principles in Scala</h1>
 <h2>Programming Paradigms(编程范式)</h2>
 <p>Paradigm: In science, a <em>paradigm</em> describes distinct concepts or thought patterns in some scientific discipline.</p>
@@ -396,362 +390,23 @@ In programming it means that</p>
 <li>the function can be applied to arguments of many types</li>
 <li>the type can have instances of many types</li>
 </ul></div>
-        <hr />
-    </div>
-		
+	
+        <hr>
 
- 
-        
+        <h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'philokeygithubio'; 
+    var disqus_title = 'Scala学习笔记';
 
- 
-
-    <div class='article'>
-        <a href="../pages/2014/10/15/czhong-de-lei.html"><h2>C++中的类</h2></a>
-        <div class= "well small"> 2014-10-15
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><h2>公有继承</h2>
-<p>通过 is-a 的方式进行继承</p>
-<ul>
-<li>基类先被创建</li>
-<li>派生类通过成员初始化列表将基类信息传递给基类构造hanshu</li>
-<li>如果省略成员初始化列表,基类将使用默认构造函数</li>
-<li>派生类过期时,先调用派生类的析构函数</li>
-</ul>
-<h3>基类和派生类的特殊关系</h3>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">private:</span>
-    <span class="n">string</span> <span class="n">name</span><span class="p">;</span>
-<span class="nl">public:</span>
-    <span class="kt">void</span> <span class="nf">print</span><span class="p">()</span> <span class="p">{</span>
-        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;A</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="n">A</span><span class="p">(</span><span class="n">string</span> <span class="n">st</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">st</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-<span class="n">class</span> <span class="n">B</span><span class="o">:</span> <span class="n">public</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">public:</span>
-    <span class="n">B</span><span class="p">(</span><span class="n">string</span> <span class="n">st</span><span class="p">)</span><span class="o">:</span><span class="n">A</span><span class="p">(</span><span class="n">st</span><span class="p">){}</span>
-<span class="p">};</span>
-</pre></div>
-
-
-<p>基类指针可以再不进行显示类型转换的情况下指向派生类的对象; 基类引用可以再不进行显式类型转换的情况下引用派生类对象</p>
-<div class="highlight"><pre><span class="n">B</span> <span class="nf">tp</span><span class="p">(</span><span class="s">&quot;abc&quot;</span><span class="p">);</span>
-<span class="n">A</span> <span class="o">&amp;</span><span class="n">rt</span> <span class="o">=</span> <span class="n">tp</span><span class="p">;</span> <span class="c1">//right</span>
-<span class="n">A</span> <span class="o">*</span><span class="n">pt</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tp</span><span class="p">;</span> <span class="c1">//right ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/10/15/czhong-de-lei.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/09/01/czhong-de-static.html"><h2>C++中的static</h2></a>
-        <div class= "well small"> 2014-09-01
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><h2>静态全局变量</h2>
-<p>在全局变量前，加上关键字static，该变量就被定义成为一个静态全局变量,存放在全局数据区。</p>
-<h3>全局变量和全局静态变量的区别</h3>
-<ul>
-<li>全局变量是不显式用static修饰的全局变量，但全局变量默认是动态的，作用域是整个工程，在一个文件内定义的全局变量，在另一个文件中，通过extern 全局变量名的声明，就可以使用全局变量。</li>
-<li>全局静态变量是显式用static修饰的全局变量，作用域是声明此变量所在的文件，其他的文件即使用extern声明也不能使用。</li>
-</ul>
-<h2>静态局部变量</h2>
-<p>在局部变量前，加上关键字static，该变量就被定义成为一个静态局部变量。</p>
-<p>有时候需要在两次调用之间对变量的值进行保存。但是全局变量不易维护，所以可以使用静态局部变量。</p>
-<p>静态局部变量保存在全局数据区，而不是保存在栈中，每次的值保持到下一次调用，直到下次赋新值。其作用域为局部作用域，当定义它的函数或语句块结束时，其作用域随之结束。</p>
-<h3>静态函数</h3>
-<p>在函数的返回类型前加上static关键字，函数即被定义为静态函数。静态函数与普通函数不同，它只能在声明它的文件当中可见，不能被其它文件使用。</p>
-<p>定义静态函数的好处：</p>
-<ul>
-<li>静态函数不能被其它文件所用；</li>
-<li>其它文件中可以定义相同名字的函数，不会发生冲突；</li>
-</ul>
-<h2>class中的静态成员</h2>
-<h3>定义</h3>
-<p>对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">private ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/09/01/czhong-de-static.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/08/19/ubuntuzi-ti.html"><h2>ubuntu字体</h2></a>
-        <div class= "well small"> 2014-08-19
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><h2>基础知识</h2>
-<p>Sans-serif=无衬线体=黑体：并不是具体一款字体，而是一类字体，选择它其实等于选择这类字体中优先级最高的那款字体。</p>
-<p>Serif=衬线体=白体：同上</p>
-<p>Monospace=等宽字体，用于终端下面以及编程使用。这类字体的要求是能区分 1 i l，o 0 O。：同上</p>
-<p>点阵字体=位图字体</p>
-<p>无衬线体更适合电脑屏幕阅读，衬线体适合打印。——因为衬线可以使得人视线平齐于一行。也就是说不会读破行。</p>
-<p>中文显示时有不同的方式，一方面因为中文本身拥有的横和同高度就可以导致这种平齐。行距对中文更重要。</p>
-<h2>Linux字体</h2>
-<h3>字体文件存放路径</h3>
-<div class="highlight"><pre><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span>  <span class="err">#系统字体</span>
-<span class="o">~/</span><span class="p">.</span><span class="n">fonts</span> <span class="err">#用户字体</span>
-</pre></div>
-
-
-<h3>配置文件路径</h3>
-<div class="highlight"><pre><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#系统配置文件</span><span class="p">,</span><span class="err">每类字体下的第一种字体优先级最高</span>
-<span class="o">~/</span><span class="p">.</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#用户配置文件，只对当前用户运行的程序有效 ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/19/ubuntuzi-ti.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/08/16/search-in-rotated-sorted-array.html"><h2>Search in Rotated Sorted Array</h2></a>
-        <div class= "well small"> 2014-08-16
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><p>解法：二分法，分别讨论左边单调递增还是右边单调递增。当有重复元素时， A[l] == A[m] 的情况要单独拿出来考虑， 因为有[l,m] =&gt; [1,3,1]这种情况</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
-    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">A</span> <span class="n">a</span> <span class="n">list</span> <span class="n">of</span> <span class="n">integers</span>
-    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">target</span> <span class="n">an</span> <span class="n">integer</span>
-    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">a</span> <span class="n">boolean</span>
-    <span class="n">def</span> <span class="n">search</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span><span class="o">:</span>
-        <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">while</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="o">:</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-            <span class="k">if ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/16/search-in-rotated-sorted-array.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/08/14/longest-valid-parentheses-leetcode.html"><h2>Longest Valid Parentheses @ LeetCode</h2></a>
-        <div class= "well small"> 2014-08-14
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><p>题意： 给出括号序列，问最长的连续合法括号子序列长度是多少</p>
-<p>解法：用一个栈记录左括号, 右括号和在数组中的下标, 如果当前括号是右括号且栈顶是左括号, 则弹栈并更新答案</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
-    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span> <span class="n">string</span>
-    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
-    <span class="n">def</span> <span class="n">longestValidParentheses</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="o">:</span>
-        <span class="n">sLen</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;)&#39;</span><span class="p">)],</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">sLen</span><span class="p">)</span><span class="o">:</span>
-            <span class="k">if</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;(&#39;</span> <span class="n">and</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;)&#39;</span><span class="o">:</span>
-                <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
-                <span class="n">ret</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-            <span class="k">else ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/14/longest-valid-parentheses-leetcode.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/08/14/unique-paths-ii-leetcode.html"><h2>Unique Paths II @ LeetCode</h2></a>
-        <div class= "well small"> 2014-08-14
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><p>题意：给n*m的格子，1有障碍物，0表示没有障碍物，问从左上角到右下角有几种走法，其中有障碍物的格子不能通过。</p>
-<p>解法：</p>
-<p>动态规划。</p>
-<p>初始化第一行和第一列时遇到障碍物就停止</p>
-<p>dp[i][j] = dp[i-1][j] + dp[i][j-1], 如果grid[i][j]有障碍物, dp[i][j] = 0</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
-    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">obstacleGrid</span><span class="p">,</span> <span class="n">a</span> <span class="n">list</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">of</span> <span class="n">integers</span>
-    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
-    <span class="n">def</span> <span class="n">uniquePathsWithObstacles</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">obstacleGrid</span><span class="p">)</span><span class="o">:</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">obstacleGrid</span><span class="p">),</span> <span class="n">len</span><span class="p">(</span><span class="n">obstacleGrid ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/14/unique-paths-ii-leetcode.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/08/13/unique-binary-search-trees-leetcode.html"><h2>Unique Binary Search Trees @ LeetCode</h2></a>
-        <div class= "well small"> 2014-08-13
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><p>题意：给定 1-n 共n个数， 问可以组成多少种不同的二分查找树。</p>
-<p>解法：动态规划。</p>
-<p>dp[n] 表示有n个数时，构成不同二分查找树的个数。转移方程为：
-$$
-dp[n] = \sum_{i=0}^{n-1}dp[i]*dp[n-i-1]
-$$</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
-    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
-    <span class="n">def</span> <span class="n">numTrees</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">:</span>
-        <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
-        <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span>
-            <span class="k">for ...</span></pre></div><script type= "text/javascript">
-    if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-        var mathjaxscript = document.createElement('script');
-        mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-        mathjaxscript.type = 'text/javascript';
-        mathjaxscript.src = 'https:' == document.location.protocol
-                ? 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
-                : 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-        mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-            "MathJax.Hub.Config({" +
-            "    config: ['MMLorHTML.js']," +
-            "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-            "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-            "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-            "    displayAlign: 'center'," +
-            "    displayIndent: '0em'," +
-            "    showMathMenu: true," +
-            "    tex2jax: { " +
-            "        inlineMath: [ ['$','$'] ], " +
-            "        displayMath: [ ['$$','$$'] ]," +
-            "        processEscapes: true," +
-            "        preview: 'TeX'," +
-            "    }, " +
-            "    'HTML-CSS': { " +
-            "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
-            "    } " +
-            "}); ";
-        (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-    }
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
 </script>
- <a class="btn btn-info xsmall" href="../pages/2014/08/13/unique-binary-search-trees-leetcode.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/08/13/python-ke-bian-dui-xiang-he-bu-ke-bian-dui-xiang.html"><h2>python 可变对象和不可变对象</h2></a>
-        <div class= "well small"> 2014-08-13
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><p>Python中没有变量，只有对象和名字。万物皆对象。
-每个对象都包含一一个标准头,通过头部信息就可以明确知道其具体类型。
-头信息由 "引用用计数" 和 "类型指针"组成,前者在对象被引用用时增加,超出作用用域或手工释放后减小,等于 0 时会被虚拟机回收 (某些被缓存的对象计数器永远不会为 0)。用 </p>
-<div class="highlight"><pre><span class="n">sys</span><span class="p">.</span><span class="n">getrefcount</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-</pre></div>
-
-
-<p>可以对象查看被引用次数</p>
-<p>Python在heap中分配的对象分成两类：可变对象和不可变对象。所谓可变对象是指，对象的内容是可变的，例如list。而不可变的对象则相反，表示其内容不可变。</p>
-<ul>
-<li>不可变对象：int，string，float，tuple</li>
-<li>可变对象   ：list，dictionary</li>
-</ul>
-<h2>不可变对象</h2>
-<p>对于不可变对象，尽管对象本身不可变，但名字的对象引用是可变的。</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1005</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1006</span> <span class="err">#</span><span class="mi">1005</span><span class="err">的引用减</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1006</span><span class="err">的引用加 ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/13/python-ke-bian-dui-xiang-he-bu-ke-bian-dui-xiang.html">read more</a></div>
-    </div>	
-				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/08/10/stlbi-ji.html"><h2>STL笔记</h2></a>
-        <div class= "well small"> 2014-08-10
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><h2>priority_queue自定义比较函数</h2>
-<p>模板声明带有三个参数</p>
-<div class="highlight"><pre><span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">Type</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="n">Functional</span><span class="o">&gt;</span>
-</pre></div>
-
-
-<p>Type 为数据类型， Container 为保存数据的容器，Functional 为元素比较方式。
-Container 必须是用数组实现的容器，比如 vector, deque 但不能用 list.
-STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默认为小根堆。</p>
-<div class="highlight"><pre><span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">iostream</span> <span class="o">&gt;</span>
-<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">queue</span> <span class="o">&gt;</span>
-<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">functional</span> <span class="o">&gt;</span>
-
-<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
-
-<span class="kr">class</span> <span class="nx">cmp</span> <span class="p">{</span>
-<span class="kr">public</span><span class="o">:</span>
-    <span class="nx">bool</span> <span class="nx">operator</span><span class="p">()</span> <span class="p">(</span><span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">a</span><span class="p">,</span> <span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="kr">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">priority_queue ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/10/stlbi-ji.html">read more</a></div>
-    </div>	
-				
-<div class="pagination">
-<ul>
-    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
-
-    <li class="active"><a href="../author/philokey.html">1</a></li>
-    <li class=""><a href="../author/philokey2.html">2</a></li>
-
-    <li class="next"><a href="../author/philokey2.html">Next &rarr;</a></li>
-
-</ul>
-</div>
- 
-  
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
         </div>
         
         <div class="span3">
@@ -762,8 +417,8 @@ STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默�
                 Site
                 </li>
             
-                <li><a href="../archives.html">Archives</a>
-                <li><a href="../tags.html">Tags</a>
+                <li><a href="../../../../archives.html">Archives</a>
+                <li><a href="../../../../tags.html">Tags</a>
                 <li><a href="http://www.philokey.com/" rel="alternate">Atom feed</a></li>
                 <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
             </ul>
@@ -776,13 +431,13 @@ STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默�
                 Categories
                 </li>
                 
-                <li><a href="../category/bi-ji.html">笔记</a></li>
-                <li><a href="../category/c.html">C++</a></li>
-                <li><a href="../category/leetcode.html">LeetCode</a></li>
-                <li><a href="../category/linux.html">Linux</a></li>
-                <li><a href="../category/python.html">python</a></li>
-                <li><a href="../category/scala.html">Scala</a></li>
-                <li><a href="../category/za.html">杂</a></li>
+                <li><a href="../../../../category/bi-ji.html">笔记</a></li>
+                <li><a href="../../../../category/c.html">C++</a></li>
+                <li><a href="../../../../category/leetcode.html">LeetCode</a></li>
+                <li><a href="../../../../category/linux.html">Linux</a></li>
+                <li><a href="../../../../category/python.html">python</a></li>
+                <li><a href="../../../../category/scala.html">Scala</a></li>
+                <li><a href="../../../../category/za.html">杂</a></li>
                    
             </ul>
             </div>
@@ -818,7 +473,7 @@ STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默�
     </div>     </div> 
 <footer>
 <br />
-<p><a href="..">philokey的笔记</a> &copy; philokey 2012</p>
+<p><a href="../../../..">philokey的笔记</a> &copy; philokey 2012</p>
 </footer>
 
 </div> <!-- /container -->

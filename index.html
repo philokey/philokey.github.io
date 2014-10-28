@@ -56,8 +56,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="./pages/2014/10/15/czhong-de-lei.html"><h1>C++中的类</h1></a>
-2014-10-15
+            <a href="./pages/2014/10/28/scalaxue-xi-bi-ji.html"><h1>Scala学习笔记</h1></a>
+2014-10-28
 
 by <a class="url fn" href="./author/philokey.html">philokey</a>
  
@@ -66,7 +66,355 @@ by <a class="url fn" href="./author/philokey.html">philokey</a>
  
         </div>
         
-        <div><h2>公有继承</h2>
+        <div><h1>Functional Programming Principles in Scala</h1>
+<h2>Programming Paradigms(编程范式)</h2>
+<p>Paradigm: In science, a <em>paradigm</em> describes distinct concepts or thought patterns in some scientific discipline.</p>
+<p>Main programming paradigms:</p>
+<ul>
+<li>imperative programming(命令式编程)</li>
+<li>functional programming</li>
+<li>logic programming</li>
+</ul>
+<p>Orthogonal to it:</p>
+<ul>
+<li>object-oriented programming(面向对象的程序设计)</li>
+</ul>
+<h3>Imperative programming</h3>
+<ul>
+<li>modifying mutable(可变的) variables </li>
+<li>using assignments</li>
+<li>and control structures such as if-then-else, loops, break,
+continue, return.</li>
+</ul>
+<p>The most common informal way to understand imperative programs is as instruction sequences for a Von Neumann(冯诺依曼) computer.</p>
+<p>There’s a strong correspondence between</p>
+<div class="highlight"><pre><span class="n">Mutable</span> <span class="n">variables</span>  <span class="err">≈</span> <span class="n">memory</span> <span class="n">cells</span>
+<span class="n">Variable</span> <span class="n">dereferences</span> <span class="err">≈</span> <span class="n">load</span> <span class="n">instructions</span>
+<span class="n">Variable</span> <span class="n">assignments</span> <span class="err">≈</span> <span class="n">store</span> <span class="n">instructions</span>
+<span class="n">Control</span> <span class="n">structures</span> <span class="err">≈</span> <span class="n">jumps</span>
+</pre></div>
+
+
+<p>Bottleneck(瓶颈): One tends to conceptualize data structures word-by-word.</p>
+<h2>Functional Programming</h2>
+<ul>
+<li>In a restricted sense, functional programming (FP) means
+programming without mutable variables, assignments, loops,
+and other imperative control structures.</li>
+<li>In a wider sense, a functional programming language enables
+the construction of elegant programs that focus on functions.</li>
+<li>In particular, functions in a FP language are first-class citizens.
+This means<ul>
+<li>they can be defined anywhere, including inside other functions</li>
+<li>like any other value, they can be passed as parameters to functions and returned as results</li>
+<li>as for other values, there exists a set operators to compose
+functions</li>
+</ul>
+</li>
+</ul>
+<h1>Elements of Programming</h1>
+<ul>
+<li>
+<p>Call-by-value has the advantage that it evaluates every function argument only once.  <strong>(x: Int)</strong></p>
+<div class="highlight"><pre><span class="n">sumOfSquares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sumOfSquares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">square</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="mi">9</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="mi">9</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Call-by-name has the advantage that a function argument is not evaluated if the corresponding parameter is unused in the evaluation of the function body. <strong>(y: =&gt; Double)</strong></p>
+<div class="highlight"><pre><span class="n">sumOfSquares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">square</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+<span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+<span class="mi">9</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+<span class="mi">9</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+<span class="mi">9</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+<span class="mi">9</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span>
+</pre></div>
+
+
+</li>
+</ul>
+<p>semicolons #分号</p>
+<h1>Tail Recursion</h1>
+<p>Implementation Consideration: If a function calls itself as its last
+action, the function’s stack frame can be reused. This is called <strong><em>tail recursion.</em></strong>
+⇒ Tail recursive functions are iterative processes.
+In general, if the last action of a function consists of calling a function (which may be the same), one stack frame would be
+sufficient for both functions. Such calls are called tail-calls.</p>
+<p>尾调用的重要性在于它可以不在调用栈上面添加一个新的堆栈帧——而是更新它，如同迭代一般。尾递归因而具有两个特征：</p>
+<ul>
+<li>调用自身函数(Self-called)；</li>
+<li>计算仅占用常量栈空间(Stack Space)。</li>
+</ul>
+<p>而形式上只要是最后一个return语句返回的是一个完整函数，它就是尾递归。</p>
+<h1>Higher-Order Functions</h1>
+<p>Functions that take other functions as parameters or that return
+functions as results are called <strong><em>higher order functions</em></strong>.</p>
+<h2>Summing with Higher-Order Functions</h2>
+<p>The type A =&gt; B is the type of a function that takes an argument of type A and returns a result of type B .</p>
+<p>So, Int =&gt; Int is the type of functions that map integers to integers.</p>
+<div class="highlight"><pre><span class="c1">//Let’s define:</span>
+<span class="n">def</span> <span class="n">sum</span><span class="p">(</span><span class="nl">f:</span> <span class="n">Int</span> <span class="o">=&gt;</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">a:</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">b:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">Int</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="mh">0</span>
+    <span class="k">else</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="n">sum</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="mh">1</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="c1">//We can then write:</span>
+<span class="n">def</span> <span class="n">sumInts</span><span class="p">(</span><span class="nl">a:</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">b:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">def</span> <span class="n">sumCubes</span><span class="p">(</span><span class="nl">a:</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">b:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">def</span> <span class="n">sumFactorials</span><span class="p">(</span><span class="nl">a:</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">b:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">fact</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="c1">//where</span>
+<span class="n">def</span> <span class="n">id</span><span class="p">(</span><span class="nl">x:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">Int</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">def</span> <span class="n">cube</span><span class="p">(</span><span class="nl">x:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">Int</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+<span class="n">def</span> <span class="n">fact</span><span class="p">(</span><span class="nl">x:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">Int</span> <span class="o">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mh">0</span><span class="p">)</span> <span class="mh">1</span> <span class="k">else</span> <span class="n">fact</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mh">1</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>Anonymous Functions</h2>
+<p><strong><em>Anonymous Function</em></strong>: a function without giving it a name.</p>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">sumInts</span><span class="p">(</span><span class="n">a</span><span class="o">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">b</span><span class="o">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">def</span> <span class="n">sumCubes</span><span class="p">(</span><span class="n">a</span><span class="o">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">b</span><span class="o">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+
+
+<h1>Currying(柯里化)</h1>
+<p>把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术。</p>
+<h2>Functions Returning Functions</h2>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">sum</span><span class="p">(</span><span class="n">f</span><span class="o">:</span> <span class="n">Int</span> <span class="o">=&gt;</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="p">(</span><span class="n">Int</span><span class="p">,</span> <span class="n">Int</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">Int</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">def</span> <span class="n">sumF</span><span class="p">(</span><span class="n">a</span><span class="o">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">b</span><span class="o">:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">Int</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="mi">0</span>
+        <span class="k">else</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="n">sumF</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">sumF</span> <span class="c1">//返回值</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><strong>sum is now a function that returns another function.</strong></p>
+<div class="highlight"><pre><span class="n">sum</span> <span class="p">(</span><span class="n">cube</span><span class="p">)</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li>sum(cube) applies sum to cube and returns the sum of cubes
+function.</li>
+<li>sum(cube) is therefore equivalent to sumCubes .</li>
+<li>This function is next applied to the arguments (1, 10) .</li>
+</ul>
+<p>Generally, function application associates to the left:</p>
+<div class="highlight"><pre><span class="n">sum</span><span class="p">(</span><span class="n">cube</span><span class="p">)(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">sum</span> <span class="p">(</span><span class="n">cube</span><span class="p">))</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">def</span> <span class="n">f</span> <span class="p">(</span> <span class="n">args</span> <span class="mi">1</span> <span class="p">)...(</span> <span class="n">args</span> <span class="n">n</span> <span class="err">−</span> <span class="mi">1</span> <span class="p">)(</span> <span class="n">args</span> <span class="n">n</span> <span class="p">)</span> <span class="o">=</span> <span class="n">E</span>
+</pre></div>
+
+
+<p>is shown to be equivalent to</p>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">f</span> <span class="o">=</span> <span class="p">(</span> <span class="n">args</span> <span class="mi">1</span> <span class="err">⇒</span> <span class="p">(</span> <span class="n">args</span> <span class="mi">2</span> <span class="err">⇒</span> <span class="p">...(</span> <span class="n">args</span> <span class="n">n</span> <span class="err">⇒</span> <span class="n">E</span> <span class="p">)...))</span>
+</pre></div>
+
+
+<h1>Functions and Data</h1>
+<h2>Classes</h2>
+<p>In Scala, we do this by defining a class:</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="nf">Rational</span><span class="p">(</span><span class="n">x</span><span class="o">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">y</span><span class="o">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">def</span> <span class="n">numer</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">def</span> <span class="n">denom</span> <span class="o">=</span> <span class="n">y</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>This definition introduces two entities:</p>
+<ul>
+<li>A new type, named Rational (有理数).</li>
+<li>A constructor Rational to create elements of this type.</li>
+</ul>
+<p>Scala keeps the names of types and values in different namespaces. So there’s no conflict between the two defintions of Rational .</p>
+<h2>Objects</h2>
+<p>We call the elements of a class type objects.</p>
+<p>We create an object by prefixing an application of the constructor of the class with the operator new .</p>
+<p><em>Example</em></p>
+<div class="highlight"><pre><span class="n">new</span> <span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>Members of an Object</h2>
+<p>Objects of the class Rational have two members, numer and denom .
+We select the members of an object with the infix operator ‘.’ (like in Java).</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span class="n">val</span> <span class="n">x</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>   <span class="o">&gt;</span> <span class="n">x</span><span class="o">:</span> <span class="n">Rational</span> <span class="o">=</span> <span class="n">Rational</span><span class="err">@</span><span class="mi">2</span><span class="n">abe0e27</span>
+<span class="n">x</span><span class="p">.</span><span class="n">numer</span>                      <span class="o">&gt;</span> <span class="mi">1</span>
+<span class="n">x</span><span class="p">.</span><span class="n">denom</span>                      <span class="o">&gt;</span> <span class="mi">2</span>
+</pre></div>
+
+
+<h1>Evaluation and Operators</h1>
+<p><strong>1.Any method with a parameter can be used like an infix operator.</strong></p>
+<p>It is therefore possible to write</p>
+<p>r add s                                             r.add(s)
+r less s           /<em> in place of </em>/          r.less(s)
+r max s                                             r.max(s)</p>
+<p><strong>2.Operators can be used as identifiers.</strong></p>
+<p><em>于是就可以方便的重载运算符了</em></p>
+<h1>Class Hierarchies(类层次)</h1>
+<h2>Abstract Classes</h2>
+<p>Consider the task of writing a class for sets of integers with the
+following operations.</p>
+<div class="highlight"><pre><span class="n">abstract</span> <span class="n">class</span> <span class="n">IntSet</span> <span class="p">{</span>
+    <span class="n">def</span> <span class="n">incl</span><span class="p">(</span><span class="n">x</span><span class="o">:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">IntSet</span>
+    <span class="n">def</span> <span class="n">contains</span><span class="p">(</span><span class="n">x</span><span class="o">:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">Boolean</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>IntSet is an <strong><em>abstract class</em></strong>.</p>
+<p>Abstract classes can contain members which are missing an implementation (in our case, incl and contains ).</p>
+<p>Consequently, no instances of an abstract class can be created with the operator <em>new</em> .</p>
+<p>Let’s consider implementing sets as binary trees.
+There are two types of possible trees: a tree for the empty set, and a tree consisting of an integer and two sub-trees.
+Here are their implementations:</p>
+<div class="highlight"><pre><span class="c1">//这是可持久化的二叉搜索树</span>
+<span class="c1">//IntSet is called the superclass of Empty and NonEmpty .(C中的基类)</span>
+<span class="c1">//Empty and NonEmpty are subclasses of IntSet .</span>
+<span class="k">class</span> <span class="n">Empty</span> <span class="k">extends</span> <span class="n">IntSet</span> <span class="p">{</span>
+    <span class="n">def</span> <span class="n">contains</span><span class="p">(</span><span class="nl">x:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">Boolean</span> <span class="o">=</span> <span class="n">false</span>
+    <span class="n">def</span> <span class="n">incl</span><span class="p">(</span><span class="nl">x:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">IntSet</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NonEmpty</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="k">new</span> <span class="n">Empty</span><span class="p">,</span> <span class="k">new</span> <span class="n">Empty</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="n">NonEmpty</span><span class="p">(</span><span class="nl">elem:</span> <span class="n">Int</span><span class="p">,</span> <span class="nl">left:</span> <span class="n">IntSet</span><span class="p">,</span> <span class="nl">right:</span> <span class="n">IntSet</span><span class="p">)</span> <span class="k">extends</span> <span class="n">IntSet</span> <span class="p">{</span>
+    <span class="n">def</span> <span class="n">contains</span><span class="p">(</span><span class="nl">x:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">Boolean</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">elem</span><span class="p">)</span> <span class="n">left</span> <span class="n">contains</span> <span class="n">x</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">elem</span><span class="p">)</span> <span class="n">right</span> <span class="n">contains</span> <span class="n">x</span>
+        <span class="k">else</span> <span class="n">true</span>
+    <span class="n">def</span> <span class="n">incl</span><span class="p">(</span><span class="nl">x:</span> <span class="n">Int</span><span class="p">)</span><span class="o">:</span> <span class="n">IntSet</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">elem</span><span class="p">)</span> <span class="k">new</span> <span class="n">NonEmpty</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">left</span> <span class="n">incl</span> <span class="n">x</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">elem</span><span class="p">)</span> <span class="k">new</span> <span class="n">NonEmpty</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="n">incl</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">else</span> <span class="k">this</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Implementation and Overriding</h2>
+<p>The definitions of contains and incl in the classes Empty and NonEmpty implement the abstract functions in the base trait IntSet .
+It is also possible to redefine an existing, non-abstract definition in a
+subclass by using override .</p>
+<div class="highlight"><pre><span class="n">abstract</span> <span class="n">class</span> <span class="n">Base</span> <span class="p">{</span>
+    <span class="n">def</span> <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">def</span> <span class="n">bar</span><span class="o">:</span> <span class="n">Int</span>
+<span class="p">}</span>
+<span class="n">class</span> <span class="n">Sub</span> <span class="n">extends</span> <span class="n">Base</span> <span class="p">{</span>
+    <span class="n">override</span> <span class="n">def</span> <span class="n">foo</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">def</span> <span class="n">bar</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Programs</h2>
+<p>Create standalone applications in Scala.
+Each such application contains an object with a <strong>main method</strong>.
+For instance, here is the “Hello World!” program in Scala.</p>
+<div class="highlight"><pre><span class="n">object</span> <span class="n">Hello</span> <span class="p">{</span>
+    <span class="n">def</span> <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">:</span> <span class="n">Array</span><span class="p">[</span><span class="n">String</span><span class="p">])</span> <span class="o">=</span> <span class="n">println</span><span class="p">(</span><span class="err">”</span><span class="n">hello</span> <span class="n">world</span><span class="o">!</span><span class="err">”</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Traits</h2>
+<p>In Java, as well as in Scala, a class can only have one superclass.
+But what if a class has several natural supertypes to which it conforms or from which it wants to inherit code?
+Here, you could use <strong><em>traits</em></strong>.
+A trait is declared like an abstract class, just with trait instead of abstract class .</p>
+<div class="highlight"><pre><span class="n">trait</span> <span class="n">Planar</span> <span class="p">{</span>
+    <span class="n">def</span> <span class="n">height</span><span class="o">:</span> <span class="n">Int</span>
+    <span class="n">def</span> <span class="n">width</span><span class="o">:</span> <span class="n">Int</span>
+    <span class="n">def</span> <span class="n">surface</span> <span class="o">=</span> <span class="n">height</span> <span class="o">*</span> <span class="n">width</span>
+<span class="p">}</span>
+
+<span class="n">class</span> <span class="n">Square</span> <span class="n">extends</span> <span class="n">Shape</span> <span class="n">with</span> <span class="n">Planar</span> <span class="n">with</span> <span class="n">Movable</span> <span class="p">...</span>
+</pre></div>
+
+
+<h1>Polymorphism(多态)</h1>
+<h2>Value Parameters</h2>
+<div class="highlight"><pre>package week4
+trait IntList ...
+class Cons(val head: Int, val tail: IntList) extends IntList ...
+class Nil extends IntList ...
+</pre></div>
+
+
+<p>A list is eithter</p>
+<ul>
+<li>an empty list new Nil</li>
+<li>a list new Cons(x, xs) consisting of a head element x and a tail list xs.</li>
+</ul>
+<p>Note the abbreviation <strong>(val head: Int, val tail: IntList)</strong> in the defitions of Cons.</p>
+<p>This defines at the same time parameters and fields of a class.</p>
+<p>It is equivalent to:</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">Cons</span><span class="p">(</span><span class="n">_head</span><span class="o">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">_tail</span><span class="o">:</span> <span class="n">IntList</span><span class="p">)</span> <span class="n">extends</span> <span class="n">IntList</span> <span class="p">{</span>
+    <span class="n">val</span> <span class="n">head</span> <span class="o">=</span> <span class="n">_head</span>
+    <span class="n">val</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">_tail</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h2>Type Parameters</h2>
+<p>类似于template吧</p>
+<div class="highlight"><pre>trait List[T] {
+    def isEmpty: Boolean
+    def head: T
+    def tail: List[T]
+class Cons[T](val head: T, val tail: List[T]) extends List[T] {
+    def isEmpty = false
+}
+class Nil[T] extends List[T] {
+    def isEmpty = true
+    def head = throw new NoSuchElementException(&quot;Nil.head&quot;)
+    def tail = throw new NoSuchElementException(&quot;Nil.tail&quot;)
+}
+</pre></div>
+
+
+<p>We can then write:</p>
+<div class="highlight"><pre><span class="n">singleton</span><span class="p">[</span><span class="n">Int</span><span class="p">](</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">singleton</span><span class="p">[</span><span class="n">Boolean</span><span class="p">](</span><span class="nb">true</span><span class="p">)</span>
+</pre></div>
+
+
+<p>scala 编译器可以自动判断类型,所以可以简写成</p>
+<div class="highlight"><pre><span class="n">singleton</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">singleton</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>polymorphism</h2>
+<p>ploymorphism means that a function type comes "in many forms"
+In programming it means that</p>
+<ul>
+<li>the function can be applied to arguments of many types</li>
+<li>the type can have instances of many types</li>
+</ul></div>
+        <hr />
+    </div>
+		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="./pages/2014/10/15/czhong-de-lei.html"><h2>C++中的类</h2></a>
+        <div class= "well small"> 2014-10-15
+
+by <a class="url fn" href="./author/philokey.html">philokey</a>
+ 
+
+
+ </div>
+        <div class="summary"><h2>公有继承</h2>
 <p>通过 is-a 的方式进行继承</p>
 <ul>
 <li>基类先被创建</li>
@@ -96,108 +444,9 @@ by <a class="url fn" href="./author/philokey.html">philokey</a>
 <p>基类指针可以再不进行显示类型转换的情况下指向派生类的对象; 基类引用可以再不进行显式类型转换的情况下引用派生类对象</p>
 <div class="highlight"><pre><span class="n">B</span> <span class="nf">tp</span><span class="p">(</span><span class="s">&quot;abc&quot;</span><span class="p">);</span>
 <span class="n">A</span> <span class="o">&amp;</span><span class="n">rt</span> <span class="o">=</span> <span class="n">tp</span><span class="p">;</span> <span class="c1">//right</span>
-<span class="n">A</span> <span class="o">*</span><span class="n">pt</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tp</span><span class="p">;</span> <span class="c1">//right</span>
-</pre></div>
-
-
-<p>不能将基类对象和地址赋给派生类引用和指针</p>
-<div class="highlight"><pre><span class="n">A</span> <span class="nf">tp</span><span class="p">(</span><span class="s">&quot;abc&quot;</span><span class="p">);</span>
-<span class="n">B</span> <span class="o">&amp;</span><span class="n">rr</span> <span class="o">=</span> <span class="n">tp</span><span class="p">;</span> <span class="c1">//wrong</span>
-<span class="n">B</span> <span class="o">*</span><span class="n">pr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tp</span><span class="p">;</span><span class="c1">//wrong</span>
-</pre></div>
-
-
-<p>以上两条符合"类型从高到底可以自动转换"</p>
-<h3>多态公有继承</h3>
-<p>当一个方法在基类和派生类中的行为不同时，重新修改基类中的那个方法，使之具有多态。一般有两种机制用于实现多态公有继承：</p>
-<ol>
-<li>在派生类中重新定义基类的方法</li>
-<li>使用虚函数（虚方法）</li>
-</ol>
-<p>如果方法是通过引用或指针而不是对象调用的，如果没有采用虚函数方法，则程序根据引用类型或指针类型选择方法，如果采用虚函数了，则程序根据引用或者指针指向的对象的类型来选择方法。</p>
-<div class="highlight"><pre><span class="c1">//behavior with non-virtual VieAcct()</span>
-<span class="c1">//method chosen according to reference type</span>
-<span class="n">Brass</span> <span class="n">dom</span><span class="p">();</span>
-<span class="n">BrassPlus</span> <span class="n">dot</span><span class="p">();</span>
-<span class="n">Brass</span> <span class="o">&amp;</span><span class="n">b1_ref</span> <span class="o">=</span> <span class="n">dom</span><span class="p">;</span>
-<span class="n">Brass</span> <span class="o">&amp;</span><span class="n">b2_ref</span> <span class="o">=</span> <span class="n">dot</span><span class="p">;</span>
-<span class="n">b1_ref</span><span class="p">.</span><span class="n">VeiAcct</span><span class="p">();</span> <span class="c1">//use Brass::VieAcct()</span>
-<span class="n">b2_ref</span><span class="p">.</span><span class="n">VeiAcct</span><span class="p">();</span> <span class="c1">//use Brass::VieAcct()</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span class="c1">//behavior with virtual VieAcct()</span>
-<span class="c1">//method chosen according to object type</span>
-<span class="n">Brass</span> <span class="n">dom</span><span class="p">();</span>
-<span class="n">BrassPlus</span> <span class="n">dot</span><span class="p">();</span>
-<span class="n">Brass</span> <span class="o">&amp;</span><span class="n">b1_ref</span> <span class="o">=</span> <span class="n">dom</span><span class="p">;</span>
-<span class="n">Brass</span> <span class="o">&amp;</span><span class="n">b2_ref</span> <span class="o">=</span> <span class="n">dot</span><span class="p">;</span>
-<span class="n">b1_ref</span><span class="p">.</span><span class="n">VeiAcct</span><span class="p">();</span> <span class="c1">//use Brass::VieAcct()</span>
-<span class="n">b2_ref</span><span class="p">.</span><span class="n">VeiAcct</span><span class="p">();</span> <span class="c1">//use BrassPluss::VieAcct()</span>
-</pre></div>
-
-
-<p>析构函数应该是虚拟的</p>
-<h3>静态联编和动态联编：</h3>
-<p>联编：将源代码中函数调用解释为执行特定的函数代码成为函数名联编。C/C++在编译过程中进行的联编称之为静态联编，又称为早期联编；在程序运行过程中联编称之为动态联编，也称为晚期联编。编译器对非虚拟方法使用静态联编，对虚拟方法使用动态联编。</p>
-<h3>虚函数的工作机制</h3>
-<p>C++规定了虚函数的行为，但将实现方法留给了编译器作者。不需要知道实现方法就可以使用虚函数，但是了解虚函数的工作原理有助于更好的理解虚函数：</p>
-<p>通常，编译器处理虚函数的方法是：给每个类对象添加一个隐藏成员。隐藏成员中保存了一个指向函数地址数组的指针。这种数组称为虚函数表(virtual function table,vtbl)。虚函数表中存储了为类对象进行声明的虚函数的地址。例如，基类对象包含一个指针，该指针指向基类中所有虚函数的地址表。派生类</p>
-<p>将包含一个指向对立地址表的指针。如果派生类提供了虚函数的新定义，该虚函数表将保存新函数的地址，如果派生类没有重新定义虚函数，则该vtbl将保存</p>
-<p>函数原始版本的地址。如果派生类定义了 新的虚函数，则该函数的地址也将被添加到vtbl中。但是注意，无论类中包含多少个虚函数，都只需要在对象中添加1个地址成员表，只是表的大小不一样。</p>
-<h3>虚函数的注意事项</h3>
-<ul>
-<li>
-<p>在基类方法的声明中使用关键字virtual可使该方法在基类以及所有的派生类（包括从派生类的派生出来的派生类）中是虚拟的，因为方法在基类中被声明为虚拟的后，它在派生类中自动默认为虚拟的。</p>
-</li>
-<li>
-<p>如果使用指向对象的引用或指针来调用虚方法，程序将使用为对象类型定义的方法，而不使用为引用或指针类型定义的方法。这个就是动态联编（晚期）联编。这个行为非常重要，因为这样就可以使得基类指针或引用可以指向派生类对象</p>
-</li>
-<li>
-<p>构造函数不能是虚函数，因为派生类不能继承构造函数，所以没有什么意义</p>
-</li>
-<li>
-<p>构函数应当是虚函数，除非类不做基类。通常应该给基类提供一个虚析构函数，即使它不需要析构函数。</p>
-</li>
-<li>
-<p>友元函数不能是虚函数，因为友元不是类成员，而只有类成员才能是虚函数。如果由于这个原因而导致了设计问题 ，可以通过友元函数使用虚函数来解决。</p>
-</li>
-<li>
-<p>如果派生类没有重新定义函数，将使用该函数的基类版本。如果派生类位于派生类链中，则将使用最新的虚函数方法办法，如果基类是隐藏的除外。</p>
-</li>
-<li>
-<p>重新定义隐藏方法</p>
-</li>
-</ul>
-<div class="highlight"><pre><span class="n">calss</span> <span class="n">Dwelling</span> <span class="p">{</span>
-<span class="nl">public:</span>
-    <span class="n">virtual</span> <span class="kt">void</span> <span class="n">showperks</span> <span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-<span class="p">...</span>
-<span class="p">};</span>
-<span class="n">class</span> <span class="n">Houve</span><span class="o">:</span> <span class="n">public</span> <span class="n">Dwelling</span> <span class="p">{</span>
-<span class="nl">public:</span>
-    <span class="n">virtual</span> <span class="kt">void</span> <span class="n">showperks</span><span class="p">()</span><span class="k">const</span><span class="p">;</span>
-<span class="p">...</span>
-<span class="p">}</span>
-
-<span class="n">Hovel</span> <span class="n">trump</span><span class="p">;</span>
-<span class="n">trump</span><span class="p">.</span><span class="n">showperks</span><span class="p">();</span> <span class="c1">//valid</span>
-<span class="n">trump</span><span class="p">.</span><span class="n">showperks</span><span class="p">();</span> <span class="c1">//invalid</span>
-</pre></div>
-
-
-<h3>Protected</h3>
-<p>protected和private 相似，在类外只能用公有类成员访问protected部分中的类成员. protected与private的区别只有在派生类中能体现出来, 派生类的成员可以直接访问protected保护成员.</p>
-<h3>抽象基类</h3>
-<p>纯虚函数(pure virtual function)：在本类里不能有实现（描述功能），实现需要在子类中实现. 纯虚函数声明的结尾处为 = 0.</p>
-<div class="highlight"><pre><span class="nx">virtual</span> <span class="kr">double</span> <span class="nx">Area</span><span class="p">()</span><span class="kr">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//a pure virtual function</span>
-</pre></div>
-
-
-<p>抽象类：一个类可以抽象出不同的对象来表达一个抽象的概念和通用的接口，这个类不能实例化(创造)对象。有纯虚函数的类是抽象类.</p></div>
-        <hr />
-    </div>
-		
+<span class="n">A</span> <span class="o">*</span><span class="n">pt</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tp</span><span class="p">;</span> <span class="c1">//right ...</span></pre></div> <a class="btn btn-info xsmall" href="./pages/2014/10/15/czhong-de-lei.html">read more</a></div>
+    </div>	
+				
 
  
         
@@ -490,53 +739,6 @@ STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默�
     <span class="nx">priority_queue ...</span></pre></div> <a class="btn btn-info xsmall" href="./pages/2014/08/10/stlbi-ji.html">read more</a></div>
     </div>	
 				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="./pages/2014/08/01/bo-ke-da-jian-ji-lu.html"><h2>博客搭建记录</h2></a>
-        <div class= "well small"> 2014-08-01
-
-by <a class="url fn" href="./author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><p>厌倦了一次又一次去搜相同问题的答案，写个博客把一些东西记录下来吧。
-出于黑客精神，决定自己搭建博客。</p>
-<p>Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelican。
-由于github有免费的300M空间，所以博客托管再github上。github还有一个好处就是对markdown的支持不错。</p>
-<p>不用数据库，全部都以可见文本形式存储，携带迁移，好开心~</p>
-<h3>本地配置Pelican</h3>
-<h4>安装pelican和markdown</h4>
-<div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="n">pelican</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">markdown</span>
-</pre></div>
-
-
-<h4>启动工程</h4>
-<div class="highlight"><pre><span class="n">pelican</span><span class="o">-</span><span class="n">quickstart</span>
-</pre></div>
-
-
-<p>目录树如下</p>
-<div class="highlight"><pre><span class="err">├──</span> <span class="n">content</span>             <span class="err">#存放</span><span class="p">.</span><span class="n">mdn</span><span class="err">文件</span>
-<span class="err">├──</span> <span class="n">develop_server</span><span class="p">.</span><span class="n">sh</span>   <span class="err">#方便开启测试服务器</span>
-<span class="err">├──</span> <span class="n">fabfile</span><span class="p">.</span><span class="n">py</span>          <span class="err">#配置文件</span>
-<span class="err">├──</span> <span class="n">Makefile</span>            <span class="err">#方便管理博客的</span><span class="n">Makefile</span>
-<span class="err">├──</span> <span class="n">output</span>              <span class="err">#生成的输出文件</span>
-<span class="err">├──</span> <span class="n">pelicanconf</span><span class="p">.</span><span class="n">py</span>      <span class="err">#主配置文件</span>
-<span class="err">└──</span> <span class="n">publishconf</span><span class="p">.</span><span class="n">py</span>      <span class="err">#主发布文件，可删除</span>
-</pre></div>
-
-
-<h4>尝试写博文</h4>
-<p>和普通的markdown文件稍有不同 ...</p> <a class="btn btn-info xsmall" href="./pages/2014/08/01/bo-ke-da-jian-ji-lu.html">read more</a></div>
-    </div>	
-				
 <div class="pagination">
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
@@ -579,6 +781,7 @@ by <a class="url fn" href="./author/philokey.html">philokey</a>
                 <li><a href="./category/leetcode.html">LeetCode</a></li>
                 <li><a href="./category/linux.html">Linux</a></li>
                 <li><a href="./category/python.html">python</a></li>
+                <li><a href="./category/scala.html">Scala</a></li>
                 <li><a href="./category/za.html">杂</a></li>
                    
             </ul>
