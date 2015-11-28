@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>philokey的笔记</title>
+    <meta name="description" content="">
+    <meta name="author" content="philokey">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../theme/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="../../../../theme/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../../theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="../../../../theme/local.css" rel="stylesheet">
+    <link href="../../../../theme/pygments.css" rel="stylesheet">
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+        <link href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate" title="philokey的笔记" type="application/atom+xml">
+        <link href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate" title="philokey的笔记" type="application/rss+xml">
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="navbar-inner">
+    <div class="container">
+
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </a>
+
+        <a class="brand" href="../../../..">philokey的笔记</a>
+
+        <div class="nav-collapse">
+        <ul class="nav">
+            
+        </ul>
+        </div>
+        
+    </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="content">
+    <div class="row">
+
+        <div class="span9">
+    <div class='article'>
+        <div class="content-title">
+            <h1>Scala学习笔记</h1>
+2014-10-28
+
+by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
+ 
+
+
+        </div>
+	
+        <div><h1>Functional Programming Principles in Scala</h1>
+<h2>Programming Paradigms(编程范式)</h2>
+<p>Paradigm: In science, a <em>paradigm</em> describes distinct concepts or thought patterns in some scientific discipline.</p>
+<p>Main programming paradigms:</p>
+<ul>
+<li>imperative programming(命令式编程)</li>
+<li>functional programming</li>
+<li>logic programming</li>
+</ul>
+<p>Orthogonal to it:</p>
+<ul>
+<li>object-oriented programming(面向对象的程序设计)</li>
+</ul>
+<h3>Imperative programming</h3>
+<ul>
+<li>modifying mutable(可变的) variables </li>
+<li>using assignments</li>
+<li>and control structures such as if-then-else, loops, break,
+continue, return.</li>
+</ul>
+<p>The most common informal way to understand imperative programs is as instruction sequences for a Von Neumann(冯诺依曼) computer.</p>
+<p>There’s a strong correspondence between</p>
+<div class="highlight"><pre>Mutable variables  ≈ memory cells
+Variable dereferences ≈ load instructions
+Variable assignments ≈ store instructions
+Control structures ≈ jumps
+</pre></div>
+
+
+<p>Bottleneck(瓶颈): One tends to conceptualize data structures word-by-word.</p>
+<h2>Functional Programming</h2>
+<ul>
+<li>In a restricted sense, functional programming (FP) means
+programming without mutable variables, assignments, loops,
+and other imperative control structures.</li>
+<li>In a wider sense, a functional programming language enables
+the construction of elegant programs that focus on functions.</li>
+<li>In particular, functions in a FP language are first-class citizens.
+This means<ul>
+<li>they can be defined anywhere, including inside other functions</li>
+<li>like any other value, they can be passed as parameters to functions and returned as results</li>
+<li>as for other values, there exists a set operators to compose
+functions</li>
+</ul>
+</li>
+</ul>
+<h1>Elements of Programming</h1>
+<ul>
+<li>
+<p>Call-by-value has the advantage that it evaluates every function argument only once.  <strong>(x: Int)</strong></p>
+<div class="highlight"><pre>sumOfSquares(3, 2+2)
+sumOfSquares(3, 4)
+square(3) + square(4)
+3 * 3 + square(4)
+9 + square(4)
+9 + 4 * 4
+</pre></div>
+
+
+</li>
+<li>
+<p>Call-by-name has the advantage that a function argument is not evaluated if the corresponding parameter is unused in the evaluation of the function body. <strong>(y: =&gt; Double)</strong></p>
+<div class="highlight"><pre>sumOfSquares(3, 2+2)
+square(3) + square(2+2)
+3 * 3 + square(2+2)
+9 + square(2+2)
+9 + (2+2) * (2+2)
+9 + 4 * (2+2)
+9 + 4 * 4
+</pre></div>
+
+
+</li>
+</ul>
+<p>semicolons #分号</p>
+<h1>Tail Recursion</h1>
+<p>Implementation Consideration: If a function calls itself as its last
+action, the function’s stack frame can be reused. This is called <strong><em>tail recursion.</em></strong>
+⇒ Tail recursive functions are iterative processes.
+In general, if the last action of a function consists of calling a function (which may be the same), one stack frame would be
+sufficient for both functions. Such calls are called tail-calls.</p>
+<p>尾调用的重要性在于它可以不在调用栈上面添加一个新的堆栈帧——而是更新它，如同迭代一般。尾递归因而具有两个特征：</p>
+<ul>
+<li>调用自身函数(Self-called)；</li>
+<li>计算仅占用常量栈空间(Stack Space)。</li>
+</ul>
+<p>而形式上只要是最后一个return语句返回的是一个完整函数，它就是尾递归。</p>
+<h1>Higher-Order Functions</h1>
+<p>Functions that take other functions as parameters or that return
+functions as results are called <strong><em>higher order functions</em></strong>.</p>
+<h2>Summing with Higher-Order Functions</h2>
+<p>The type A =&gt; B is the type of a function that takes an argument of type A and returns a result of type B .</p>
+<p>So, Int =&gt; Int is the type of functions that map integers to integers.</p>
+<div class="highlight"><pre><span class="c1">//Let’s define:</span>
+<span class="k">def</span> <span class="n">sum</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">,</span> <span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="o">)</span> <span class="mi">0</span>
+    <span class="k">else</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">+</span> <span class="n">sum</span><span class="o">(</span><span class="n">f</span><span class="o">,</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
+<span class="c1">//We can then write:</span>
+<span class="k">def</span> <span class="n">sumInts</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">sum</span><span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
+<span class="k">def</span> <span class="n">sumCubes</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">sum</span><span class="o">(</span><span class="n">cube</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
+<span class="k">def</span> <span class="n">sumFactorials</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">sum</span><span class="o">(</span><span class="n">fact</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
+<span class="c1">//where</span>
+<span class="k">def</span> <span class="n">id</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span>
+<span class="k">def</span> <span class="n">cube</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+<span class="k">def</span> <span class="n">fact</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">fact</span><span class="o">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+</pre></div>
+
+
+<h2>Anonymous Functions</h2>
+<p><strong><em>Anonymous Function</em></strong>: a function without giving it a name.</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="n">sumInts</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">sum</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
+<span class="k">def</span> <span class="n">sumCubes</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">sum</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
+</pre></div>
+
+
+<h1>Currying(柯里化)</h1>
+<p>把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术。</p>
+<h2>Functions Returning Functions</h2>
+<div class="highlight"><pre><span class="k">def</span> <span class="n">sum</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">sumF</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="o">)</span> <span class="mi">0</span>
+        <span class="k">else</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">+</span> <span class="n">sumF</span><span class="o">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
+    <span class="n">sumF</span> <span class="c1">//返回值</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p><strong>sum is now a function that returns another function.</strong></p>
+<div class="highlight"><pre>sum (cube) (1, 10)
+</pre></div>
+
+
+<ul>
+<li>sum(cube) applies sum to cube and returns the sum of cubes
+function.</li>
+<li>sum(cube) is therefore equivalent to sumCubes .</li>
+<li>This function is next applied to the arguments (1, 10) .</li>
+</ul>
+<p>Generally, function application associates to the left:</p>
+<div class="highlight"><pre>sum(cube)(1, 10) == (sum (cube)) (1, 10)
+
+def f ( args 1 )...( args n − 1 )( args n ) = E
+</pre></div>
+
+
+<p>is shown to be equivalent to</p>
+<div class="highlight"><pre>def f = ( args 1 ⇒ ( args 2 ⇒ ...( args n ⇒ E )...))
+</pre></div>
+
+
+<h1>Functions and Data</h1>
+<h2>Classes</h2>
+<p>In Scala, we do this by defining a class:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Rational</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">numer</span> <span class="k">=</span> <span class="n">x</span>
+    <span class="k">def</span> <span class="n">denom</span> <span class="k">=</span> <span class="n">y</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>This definition introduces two entities:</p>
+<ul>
+<li>A new type, named Rational (有理数).</li>
+<li>A constructor Rational to create elements of this type.</li>
+</ul>
+<p>Scala keeps the names of types and values in different namespaces. So there’s no conflict between the two defintions of Rational .</p>
+<h2>Objects</h2>
+<p>We call the elements of a class type objects.</p>
+<p>We create an object by prefixing an application of the constructor of the class with the operator new .</p>
+<p><em>Example</em></p>
+<div class="highlight"><pre>new Rational(1, 2)
+</pre></div>
+
+
+<h2>Members of an Object</h2>
+<p>Objects of the class Rational have two members, numer and denom .
+We select the members of an object with the infix operator ‘.’ (like in Java).</p>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>   <span class="o">&gt;</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Rational</span> <span class="o">=</span> <span class="nc">Rational</span><span class="k">@</span><span class="mi">2</span><span class="n">abe0e27</span>
+<span class="n">x</span><span class="o">.</span><span class="n">numer</span>                      <span class="o">&gt;</span> <span class="mi">1</span>
+<span class="n">x</span><span class="o">.</span><span class="n">denom</span>                      <span class="o">&gt;</span> <span class="mi">2</span>
+</pre></div>
+
+
+<h1>Evaluation and Operators</h1>
+<p><strong>1.Any method with a parameter can be used like an infix operator.</strong></p>
+<p>It is therefore possible to write</p>
+<div class="highlight"><pre>r add s                                             r.add(s)
+r less s           /* in place of */          r.less(s)
+r max s                                             r.max(s)
+</pre></div>
+
+
+<p><strong>2.Operators can be used as identifiers.</strong></p>
+<p><em>于是就可以方便的重载运算符了</em></p>
+<h1>Class Hierarchies(类层次)</h1>
+<h2>Abstract Classes</h2>
+<p>Consider the task of writing a class for sets of integers with the
+following operations.</p>
+<div class="highlight"><pre><span class="k">abstract</span> <span class="k">class</span> <span class="nc">IntSet</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">incl</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">IntSet</span>
+    <span class="k">def</span> <span class="n">contains</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>IntSet is an <strong><em>abstract class</em></strong>.</p>
+<p>Abstract classes can contain members which are missing an implementation (in our case, incl and contains ).</p>
+<p>Consequently, no instances of an abstract class can be created with the operator <em>new</em> .</p>
+<p>Let’s consider implementing sets as binary trees.
+There are two types of possible trees: a tree for the empty set, and a tree consisting of an integer and two sub-trees.
+Here are their implementations:</p>
+<div class="highlight"><pre><span class="c1">//这是可持久化的二叉搜索树</span>
+<span class="c1">//IntSet is called the superclass of Empty and NonEmpty .(C中的基类)</span>
+<span class="c1">//Empty and NonEmpty are subclasses of IntSet .</span>
+<span class="k">class</span> <span class="nc">Empty</span> <span class="k">extends</span> <span class="nc">IntSet</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">contains</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="k">def</span> <span class="n">incl</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">IntSet</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NonEmpty</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Empty</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Empty</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">class</span> <span class="nc">NonEmpty</span><span class="o">(</span><span class="n">elem</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">left</span><span class="k">:</span> <span class="kt">IntSet</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">IntSet</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">IntSet</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">contains</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">elem</span><span class="o">)</span> <span class="n">left</span> <span class="n">contains</span> <span class="n">x</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">elem</span><span class="o">)</span> <span class="n">right</span> <span class="n">contains</span> <span class="n">x</span>
+        <span class="k">else</span> <span class="kc">true</span>
+    <span class="k">def</span> <span class="n">incl</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">IntSet</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">elem</span><span class="o">)</span> <span class="k">new</span> <span class="nc">NonEmpty</span><span class="o">(</span><span class="n">elem</span><span class="o">,</span> <span class="n">left</span> <span class="n">incl</span> <span class="n">x</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">elem</span><span class="o">)</span> <span class="k">new</span> <span class="nc">NonEmpty</span><span class="o">(</span><span class="n">elem</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span> <span class="n">incl</span> <span class="n">x</span><span class="o">)</span>
+        <span class="k">else</span> <span class="k">this</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<h2>Implementation and Overriding</h2>
+<p>The definitions of contains and incl in the classes Empty and NonEmpty implement the abstract functions in the base trait IntSet .
+It is also possible to redefine an existing, non-abstract definition in a
+subclass by using override .</p>
+<div class="highlight"><pre><span class="k">abstract</span> <span class="k">class</span> <span class="nc">Base</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">foo</span> <span class="k">=</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="n">bar</span><span class="k">:</span> <span class="kt">Int</span>
+<span class="o">}</span>
+<span class="k">class</span> <span class="nc">Sub</span> <span class="k">extends</span> <span class="nc">Base</span> <span class="o">{</span>
+    <span class="k">override</span> <span class="k">def</span> <span class="n">foo</span> <span class="k">=</span> <span class="mi">2</span>
+    <span class="k">def</span> <span class="n">bar</span> <span class="k">=</span> <span class="mi">3</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<h2>Programs</h2>
+<p>Create standalone applications in Scala.
+Each such application contains an object with a <strong>main method</strong>.
+For instance, here is the “Hello World!” program in Scala.</p>
+<div class="highlight"><pre><span class="k">object</span> <span class="nc">Hello</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">=</span> <span class="n">println</span><span class="o">(</span><span class="err">”</span><span class="n">hello</span> <span class="n">world</span><span class="o">!</span><span class="err">”</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<h2>Traits</h2>
+<p>In Java, as well as in Scala, a class can only have one superclass.
+But what if a class has several natural supertypes to which it conforms or from which it wants to inherit code?
+Here, you could use <strong><em>traits</em></strong>.
+A trait is declared like an abstract class, just with trait instead of abstract class .</p>
+<div class="highlight"><pre><span class="k">trait</span> <span class="nc">Planar</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">height</span><span class="k">:</span> <span class="kt">Int</span>
+    <span class="k">def</span> <span class="n">width</span><span class="k">:</span> <span class="kt">Int</span>
+    <span class="k">def</span> <span class="n">surface</span> <span class="k">=</span> <span class="n">height</span> <span class="o">*</span> <span class="n">width</span>
+<span class="o">}</span>
+
+<span class="k">class</span> <span class="nc">Square</span> <span class="k">extends</span> <span class="nc">Shape</span> <span class="k">with</span> <span class="nc">Planar</span> <span class="k">with</span> <span class="nc">Movable</span> <span class="o">...</span>
+</pre></div>
+
+
+<h1>Polymorphism(多态)</h1>
+<h2>Value Parameters</h2>
+<div class="highlight"><pre>package week4
+trait IntList ...
+class Cons(val head: Int, val tail: IntList) extends IntList ...
+class Nil extends IntList ...
+</pre></div>
+
+
+<p>A list is eithter</p>
+<ul>
+<li>an empty list new Nil</li>
+<li>a list new Cons(x, xs) consisting of a head element x and a tail list xs.</li>
+</ul>
+<p>Note the abbreviation <strong>(val head: Int, val tail: IntList)</strong> in the defitions of Cons.</p>
+<p>This defines at the same time parameters and fields of a class.</p>
+<p>It is equivalent to:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Cons</span><span class="o">(</span><span class="nc">_head</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="nc">_tail</span><span class="k">:</span> <span class="kt">IntList</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">IntList</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">head</span> <span class="k">=</span> <span class="nc">_head</span>
+    <span class="k">val</span> <span class="n">tail</span> <span class="k">=</span> <span class="nc">_tail</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<h2>Type Parameters</h2>
+<p>类似于template吧</p>
+<div class="highlight"><pre><span class="k">trait</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">isEmpty</span><span class="k">:</span> <span class="kt">Boolean</span>
+    <span class="k">def</span> <span class="n">head</span><span class="k">:</span> <span class="kt">T</span>
+    <span class="k">def</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">class</span> <span class="nc">Cons</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="k">val</span> <span class="n">head</span><span class="k">:</span> <span class="kt">T</span><span class="o">,</span> <span class="k">val</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">isEmpty</span> <span class="k">=</span> <span class="kc">false</span>
+<span class="o">}</span>
+<span class="k">class</span> <span class="nc">Nil</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
+    <span class="k">def</span> <span class="n">isEmpty</span> <span class="k">=</span> <span class="kc">true</span>
+    <span class="k">def</span> <span class="n">head</span> <span class="k">=</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">NoSuchElementException</span><span class="o">(</span><span class="s">&quot;Nil.head&quot;</span><span class="o">)</span>
+    <span class="k">def</span> <span class="n">tail</span> <span class="k">=</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">NoSuchElementException</span><span class="o">(</span><span class="s">&quot;Nil.tail&quot;</span><span class="o">)</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p>We can then write:</p>
+<div class="highlight"><pre><span class="n">singleton</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="mi">1</span><span class="o">)</span>
+<span class="n">singleton</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">](</span><span class="kc">true</span><span class="o">)</span>
+</pre></div>
+
+
+<p>scala 编译器可以自动判断类型,所以可以简写成</p>
+<div class="highlight"><pre><span class="n">singleton</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+<span class="n">singleton</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</pre></div>
+
+
+<h2>polymorphism</h2>
+<p>ploymorphism means that a function type comes "in many forms"
+In programming it means that</p>
+<ul>
+<li>the function can be applied to arguments of many types</li>
+<li>the type can have instances of many types</li>
+</ul>
+<blockquote>
+<p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
+</blockquote></div>
+	
+        <hr>
+
+        <h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'philokeygithubio'; 
+    var disqus_title = 'Scala学习笔记';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+        </div>
+        
+        <div class="span3">
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Site
+                </li>
+            
+                <li><a href="../../../../archives.html">Archives</a>
+                <li><a href="../../../../tags.html">Tags</a>
+
+
+
+                <li><a href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
+                <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+
+            </ul>
+            </div>
+
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Categories
+                </li>
+                
+                <li><a href="../../../../category/bi-ji.html">笔记</a></li>
+                <li><a href="../../../../category/c.html">C++</a></li>
+                <li><a href="../../../../category/leetcode.html">LeetCode</a></li>
+                <li><a href="../../../../category/linux.html">Linux</a></li>
+                <li><a href="../../../../category/python.html">python</a></li>
+                <li><a href="../../../../category/scala.html">Scala</a></li>
+                <li><a href="../../../../category/za.html">杂</a></li>
+                   
+            </ul>
+            </div>
+
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Links
+                </li>
+            
+                <li><a href="http://getpelican.com/">Pelican</a></li>
+                <li><a href="http://python.org/">Python.org</a></li>
+                <li><a href="https://www.google.com/ncr">Google</a></li>
+            </ul>
+            </div>
+
+
+            <div class="social">
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Social
+                </li>
+           
+                <li><a href="https://github.com/philokey">Github</a></li>
+                <li><a href="http://weibo.com/u/1690959514/">微博</a></li>
+            </ul>
+            </div>
+            </div>
+
+        </div>  
+    </div>     </div> 
+<footer>
+<br />
+<p><a href="../../../..">philokey的笔记</a> &copy; philokey 2014</p>
+</footer>
+
+</div> <!-- /container -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="../../../../theme/bootstrap-collapse.js"></script>
+<script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+ 
+</body>
+</html>

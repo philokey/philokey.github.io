@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>philokey的笔记</title>
+    <meta name="description" content="">
+    <meta name="author" content="philokey">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../theme/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="../../../../theme/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../../theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="../../../../theme/local.css" rel="stylesheet">
+    <link href="../../../../theme/pygments.css" rel="stylesheet">
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+        <link href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate" title="philokey的笔记" type="application/atom+xml">
+        <link href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate" title="philokey的笔记" type="application/rss+xml">
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="navbar-inner">
+    <div class="container">
+
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </a>
+
+        <a class="brand" href="../../../..">philokey的笔记</a>
+
+        <div class="nav-collapse">
+        <ul class="nav">
+            
+        </ul>
+        </div>
+        
+    </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="content">
+    <div class="row">
+
+        <div class="span9">
+    <div class='article'>
+        <div class="content-title">
+            <h1>ubuntu字体</h1>
+2014-08-19
+
+by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
+ 
+
+
+        </div>
+	
+        <div><h2>基础知识</h2>
+<p>Sans-serif=无衬线体=黑体：并不是具体一款字体，而是一类字体，选择它其实等于选择这类字体中优先级最高的那款字体。</p>
+<p>Serif=衬线体=白体：同上</p>
+<p>Monospace=等宽字体，用于终端下面以及编程使用。这类字体的要求是能区分 1 i l，o 0 O。：同上</p>
+<p>点阵字体=位图字体</p>
+<p>无衬线体更适合电脑屏幕阅读，衬线体适合打印。——因为衬线可以使得人视线平齐于一行。也就是说不会读破行。</p>
+<p>中文显示时有不同的方式，一方面因为中文本身拥有的横和同高度就可以导致这种平齐。行距对中文更重要。</p>
+<h2>Linux字体</h2>
+<h3>字体文件存放路径</h3>
+<div class="highlight"><pre>/usr/share/fonts/  #系统字体
+~/.fonts #用户字体
+</pre></div>
+
+
+<h3>配置文件路径</h3>
+<div class="highlight"><pre>/etc/fonts/fonts.conf #系统配置文件,每类字体下的第一种字体优先级最高
+~/.fonts.conf #用户配置文件，只对当前用户运行的程序有效
+</pre></div>
+
+
+<h3>命令</h3>
+<div class="highlight"><pre>fc-cache -fv #通常复制字体进~/.fonts就会自动刷新字体，如果没有，用这个命令，如果复制进的是/usr/share/fonts/，用sudo fc-cache -fv
+fc-match sans-serif #抓取当前用户sans-serif类字体优先级最高的那款字体
+fc-match serif #抓取当前用户serif类字体优先级最高的那款字体
+fc-match monospace #抓取当前用户monospace类字体优先级最高的那款字体
+</pre></div></div>
+	
+        <hr>
+
+        <h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'philokeygithubio'; 
+    var disqus_title = 'ubuntu字体';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+        </div>
+        
+        <div class="span3">
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Site
+                </li>
+            
+                <li><a href="../../../../archives.html">Archives</a>
+                <li><a href="../../../../tags.html">Tags</a>
+
+
+
+                <li><a href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
+                <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+
+            </ul>
+            </div>
+
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Categories
+                </li>
+                
+                <li><a href="../../../../category/bi-ji.html">笔记</a></li>
+                <li><a href="../../../../category/c.html">C++</a></li>
+                <li><a href="../../../../category/leetcode.html">LeetCode</a></li>
+                <li><a href="../../../../category/linux.html">Linux</a></li>
+                <li><a href="../../../../category/python.html">python</a></li>
+                <li><a href="../../../../category/scala.html">Scala</a></li>
+                <li><a href="../../../../category/za.html">杂</a></li>
+                   
+            </ul>
+            </div>
+
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Links
+                </li>
+            
+                <li><a href="http://getpelican.com/">Pelican</a></li>
+                <li><a href="http://python.org/">Python.org</a></li>
+                <li><a href="https://www.google.com/ncr">Google</a></li>
+            </ul>
+            </div>
+
+
+            <div class="social">
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Social
+                </li>
+           
+                <li><a href="https://github.com/philokey">Github</a></li>
+                <li><a href="http://weibo.com/u/1690959514/">微博</a></li>
+            </ul>
+            </div>
+            </div>
+
+        </div>  
+    </div>     </div> 
+<footer>
+<br />
+<p><a href="../../../..">philokey的笔记</a> &copy; philokey 2014</p>
+</footer>
+
+</div> <!-- /container -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="../../../../theme/bootstrap-collapse.js"></script>
+<script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+ 
+</body>
+</html>

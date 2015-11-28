@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>philokey的笔记</title><link>http://www.philokey.com/</link><description></description><atom:link href="http://www.philokey.com/feeds/linux.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 19 Aug 2014 12:50:00 +0800</lastBuildDate><item><title>ubuntu字体</title><link>http://www.philokey.com/pages/2014/08/19/ubuntuzi-ti.html</link><description>&lt;h2&gt;基础知识&lt;/h2&gt;
+&lt;p&gt;Sans-serif=无衬线体=黑体：并不是具体一款字体，而是一类字体，选择它其实等于选择这类字体中优先级最高的那款字体。&lt;/p&gt;
+&lt;p&gt;Serif=衬线体=白体：同上&lt;/p&gt;
+&lt;p&gt;Monospace=等宽字体，用于终端下面以及编程使用。这类字体的要求是能区分 1 i l，o 0 O。：同上&lt;/p&gt;
+&lt;p&gt;点阵字体=位图字体&lt;/p&gt;
+&lt;p&gt;无衬线体更适合电脑屏幕阅读，衬线体适合打印。——因为衬线可以使得人视线平齐于一行。也就是说不会读破行。&lt;/p&gt;
+&lt;p&gt;中文显示时有不同的方式，一方面因为中文本身拥有的横和同高度就可以导致这种平齐。行距对中文更重要。&lt;/p&gt;
+&lt;h2&gt;Linux字体&lt;/h2&gt;
+&lt;h3&gt;字体文件存放路径&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;/usr/share/fonts/  #系统字体
+~/.fonts #用户字体
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;配置文件路径&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;/etc/fonts/fonts.conf #系统配置文件,每类字体下的第一种字体优先级最高
+~/.fonts.conf #用户配置文件，只对当前用户运行的程序有效
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;命令&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;fc-cache -fv #通常复制字体进~/.fonts就会自动刷新字体，如果没有，用这个命令，如果复制进的是/usr/share/fonts/，用sudo fc-cache -fv
+fc-match sans-serif #抓取当前用户sans-serif类字体优先级最高的那款字体
+fc-match serif #抓取当前用户serif类字体优先级最高的那款字体
+fc-match monospace #抓取当前用户monospace类字体优先级最高的那款字体
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">philokey</dc:creator><pubDate>Tue, 19 Aug 2014 12:50:00 +0800</pubDate><guid>tag:www.philokey.com,2014-08-19:pages/2014/08/19/ubuntuzi-ti.html</guid></item></channel></rss>

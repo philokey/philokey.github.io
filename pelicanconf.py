@@ -25,7 +25,8 @@ DEFAULT_DATE_FORMAT = '%Y-%m-%d'
 
 #plugins
 
-PLUGIN_PATH = u"/usr/local/lib/python2.7/site-packages/pelican/pelican-plugins"
+#PLUGIN_PATH = u"/usr/local/lib/python2.7/site-packages/pelican/pelican-plugins"
+PLUGIN_PATH = u"/Users/philokey/Practice/github/pelican-plugins"
 PLUGINS = ['sitemap','render_math']
 
 ## 配置sitemap 插件
