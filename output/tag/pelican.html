@@ -75,14 +75,16 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <p>Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelican。
 由于github有免费的300M空间，所以博客托管再github上。github还有一个好处就是对markdown的支持不错。</p>
 <p>不用数据库，全部都以可见文本形式存储，携带迁移，好开心~</p>
-<h3>本地配置Pelican</h3>
-<h4>安装pelican和markdown</h4>
+<p>2015.11.29 update</p>
+<p>谢天谢地有这篇搭建笔记，重新把博客搭起来并迁移到了Python3，真感人。</p>
+<h2>本地配置Pelican</h2>
+<h3>安装pelican和markdown</h3>
 <div class="highlight"><pre>pip install pelican
 pip install markdown
 </pre></div>
 
 
-<h4>启动工程</h4>
+<h3>启动工程</h3>
 <div class="highlight"><pre>pelican-quickstart
 </pre></div>
 
@@ -98,7 +100,7 @@ pip install markdown
 </pre></div>
 
 
-<h4>尝试写博文</h4>
+<h3>尝试写博文</h3>
 <p>和普通的markdown文件稍有不同，在顶部要有</p>
 <div class="highlight"><pre><span class="n">Title</span><span class="o">:</span> <span class="n">My</span> <span class="kd">super</span> <span class="n">title</span>
 <span class="n">Date</span><span class="o">:</span> <span class="mi">2014</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">01</span> <span class="mi">10</span><span class="o">:</span><span class="mi">20</span>
@@ -111,7 +113,7 @@ pip install markdown
 
 
 <p>前两项必填</p>
-<h4>本地运行</h4>
+<h3>本地运行</h3>
 <p>在博客根目录下</p>
 <div class="highlight"><pre>make html
 make serve
@@ -119,7 +121,7 @@ make serve
 
 
 <p>到 http://127.0.0.1:8000/ 可以查看。</p>
-<h4>组织文件结构</h4>
+<h3>组织文件结构</h3>
 <p>默认所有都再output里,可以按照日期组织生成的html
 在pelicanconf.py里配置:</p>
 <div class="highlight"><pre>ARTICLE_URL = &#39;pages/{date:%Y}/{date:%m}/{date:%d}/{slug}.html&#39;
@@ -127,7 +129,7 @@ ARTICLE_SAVE_AS = &#39;pages/{date:%Y}/{date:%m}/{date:%d}/{slug}.html&#39;
 </pre></div>
 
 
-<h4>修改主题</h4>
+<h3>修改主题</h3>
 <p>默认主题好丑，可以安装自己喜欢的主题</p>
 <div class="highlight"><pre>git clone https://github.com/getpelican/pelican-themes.git
 cd pelican-themes
@@ -140,13 +142,33 @@ sudo pelican-themes -i bootstrap2
 </pre></div>
 
 
-<h4>安装第三方评论系统</h4>
+<h3>安装插件</h3>
+<p><code>git clone git://github.com/getpelican/pelican-plugins.git</code></p>
+<p>以sitemap为例，修改配置文件pelicanconf.py</p>
+<p>'''
+PLUGIN_PATH = u"pelican-plugins"
+PLUGINS = ["sitemap"]
+SITEMAP = {
+    "format": "xml",
+    "priorities": {
+        "articles": 0.7,
+        "indexes": 0.5,
+        "pages": 0.3,
+    },
+    "changefreqs": {
+        "articles": "monthly",
+        "indexes": "daily",
+        "pages": "monthly",
+    }
+}
+'''</p>
+<h3>安装第三方评论系统</h3>
 <p>在Disqus上申请一个站点，记牢Shortname。 在pelicanconf.py添加</p>
 <div class="highlight"><pre>DISQUS_SITENAME = &#39;Shortname&#39;
 </pre></div>
 
 
-<h4>添加Google Analytics</h4>
+<h3>添加Google Analytics</h3>
 <p>去Google Analytics申请账号，记下跟踪ID。 在pelicanconf.py添加</p>
 <div class="highlight"><pre>GOOGLE_ANALYTICS = 跟踪ID
 </pre></div>
@@ -154,7 +176,7 @@ sudo pelican-themes -i bootstrap2
 
 <p>听说Google Analytics极其强悍，我没用过，试试吧</p>
 <p>至此，本地的部分就差不多搭建完毕了</p>
-<h3>使用GitHub Pages</h3>
+<h2>使用GitHub Pages</h2>
 <p>在github上创建一个repository,名字为 username.github.io 并再setting里并再setting里面生成GitHub面生成GitHub Pages，几分钟后，页面会自动生成.</p>
 <p>到output里把</p>
 <div class="highlight"><pre>cd output
@@ -168,7 +190,7 @@ git push origin master
 
 
 <p>这样在username.github.io里面就可以查看博客</p>
-<h4>一键上传</h4>
+<h3>一键上传</h3>
 <p>修改Makefile文件</p>
 <div class="highlight"><pre><span class="nf">publish</span><span class="o">:</span>
     <span class="k">$(</span>PELICAN<span class="k">)</span> <span class="k">$(</span>INPUTDIR<span class="k">)</span> -o <span class="k">$(</span>OUTPUTDIR<span class="k">)</span> -s <span class="k">$(</span>CONFFILE<span class="k">)</span> <span class="k">$(</span>PELICANOPTS<span class="k">)</span>
@@ -184,8 +206,8 @@ git push origin master
 
 
 <p>就可以实现一键上传</p>
-<h3>申请独立域名</h3>
-<h4>Godaddy</h4>
+<h2>申请独立域名</h2>
+<h3>Godaddy</h3>
 <p>在<a href="http://godaddy.com/">godaddy</a>购买域名，并在Manage My Domains里修改Nameservers为这两个地址：</p>
 <div class="highlight"><pre>f1g1ns1.dnspod.net
 f1g1ns2.dnspod.net
@@ -193,19 +215,19 @@ f1g1ns2.dnspod.net
 
 
 <p>使用godaddy自己的DNS服务器会被墙的样子</p>
-<h4>Dnspod</h4>
+<h3>Dnspod</h3>
 <p>在<a href="https://www.dnspod.cn/">Dnspod</a>注册账号, 并添加刚申请的域名.
 添加到 207.97.227.245 的A记录
 并把CNAME的记录值改为 username.github.io.</p>
-<h4>Github</h4>
+<h3>Github</h3>
 <p>在output目录下添加CNAME文件，里面填入</p>
 <div class="highlight"><pre>www.申请的域名
 </pre></div>
 
 
 <p>这样，博客主题就完成了。其他小功能自己探索吧</p>
-<h3>补充</h3>
-<h4>红框问题</h4>
+<h2>补充</h2>
+<h3>红框问题</h3>
 <p>发布之后发现代码里面有奇怪的红框，审查元素得知是css 里面有一个.err的class，如果代码被判断有语法错误就会产生红框，而大部分红框都是误伤。由于每次make html时主题的css都会重新根据安装的主题重新生成一边，所以要先卸载主题</p>
 <div class="highlight"><pre>sudo pelican-themes -i bootstrap2
 </pre></div>

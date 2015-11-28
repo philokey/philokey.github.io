@@ -9,13 +9,19 @@ Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelic
 由于github有免费的300M空间，所以博客托管再github上。github还有一个好处就是对markdown的支持不错。
 
 不用数据库，全部都以可见文本形式存储，携带迁移，好开心~
-###本地配置Pelican
-####安装pelican和markdown
+
+2015.11.29 update
+
+谢天谢地有这篇搭建笔记，重新把博客搭起来并迁移到了Python3，真感人。
+
+##本地配置Pelican
+
+###安装pelican和markdown
     
     pip install pelican
     pip install markdown
     
-####启动工程
+###启动工程
     pelican-quickstart
 目录树如下
 
@@ -27,7 +33,7 @@ Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelic
     ├── pelicanconf.py      #主配置文件
     └── publishconf.py      #主发布文件，可删除
 
-####尝试写博文
+###尝试写博文
 和普通的markdown文件稍有不同，在顶部要有
 
     Title: My super title
@@ -38,7 +44,9 @@ Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelic
     Author: Philokey
     Summary: Short version for index and feeds
 前两项必填
-####本地运行
+
+###本地运行
+
 在博客根目录下
 ```
 make html
@@ -46,7 +54,8 @@ make serve
 ```
 到 http://127.0.0.1:8000/ 可以查看。
 
-####组织文件结构
+###组织文件结构
+
 默认所有都再output里,可以按照日期组织生成的html
 在pelicanconf.py里配置:
     
@@ -54,7 +63,8 @@ make serve
     ARTICLE_SAVE_AS = 'pages/{date:%Y}/{date:%m}/{date:%d}/{slug}.html'
 
 
-####修改主题
+###修改主题
+
 默认主题好丑，可以安装自己喜欢的主题
 ```
 git clone https://github.com/getpelican/pelican-themes.git
@@ -66,12 +76,39 @@ sudo pelican-themes -i bootstrap2
 
     THEME = 'bootstrap2'
 
-####安装第三方评论系统
+###安装插件
+
+ ```
+ git clone git://github.com/getpelican/pelican-plugins.git
+ ```
+
+ 以sitemap为例，修改配置文件pelicanconf.py
+
+'''
+PLUGIN_PATH = u"pelican-plugins"
+PLUGINS = ["sitemap"]
+SITEMAP = {
+    "format": "xml",
+    "priorities": {
+        "articles": 0.7,
+        "indexes": 0.5,
+        "pages": 0.3,
+    },
+    "changefreqs": {
+        "articles": "monthly",
+        "indexes": "daily",
+        "pages": "monthly",
+    }
+}
+'''
+
+###安装第三方评论系统
+
 在Disqus上申请一个站点，记牢Shortname。 在pelicanconf.py添加
 
     DISQUS_SITENAME = 'Shortname'
 
-####添加Google Analytics
+###添加Google Analytics
 
 去Google Analytics申请账号，记下跟踪ID。 在pelicanconf.py添加
 
@@ -80,7 +117,9 @@ sudo pelican-themes -i bootstrap2
 听说Google Analytics极其强悍，我没用过，试试吧
 
 至此，本地的部分就差不多搭建完毕了
-###使用GitHub Pages
+
+##使用GitHub Pages
+
 在github上创建一个repository,名字为 username.github.io 并再setting里并再setting里面生成GitHub面生成GitHub Pages，几分钟后，页面会自动生成.
 
 到output里把
@@ -95,7 +134,7 @@ git push origin master
 ```
 这样在username.github.io里面就可以查看博客
 
-####一键上传
+###一键上传
 修改Makefile文件
 
     publish:
@@ -109,27 +148,33 @@ git push origin master
     make github 
 就可以实现一键上传
 
-###申请独立域名
+##申请独立域名
 
-####Godaddy
+###Godaddy
+
 在[godaddy][1]购买域名，并在Manage My Domains里修改Nameservers为这两个地址：
     
     f1g1ns1.dnspod.net
     f1g1ns2.dnspod.net
 使用godaddy自己的DNS服务器会被墙的样子
-####Dnspod
+
+###Dnspod
+
 在[Dnspod][2]注册账号, 并添加刚申请的域名.
 添加到 207.97.227.245 的A记录
 并把CNAME的记录值改为 username.github.io.
-####Github
+
+###Github
+
 在output目录下添加CNAME文件，里面填入
     
     www.申请的域名
 
 这样，博客主题就完成了。其他小功能自己探索吧
 
-###补充
-####红框问题
+##补充
+
+###红框问题
 发布之后发现代码里面有奇怪的红框，审查元素得知是css 里面有一个.err的class，如果代码被判断有语法错误就会产生红框，而大部分红框都是误伤。由于每次make html时主题的css都会重新根据安装的主题重新生成一边，所以要先卸载主题
 
     sudo pelican-themes -i bootstrap2

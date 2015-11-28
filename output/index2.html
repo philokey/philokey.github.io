@@ -73,14 +73,16 @@ by <a class="url fn" href="./author/philokey.html">philokey</a>
 <p>Wordpress过于庞大，而且我不会PHP，所以选择了基于python的pelican。
 由于github有免费的300M空间，所以博客托管再github上。github还有一个好处就是对markdown的支持不错。</p>
 <p>不用数据库，全部都以可见文本形式存储，携带迁移，好开心~</p>
-<h3>本地配置Pelican</h3>
-<h4>安装pelican和markdown</h4>
+<p>2015.11.29 update</p>
+<p>谢天谢地有这篇搭建笔记，重新把博客搭起来并迁移到了Python3，真感人。</p>
+<h2>本地配置Pelican</h2>
+<h3>安装pelican和markdown</h3>
 <div class="highlight"><pre>pip install pelican
 pip install markdown
 </pre></div>
 
 
-<h4>启动工程</h4>
+<h3>启动工程</h3>
 <div class="highlight"><pre>pelican-quickstart
 </pre></div>
 
@@ -92,13 +94,7 @@ pip install markdown
 ├── Makefile            #方便管理博客的Makefile
 ├── output              #生成的输出文件
 ├── pelicanconf.py      #主配置文件
-└── publishconf.py      #主发布文件，可删除
-</pre></div>
-
-
-<h4>尝试写博文</h4>
-<p>和普通的markdown文件稍有不同，在顶部要有</p>
-<div class="highlight"><pre><span class="n">Title</span><span class="o">:</span> <span class="n">My ...</span></pre></div> <a class="btn btn-info xsmall" href="./pages/2014/08/01/bo-ke-da-jian-ji-lu.html">read more</a></div>
+└── publishconf.py ...</pre></div> <a class="btn btn-info xsmall" href="./pages/2014/08/01/bo-ke-da-jian-ji-lu.html">read more</a></div>
     </div>	
 				
 
