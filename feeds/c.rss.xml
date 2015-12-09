@@ -8,35 +8,35 @@
 &lt;li&gt;派生类过期时,先调用派生类的析构函数&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;基类和派生类的特殊关系&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="nl"&gt;private:&lt;/span&gt;
-    &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="nl"&gt;public:&lt;/span&gt;
-    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;print&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;A&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="nl"&gt;public:&lt;/span&gt;
-    &lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;){}&lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; {
+&lt;span class="n"&gt;private:&lt;/span&gt;
+    &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="nb"&gt;name&lt;/span&gt;;
+&lt;span class="n"&gt;public:&lt;/span&gt;
+    &lt;span class="nb"&gt;void&lt;/span&gt; &lt;span class="nb"&gt;print&lt;/span&gt;() {
+        &lt;span class="nb"&gt;printf&lt;/span&gt;(&lt;span class="s"&gt;&amp;quot;A\n&amp;quot;&lt;/span&gt;);
+    }
+    &lt;span class="n"&gt;A&lt;/span&gt;(&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;) {
+        &lt;span class="nb"&gt;name&lt;/span&gt; = &lt;span class="n"&gt;st&lt;/span&gt;;
+    }
+};
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;B:&lt;/span&gt; &lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; {
+&lt;span class="n"&gt;public:&lt;/span&gt;
+    &lt;span class="n"&gt;B&lt;/span&gt;(&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;):&lt;span class="n"&gt;A&lt;/span&gt;(&lt;span class="n"&gt;st&lt;/span&gt;){}
+};
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;基类指针可以再不进行显示类型转换的情况下指向派生类的对象; 基类引用可以再不进行显式类型转换的情况下引用派生类对象&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;B&lt;/span&gt; &lt;span class="nf"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;abc&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//right&lt;/span&gt;
-&lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//right&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;B tp(&amp;quot;abc&amp;quot;);
+A &amp;amp;rt = tp; //right
+A *pt = &amp;amp;tp; //right
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;不能将基类对象和地址赋给派生类引用和指针&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="nf"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;abc&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="n"&gt;B&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;rr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//wrong&lt;/span&gt;
-&lt;span class="n"&gt;B&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="c1"&gt;//wrong&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;A tp(&amp;quot;abc&amp;quot;);
+B &amp;amp;rr = tp; //wrong
+B *pr = &amp;amp;tp;//wrong
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -48,25 +48,25 @@
 &lt;li&gt;使用虚函数（虚方法）&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;如果方法是通过引用或指针而不是对象调用的，如果没有采用虚函数方法，则程序根据引用类型或指针类型选择方法，如果采用虚函数了，则程序根据引用或者指针指向的对象的类型来选择方法。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//behavior with non-virtual VieAcct()&lt;/span&gt;
-&lt;span class="c1"&gt;//method chosen according to reference type&lt;/span&gt;
-&lt;span class="n"&gt;Brass&lt;/span&gt; &lt;span class="n"&gt;dom&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-&lt;span class="n"&gt;BrassPlus&lt;/span&gt; &lt;span class="n"&gt;dot&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-&lt;span class="n"&gt;Brass&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;b1_ref&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dom&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;Brass&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;b2_ref&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dot&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;b1_ref&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;VeiAcct&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//use Brass::VieAcct()&lt;/span&gt;
-&lt;span class="n"&gt;b2_ref&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;VeiAcct&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//use Brass::VieAcct()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;//behavior with non-virtual VieAcct()
+//method chosen according to reference type
+Brass dom();
+BrassPlus dot();
+Brass &amp;amp;b1_ref = dom;
+Brass &amp;amp;b2_ref = dot;
+b1_ref.VeiAcct(); //use Brass::VieAcct()
+b2_ref.VeiAcct(); //use Brass::VieAcct()
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//behavior with virtual VieAcct()&lt;/span&gt;
-&lt;span class="c1"&gt;//method chosen according to object type&lt;/span&gt;
-&lt;span class="n"&gt;Brass&lt;/span&gt; &lt;span class="n"&gt;dom&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-&lt;span class="n"&gt;BrassPlus&lt;/span&gt; &lt;span class="n"&gt;dot&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-&lt;span class="n"&gt;Brass&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;b1_ref&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dom&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;Brass&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;b2_ref&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dot&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;b1_ref&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;VeiAcct&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//use Brass::VieAcct()&lt;/span&gt;
-&lt;span class="n"&gt;b2_ref&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;VeiAcct&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//use BrassPluss::VieAcct()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;//behavior with virtual VieAcct()
+//method chosen according to object type
+Brass dom();
+BrassPlus dot();
+Brass &amp;amp;b1_ref = dom;
+Brass &amp;amp;b2_ref = dot;
+b1_ref.VeiAcct(); //use Brass::VieAcct()
+b2_ref.VeiAcct(); //use BrassPluss::VieAcct()
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -102,20 +102,20 @@
 &lt;p&gt;重新定义隐藏方法&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;calss&lt;/span&gt; &lt;span class="n"&gt;Dwelling&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="nl"&gt;public:&lt;/span&gt;
-    &lt;span class="n"&gt;virtual&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;showperks&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;...&lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;Houve&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Dwelling&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="nl"&gt;public:&lt;/span&gt;
-    &lt;span class="n"&gt;virtual&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;showperks&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;...&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;calss Dwelling {
+public:
+    virtual void showperks (int a) const;
+...
+};
+class Houve: public Dwelling {
+public:
+    virtual void showperks()const;
+...
+}
 
-&lt;span class="n"&gt;Hovel&lt;/span&gt; &lt;span class="n"&gt;trump&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="n"&gt;trump&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;showperks&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//valid&lt;/span&gt;
-&lt;span class="n"&gt;trump&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;showperks&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="c1"&gt;//invalid&lt;/span&gt;
+Hovel trump;
+trump.showperks(); //valid
+trump.showperks(); //invalid
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -148,35 +148,35 @@
 &lt;h2&gt;class中的静态成员&lt;/h2&gt;
 &lt;h3&gt;定义&lt;/h3&gt;
 &lt;p&gt;对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="nl"&gt;private:&lt;/span&gt;
-    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;output&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="err"&gt;；&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; {
+&lt;span class="n"&gt;private:&lt;/span&gt;
+    &lt;span class="n"&gt;char&lt;/span&gt; *&lt;span class="n"&gt;str&lt;/span&gt;;
+    &lt;span class="n"&gt;static&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="nb"&gt;num&lt;/span&gt;;
+    &lt;span class="n"&gt;static&lt;/span&gt; &lt;span class="nb"&gt;void&lt;/span&gt; &lt;span class="n"&gt;output&lt;/span&gt;() ;  
+}；
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;每个对象都有自己的str，共享一个num&lt;/p&gt;
 &lt;h3&gt;特点&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;//通过类名可以调用静态成员函数&lt;/span&gt;
-&lt;span class="no"&gt;A&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;output&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;//通过类名可以调用静态成员函数
+A::output()
 
-&lt;span class="c1"&gt;//静态成员函数中不能引用非静态成员&lt;/span&gt;
-&lt;span class="cm"&gt;/*&lt;/span&gt;
-&lt;span class="cm"&gt;因为静态成员函数属于整个类，在类实例化对象之前就已经分配空间了，而类的非静态成员必须在类实例化对象后才有内存空间，所以这个调用就出错了，就好比没有声明一个变量却提前使用它一样。&lt;/span&gt;
-&lt;span class="cm"&gt;*/&lt;/span&gt;
-&lt;span class="c1"&gt;//output定义为&lt;/span&gt;
-&lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;void&lt;/span&gt; &lt;span class="k"&gt;output&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//error!  &lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+//静态成员函数中不能引用非静态成员
+/*
+因为静态成员函数属于整个类，在类实例化对象之前就已经分配空间了，而类的非静态成员必须在类实例化对象后才有内存空间，所以这个调用就出错了，就好比没有声明一个变量却提前使用它一样。
+*/
+//output定义为
+static void output() {
+    cout&amp;lt;&amp;lt;str&amp;lt;&amp;lt;endl; //error!  
+}
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;初始化&lt;/h2&gt;
 &lt;p&gt;只有const static 的成员可以再类的声明中直接初始化。&lt;/p&gt;
 &lt;p&gt;静态成员一般选择在类的实现文件中,用构造函数以进行初始化&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="c1"&gt;//或者   &lt;/span&gt;
-&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;int&lt;/span&gt; &lt;span class="nt"&gt;A&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;:num&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nt"&gt;0&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="nt"&gt;或者&lt;/span&gt;   
+&lt;span class="nt"&gt;int&lt;/span&gt; &lt;span class="nt"&gt;A&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="nd"&gt;:num&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;0&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">philokey</dc:creator><pubDate>Mon, 01 Sep 2014 00:00:00 +0800</pubDate><guid>tag:www.philokey.com,2014-09-01:pages/2014/09/01/czhong-de-static.html</guid></item></channel></rss>

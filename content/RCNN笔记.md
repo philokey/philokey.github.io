@@ -27,7 +27,6 @@ Tag: CNN
 
 53.3% mAP，比之前的高了10%以上
 
-
 ## Visualization, ablation, and modes of error
 
 

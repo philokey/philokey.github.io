@@ -18,6 +18,10 @@
     <link href="../theme/local.css" rel="stylesheet">
     <link href="../theme/pygments.css" rel="stylesheet">
 
+    <!-- So Firefox can bookmark->"abo this site" -->
+        <link href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate" title="philokey的笔记" type="application/atom+xml">
+        <link href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate" title="philokey的笔记" type="application/rss+xml">
+
 </head>
 
 <body>
@@ -56,8 +60,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="../pages/2014/10/28/scalaxue-xi-bi-ji.html"><h1>Scala学习笔记</h1></a>
-2014-10-28
+            <a href="../pages/2015/12/09/lun-wen-bi-ji-rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation.html"><h1>论文笔记：Rich feature hierarchies for accurate object detection and semantic segmentation</h1></a>
+2015-12-09
 
 by <a class="url fn" href="../author/philokey.html">philokey</a>
  
@@ -66,7 +70,141 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
  
         </div>
         
-        <div><h1>Functional Programming Principles in Scala</h1>
+        <div><h2>Object detection with R-CNN</h2>
+<h3>Module design</h3>
+<p>先用selective search生成category-independent region proposals，然后从每个region proposal中用CNN提取出4096维的特征向量。</p>
+<h3>Test time detection</h3>
+<p>每张测试图片用selective search 的fast mode大概提取出2000个region proposal. 对每个region，用训练好的CNN提取特征，再用SVM分类，打分。如果region有重叠(IoU)，保留分最高的，舍弃其它。</p>
+<p>由于</p>
+<ol>
+<li>CNN共享参数</li>
+<li>the feature vectors computed by the CNN
+are low-dimensional when compared to other common approaches</li>
+</ol>
+<p>所以速度比较快。 13s/image on a GPU or 53s/image on a CPU</p>
+<h3>Training</h3>
+<p>用ILSVRC 2012数据集做pre-training，得到粗略的模型,但效果实际上比Alex他们差一点点，作者认为是自己的训练过程比较简单导致的。</p>
+<p>微调：将粗略模型的1000分类变成了现在的21分类（20种类+1背景）和ground truth的box重叠超过50%(IoU = 0.5)算正例，否则是负例。</p>
+<p>每次mini-batch的size为128，其中32个positive windows，96 backrgound windows。</p>
+<p>对positive windows 做 bias</p>
+<p>物体种类分类器：region里面有物体的部分，看物体的IoU是否达到阈值，达到才认为是正样本。IoU的设置很重要，这个IoU和上面的不一样，是SVM的，文中设置为0.3，会有好几个百分点的差别。分类用的是hard negative mining svm（然而并不知道这是什么，查查）</p>
+<h3>Results on PASCAL VOC 201012</h3>
+<p>53.3% mAP，比之前的高了10%以上</p>
+<h2>Visualization, ablation, and modes of error</h2>
+<h3>Visualizing learned features</h3>
+<p>核心思想是在pool5中一个神经元对应回去原图的227 * 227中的195 * 195个像素(术语是pool5神经元的感受野是195 * 195)。这个可以用公式</p>
+<div class="math">$$
+r_i = s_i*(r_(i+1)-1) + k_i
+$$</div>
+<p>其中<span class="math">\(r_i\)</span>是表示第<span class="math">\(i\)</span>层layer的输入的区域的大小，<span class="math">\(s_i\)</span>表示第<span class="math">\(i\)</span>层layer的stride，<span class="math">\(ki_\)</span>表示kernel size，注意，不需要考虑padding size。</p>
+<p>可视化的方法是将10M的region在训练好的网络中FP，然后看某个pool5中特定的神经元(central pool5 unit)的激活程度并且给一个rank。</p>
+<h3>Ablation studies</h3>
+<p><strong>Performance layer-by-layer, without fine-tuning</strong> 对没有经过微调，只用PASCAL数据集训练的的网络，用pool5，fc6，fc7的特征做SVM分类，出来的效果都差不多。作者得到的结论是：CNN的特征表达能力大部分是在卷积层。</p>
+<p><strong>Performance layer-by-layer, with fine-tuning</strong> pool5经过finetuning之后，mAP的提高不明显，所以卷积层提取出来的特征是具有普遍性的，而fc7经过finetuning后得到很大的提升，说明finetuning的效果主要是在全连接层上。</p>
+<p><strong>Comparison to recent feature learning methods</strong> 和DPM(Discriminatively trained deformable part models, release 5)方法对比，说明R-CNN的优越性，有更强的学习能力。</p>
+<h3>Detection error analysis</h3>
+<p>一个误差分析工具。把错误分成四类：</p>
+<ol>
+<li>
+<p>Loc—poor localization (a detection with an IoU overlap with the correct class between 0.1 and 0.5, or a duplicate);</p>
+</li>
+<li>
+<p>Sim—confusion with a similar category;</p>
+</li>
+<li>
+<p>Oth—confusion with a dissimilar object category;</p>
+</li>
+<li>
+<p>BG—a FP that fired on background.</p>
+</li>
+</ol>
+<p>错误主要是由Loc导致的，加上BB的方法可以有效的减少这类错误</p>
+<h3>Bounding box regression</h3>
+<p>为了解决Loc的问题，在pool5的结构上，用线性回归来进一步定位物体的位置，这样子使得mAP提高了4个点。</p>
+<h2>Semantic segmentation</h2>
+<p>在开源的切分框架O2P上做的</p>
+<p><strong>CNN features for segmentation</strong> </p>
+<p>提出3种策略计算CPMC region的评分</p>
+<p>把CPMC regions变成227*227，然后计算特征</p>
+<p>策略1(full)：忽略region的形状，直接计算矩形regions上的特征</p>
+<p>策略2(fg)：只在region的前景上计算特征</p>
+<p>策略3(fg+full)： 把前两个特征合并</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script></div>
+        <hr />
+    </div>
+		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="../pages/2014/10/28/scalaxue-xi-bi-ji.html"><h2>Scala学习笔记</h2></a>
+        <div class= "well small"> 2014-10-28
+
+by <a class="url fn" href="../author/philokey.html">philokey</a>
+ 
+
+
+ </div>
+        <div class="summary"><h1>Functional Programming Principles in Scala</h1>
 <h2>Programming Paradigms(编程范式)</h2>
 <p>Paradigm: In science, a <em>paradigm</em> describes distinct concepts or thought patterns in some scientific discipline.</p>
 <p>Main programming paradigms:</p>
@@ -83,328 +221,9 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <ul>
 <li>modifying mutable(可变的) variables </li>
 <li>using assignments</li>
-<li>and control structures such as if-then-else, loops, break,
-continue, return.</li>
-</ul>
-<p>The most common informal way to understand imperative programs is as instruction sequences for a Von Neumann(冯诺依曼) computer.</p>
-<p>There’s a strong correspondence between</p>
-<div class="highlight"><pre><span class="n">Mutable</span> <span class="n">variables</span>  <span class="err">≈</span> <span class="n">memory</span> <span class="n">cells</span>
-<span class="n">Variable</span> <span class="n">dereferences</span> <span class="err">≈</span> <span class="n">load</span> <span class="n">instructions</span>
-<span class="n">Variable</span> <span class="n">assignments</span> <span class="err">≈</span> <span class="n">store</span> <span class="n">instructions</span>
-<span class="n">Control</span> <span class="n">structures</span> <span class="err">≈</span> <span class="n">jumps</span>
-</pre></div>
-
-
-<p>Bottleneck(瓶颈): One tends to conceptualize data structures word-by-word.</p>
-<h2>Functional Programming</h2>
-<ul>
-<li>In a restricted sense, functional programming (FP) means
-programming without mutable variables, assignments, loops,
-and other imperative control structures.</li>
-<li>In a wider sense, a functional programming language enables
-the construction of elegant programs that focus on functions.</li>
-<li>In particular, functions in a FP language are first-class citizens.
-This means<ul>
-<li>they can be defined anywhere, including inside other functions</li>
-<li>like any other value, they can be passed as parameters to functions and returned as results</li>
-<li>as for other values, there exists a set operators to compose
-functions</li>
-</ul>
-</li>
-</ul>
-<h1>Elements of Programming</h1>
-<ul>
-<li>
-<p>Call-by-value has the advantage that it evaluates every function argument only once.  <strong>(x: Int)</strong></p>
-<div class="highlight"><pre><span class="n">sumOfSquares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">sumOfSquares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">square</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>Call-by-name has the advantage that a function argument is not evaluated if the corresponding parameter is unused in the evaluation of the function body. <strong>(y: =&gt; Double)</strong></p>
-<div class="highlight"><pre><span class="n">sumOfSquares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">square</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span>
-</pre></div>
-
-
-</li>
-</ul>
-<p>semicolons #分号</p>
-<h1>Tail Recursion</h1>
-<p>Implementation Consideration: If a function calls itself as its last
-action, the function’s stack frame can be reused. This is called <strong><em>tail recursion.</em></strong>
-⇒ Tail recursive functions are iterative processes.
-In general, if the last action of a function consists of calling a function (which may be the same), one stack frame would be
-sufficient for both functions. Such calls are called tail-calls.</p>
-<p>尾调用的重要性在于它可以不在调用栈上面添加一个新的堆栈帧——而是更新它，如同迭代一般。尾递归因而具有两个特征：</p>
-<ul>
-<li>调用自身函数(Self-called)；</li>
-<li>计算仅占用常量栈空间(Stack Space)。</li>
-</ul>
-<p>而形式上只要是最后一个return语句返回的是一个完整函数，它就是尾递归。</p>
-<h1>Higher-Order Functions</h1>
-<p>Functions that take other functions as parameters or that return
-functions as results are called <strong><em>higher order functions</em></strong>.</p>
-<h2>Summing with Higher-Order Functions</h2>
-<p>The type A =&gt; B is the type of a function that takes an argument of type A and returns a result of type B .</p>
-<p>So, Int =&gt; Int is the type of functions that map integers to integers.</p>
-<div class="highlight"><pre><span class="c1">//Let’s define:</span>
-<span class="k">def</span> <span class="n">sum</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">,</span> <span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="o">)</span> <span class="mi">0</span>
-    <span class="k">else</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">+</span> <span class="n">sum</span><span class="o">(</span><span class="n">f</span><span class="o">,</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
-<span class="c1">//We can then write:</span>
-<span class="k">def</span> <span class="n">sumInts</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">sum</span><span class="o">(</span><span class="n">id</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
-<span class="k">def</span> <span class="n">sumCubes</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">sum</span><span class="o">(</span><span class="n">cube</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
-<span class="k">def</span> <span class="n">sumFactorials</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">sum</span><span class="o">(</span><span class="n">fact</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
-<span class="c1">//where</span>
-<span class="k">def</span> <span class="n">id</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span>
-<span class="k">def</span> <span class="n">cube</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
-<span class="k">def</span> <span class="n">fact</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">fact</span><span class="o">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
-</pre></div>
-
-
-<h2>Anonymous Functions</h2>
-<p><strong><em>Anonymous Function</em></strong>: a function without giving it a name.</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="n">sumInts</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">sum</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
-<span class="k">def</span> <span class="n">sumCubes</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">sum</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
-</pre></div>
-
-
-<h1>Currying(柯里化)</h1>
-<p>把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术。</p>
-<h2>Functions Returning Functions</h2>
-<div class="highlight"><pre><span class="k">def</span> <span class="n">sum</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=&gt;</span> <span class="nc">Int</span><span class="o">)</span><span class="k">:</span> <span class="o">(</span><span class="kt">Int</span><span class="o">,</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="nc">Int</span> <span class="k">=</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">sumF</span><span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="o">)</span> <span class="mi">0</span>
-        <span class="k">else</span> <span class="n">f</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="o">+</span> <span class="n">sumF</span><span class="o">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
-    <span class="n">sumF</span> <span class="c1">//返回值</span>
-<span class="o">}</span>
-</pre></div>
-
-
-<p><strong>sum is now a function that returns another function.</strong></p>
-<div class="highlight"><pre><span class="n">sum</span> <span class="p">(</span><span class="n">cube</span><span class="p">)</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-</pre></div>
-
-
-<ul>
-<li>sum(cube) applies sum to cube and returns the sum of cubes
-function.</li>
-<li>sum(cube) is therefore equivalent to sumCubes .</li>
-<li>This function is next applied to the arguments (1, 10) .</li>
-</ul>
-<p>Generally, function application associates to the left:</p>
-<div class="highlight"><pre><span class="n">sum</span><span class="p">(</span><span class="n">cube</span><span class="p">)(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">sum</span> <span class="p">(</span><span class="n">cube</span><span class="p">))</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-
-<span class="n">def</span> <span class="n">f</span> <span class="p">(</span> <span class="n">args</span> <span class="mi">1</span> <span class="p">)...(</span> <span class="n">args</span> <span class="n">n</span> <span class="err">−</span> <span class="mi">1</span> <span class="p">)(</span> <span class="n">args</span> <span class="n">n</span> <span class="p">)</span> <span class="o">=</span> <span class="n">E</span>
-</pre></div>
-
-
-<p>is shown to be equivalent to</p>
-<div class="highlight"><pre><span class="n">def</span> <span class="n">f</span> <span class="o">=</span> <span class="p">(</span> <span class="n">args</span> <span class="mi">1</span> <span class="err">⇒</span> <span class="p">(</span> <span class="n">args</span> <span class="mi">2</span> <span class="err">⇒</span> <span class="p">...(</span> <span class="n">args</span> <span class="n">n</span> <span class="err">⇒</span> <span class="n">E</span> <span class="p">)...))</span>
-</pre></div>
-
-
-<h1>Functions and Data</h1>
-<h2>Classes</h2>
-<p>In Scala, we do this by defining a class:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Rational</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">numer</span> <span class="k">=</span> <span class="n">x</span>
-    <span class="k">def</span> <span class="n">denom</span> <span class="k">=</span> <span class="n">y</span>
-<span class="o">}</span>
-</pre></div>
-
-
-<p>This definition introduces two entities:</p>
-<ul>
-<li>A new type, named Rational (有理数).</li>
-<li>A constructor Rational to create elements of this type.</li>
-</ul>
-<p>Scala keeps the names of types and values in different namespaces. So there’s no conflict between the two defintions of Rational .</p>
-<h2>Objects</h2>
-<p>We call the elements of a class type objects.</p>
-<p>We create an object by prefixing an application of the constructor of the class with the operator new .</p>
-<p><em>Example</em></p>
-<div class="highlight"><pre><span class="n">new</span> <span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
-
-
-<h2>Members of an Object</h2>
-<p>Objects of the class Rational have two members, numer and denom .
-We select the members of an object with the infix operator ‘.’ (like in Java).</p>
-<p><strong>Example</strong></p>
-<div class="highlight"><pre><span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Rational</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>   <span class="o">&gt;</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Rational</span> <span class="o">=</span> <span class="nc">Rational</span><span class="k">@</span><span class="mi">2</span><span class="n">abe0e27</span>
-<span class="n">x</span><span class="o">.</span><span class="n">numer</span>                      <span class="o">&gt;</span> <span class="mi">1</span>
-<span class="n">x</span><span class="o">.</span><span class="n">denom</span>                      <span class="o">&gt;</span> <span class="mi">2</span>
-</pre></div>
-
-
-<h1>Evaluation and Operators</h1>
-<p><strong>1.Any method with a parameter can be used like an infix operator.</strong></p>
-<p>It is therefore possible to write</p>
-<div class="highlight"><pre><span class="n">r</span> <span class="n">add</span> <span class="n">s</span>                                             <span class="n">r</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="n">r</span> <span class="n">less</span> <span class="n">s</span>           <span class="cm">/* in place of */</span>          <span class="n">r</span><span class="p">.</span><span class="n">less</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="n">r</span> <span class="n">max</span> <span class="n">s</span>                                             <span class="n">r</span><span class="p">.</span><span class="n">max</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-</pre></div>
-
-
-<p><strong>2.Operators can be used as identifiers.</strong></p>
-<p><em>于是就可以方便的重载运算符了</em></p>
-<h1>Class Hierarchies(类层次)</h1>
-<h2>Abstract Classes</h2>
-<p>Consider the task of writing a class for sets of integers with the
-following operations.</p>
-<div class="highlight"><pre><span class="k">abstract</span> <span class="k">class</span> <span class="nc">IntSet</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">incl</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">IntSet</span>
-    <span class="k">def</span> <span class="n">contains</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span>
-<span class="o">}</span>
-</pre></div>
-
-
-<p>IntSet is an <strong><em>abstract class</em></strong>.</p>
-<p>Abstract classes can contain members which are missing an implementation (in our case, incl and contains ).</p>
-<p>Consequently, no instances of an abstract class can be created with the operator <em>new</em> .</p>
-<p>Let’s consider implementing sets as binary trees.
-There are two types of possible trees: a tree for the empty set, and a tree consisting of an integer and two sub-trees.
-Here are their implementations:</p>
-<div class="highlight"><pre><span class="c1">//这是可持久化的二叉搜索树</span>
-<span class="c1">//IntSet is called the superclass of Empty and NonEmpty .(C中的基类)</span>
-<span class="c1">//Empty and NonEmpty are subclasses of IntSet .</span>
-<span class="k">class</span> <span class="nc">Empty</span> <span class="k">extends</span> <span class="nc">IntSet</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">contains</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">false</span>
-    <span class="k">def</span> <span class="n">incl</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">IntSet</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NonEmpty</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Empty</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Empty</span><span class="o">)</span>
-<span class="o">}</span>
-
-<span class="k">class</span> <span class="nc">NonEmpty</span><span class="o">(</span><span class="n">elem</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">left</span><span class="k">:</span> <span class="kt">IntSet</span><span class="o">,</span> <span class="n">right</span><span class="k">:</span> <span class="kt">IntSet</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">IntSet</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">contains</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">elem</span><span class="o">)</span> <span class="n">left</span> <span class="n">contains</span> <span class="n">x</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">elem</span><span class="o">)</span> <span class="n">right</span> <span class="n">contains</span> <span class="n">x</span>
-        <span class="k">else</span> <span class="kc">true</span>
-    <span class="k">def</span> <span class="n">incl</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">IntSet</span> <span class="o">=</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">elem</span><span class="o">)</span> <span class="k">new</span> <span class="nc">NonEmpty</span><span class="o">(</span><span class="n">elem</span><span class="o">,</span> <span class="n">left</span> <span class="n">incl</span> <span class="n">x</span><span class="o">,</span> <span class="n">right</span><span class="o">)</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">elem</span><span class="o">)</span> <span class="k">new</span> <span class="nc">NonEmpty</span><span class="o">(</span><span class="n">elem</span><span class="o">,</span> <span class="n">left</span><span class="o">,</span> <span class="n">right</span> <span class="n">incl</span> <span class="n">x</span><span class="o">)</span>
-        <span class="k">else</span> <span class="k">this</span>
-<span class="o">}</span>
-</pre></div>
-
-
-<h2>Implementation and Overriding</h2>
-<p>The definitions of contains and incl in the classes Empty and NonEmpty implement the abstract functions in the base trait IntSet .
-It is also possible to redefine an existing, non-abstract definition in a
-subclass by using override .</p>
-<div class="highlight"><pre><span class="k">abstract</span> <span class="k">class</span> <span class="nc">Base</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">foo</span> <span class="k">=</span> <span class="mi">1</span>
-    <span class="k">def</span> <span class="n">bar</span><span class="k">:</span> <span class="kt">Int</span>
-<span class="o">}</span>
-<span class="k">class</span> <span class="nc">Sub</span> <span class="k">extends</span> <span class="nc">Base</span> <span class="o">{</span>
-    <span class="k">override</span> <span class="k">def</span> <span class="n">foo</span> <span class="k">=</span> <span class="mi">2</span>
-    <span class="k">def</span> <span class="n">bar</span> <span class="k">=</span> <span class="mi">3</span>
-<span class="o">}</span>
-</pre></div>
-
-
-<h2>Programs</h2>
-<p>Create standalone applications in Scala.
-Each such application contains an object with a <strong>main method</strong>.
-For instance, here is the “Hello World!” program in Scala.</p>
-<div class="highlight"><pre><span class="k">object</span> <span class="nc">Hello</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">=</span> <span class="n">println</span><span class="o">(</span><span class="err">”</span><span class="n">hello</span> <span class="n">world</span><span class="o">!</span><span class="err">”</span><span class="o">)</span>
-<span class="o">}</span>
-</pre></div>
-
-
-<h2>Traits</h2>
-<p>In Java, as well as in Scala, a class can only have one superclass.
-But what if a class has several natural supertypes to which it conforms or from which it wants to inherit code?
-Here, you could use <strong><em>traits</em></strong>.
-A trait is declared like an abstract class, just with trait instead of abstract class .</p>
-<div class="highlight"><pre><span class="k">trait</span> <span class="nc">Planar</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">height</span><span class="k">:</span> <span class="kt">Int</span>
-    <span class="k">def</span> <span class="n">width</span><span class="k">:</span> <span class="kt">Int</span>
-    <span class="k">def</span> <span class="n">surface</span> <span class="k">=</span> <span class="n">height</span> <span class="o">*</span> <span class="n">width</span>
-<span class="o">}</span>
-
-<span class="k">class</span> <span class="nc">Square</span> <span class="k">extends</span> <span class="nc">Shape</span> <span class="k">with</span> <span class="nc">Planar</span> <span class="k">with</span> <span class="nc">Movable</span> <span class="o">...</span>
-</pre></div>
-
-
-<h1>Polymorphism(多态)</h1>
-<h2>Value Parameters</h2>
-<div class="highlight"><pre>package week4
-trait IntList ...
-class Cons(val head: Int, val tail: IntList) extends IntList ...
-class Nil extends IntList ...
-</pre></div>
-
-
-<p>A list is eithter</p>
-<ul>
-<li>an empty list new Nil</li>
-<li>a list new Cons(x, xs) consisting of a head element x and a tail list xs.</li>
-</ul>
-<p>Note the abbreviation <strong>(val head: Int, val tail: IntList)</strong> in the defitions of Cons.</p>
-<p>This defines at the same time parameters and fields of a class.</p>
-<p>It is equivalent to:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Cons</span><span class="o">(</span><span class="nc">_head</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="nc">_tail</span><span class="k">:</span> <span class="kt">IntList</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">IntList</span> <span class="o">{</span>
-    <span class="k">val</span> <span class="n">head</span> <span class="k">=</span> <span class="nc">_head</span>
-    <span class="k">val</span> <span class="n">tail</span> <span class="k">=</span> <span class="nc">_tail</span>
-<span class="o">}</span>
-</pre></div>
-
-
-<h2>Type Parameters</h2>
-<p>类似于template吧</p>
-<div class="highlight"><pre><span class="k">trait</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">isEmpty</span><span class="k">:</span> <span class="kt">Boolean</span>
-    <span class="k">def</span> <span class="n">head</span><span class="k">:</span> <span class="kt">T</span>
-    <span class="k">def</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
-<span class="k">class</span> <span class="nc">Cons</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="k">val</span> <span class="n">head</span><span class="k">:</span> <span class="kt">T</span><span class="o">,</span> <span class="k">val</span> <span class="n">tail</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">extends</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">isEmpty</span> <span class="k">=</span> <span class="kc">false</span>
-<span class="o">}</span>
-<span class="k">class</span> <span class="nc">Nil</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="nc">extends</span> <span class="nc">List</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="o">{</span>
-    <span class="k">def</span> <span class="n">isEmpty</span> <span class="k">=</span> <span class="kc">true</span>
-    <span class="k">def</span> <span class="n">head</span> <span class="k">=</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">NoSuchElementException</span><span class="o">(</span><span class="s">&quot;Nil.head&quot;</span><span class="o">)</span>
-    <span class="k">def</span> <span class="n">tail</span> <span class="k">=</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">NoSuchElementException</span><span class="o">(</span><span class="s">&quot;Nil.tail&quot;</span><span class="o">)</span>
-<span class="o">}</span>
-</pre></div>
-
-
-<p>We can then write:</p>
-<div class="highlight"><pre><span class="n">singleton</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="mi">1</span><span class="o">)</span>
-<span class="n">singleton</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">](</span><span class="kc">true</span><span class="o">)</span>
-</pre></div>
-
-
-<p>scala 编译器可以自动判断类型,所以可以简写成</p>
-<div class="highlight"><pre><span class="n">singleton</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-<span class="n">singleton</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
-</pre></div>
-
-
-<h2>polymorphism</h2>
-<p>ploymorphism means that a function type comes "in many forms"
-In programming it means that</p>
-<ul>
-<li>the function can be applied to arguments of many types</li>
-<li>the type can have instances of many types</li>
-</ul>
-<blockquote>
-<p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
-</blockquote></div>
-        <hr />
-    </div>
-		
+<li>and control structures ...</li></ul> <a class="btn btn-info xsmall" href="../pages/2014/10/28/scalaxue-xi-bi-ji.html">read more</a></div>
+    </div>	
+				
 
  
         
@@ -429,28 +248,28 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <li>派生类过期时,先调用派生类的析构函数</li>
 </ul>
 <h3>基类和派生类的特殊关系</h3>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">private:</span>
-    <span class="n">string</span> <span class="n">name</span><span class="p">;</span>
-<span class="nl">public:</span>
-    <span class="kt">void</span> <span class="nf">print</span><span class="p">()</span> <span class="p">{</span>
-        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;A</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="n">A</span><span class="p">(</span><span class="n">string</span> <span class="n">st</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">st</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-<span class="n">class</span> <span class="n">B</span><span class="o">:</span> <span class="n">public</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">public:</span>
-    <span class="n">B</span><span class="p">(</span><span class="n">string</span> <span class="n">st</span><span class="p">)</span><span class="o">:</span><span class="n">A</span><span class="p">(</span><span class="n">st</span><span class="p">){}</span>
-<span class="p">};</span>
+<div class="highlight"><pre><span class="k">class</span> <span class="n">A</span> {
+<span class="n">private:</span>
+    <span class="n">string</span> <span class="nb">name</span>;
+<span class="n">public:</span>
+    <span class="nb">void</span> <span class="nb">print</span>() {
+        <span class="nb">printf</span>(<span class="s">&quot;A\n&quot;</span>);
+    }
+    <span class="n">A</span>(<span class="n">string</span> <span class="n">st</span>) {
+        <span class="nb">name</span> = <span class="n">st</span>;
+    }
+};
+<span class="k">class</span> <span class="n">B:</span> <span class="n">public</span> <span class="n">A</span> {
+<span class="n">public:</span>
+    <span class="n">B</span>(<span class="n">string</span> <span class="n">st</span>):<span class="n">A</span>(<span class="n">st</span>){}
+};
 </pre></div>
 
 
 <p>基类指针可以再不进行显示类型转换的情况下指向派生类的对象; 基类引用可以再不进行显式类型转换的情况下引用派生类对象</p>
-<div class="highlight"><pre><span class="n">B</span> <span class="nf">tp</span><span class="p">(</span><span class="s">&quot;abc&quot;</span><span class="p">);</span>
-<span class="n">A</span> <span class="o">&amp;</span><span class="n">rt</span> <span class="o">=</span> <span class="n">tp</span><span class="p">;</span> <span class="c1">//right</span>
-<span class="n">A</span> <span class="o">*</span><span class="n">pt</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tp</span><span class="p">;</span> <span class="c1">//right ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/10/15/czhong-de-lei.html">read more</a></div>
+<div class="highlight"><pre>B tp(&quot;abc&quot;);
+A &amp;rt = tp; //right
+A *pt = &amp;tp; //right ...</pre></div> <a class="btn btn-info xsmall" href="../pages/2014/10/15/czhong-de-lei.html">read more</a></div>
     </div>	
 				
 
@@ -489,8 +308,8 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <h2>class中的静态成员</h2>
 <h3>定义</h3>
 <p>对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">private ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/09/01/czhong-de-static.html">read more</a></div>
+<div class="highlight"><pre><span class="k">class</span> <span class="n">A</span> {
+<span class="n">private ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/09/01/czhong-de-static.html">read more</a></div>
     </div>	
 				
 
@@ -517,14 +336,14 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <p>中文显示时有不同的方式，一方面因为中文本身拥有的横和同高度就可以导致这种平齐。行距对中文更重要。</p>
 <h2>Linux字体</h2>
 <h3>字体文件存放路径</h3>
-<div class="highlight"><pre><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span>  <span class="err">#系统字体</span>
-<span class="o">~/</span><span class="p">.</span><span class="n">fonts</span> <span class="err">#用户字体</span>
+<div class="highlight"><pre>/usr/share/fonts/  #系统字体
+~/.fonts #用户字体
 </pre></div>
 
 
 <h3>配置文件路径</h3>
-<div class="highlight"><pre><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">fonts</span><span class="o">/</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#系统配置文件</span><span class="p">,</span><span class="err">每类字体下的第一种字体优先级最高</span>
-<span class="o">~/</span><span class="p">.</span><span class="n">fonts</span><span class="p">.</span><span class="n">conf</span> <span class="err">#用户配置文件，只对当前用户运行的程序有效 ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/19/ubuntuzi-ti.html">read more</a></div>
+<div class="highlight"><pre>/etc/fonts/fonts.conf #系统配置文件,每类字体下的第一种字体优先级最高
+~/.fonts.conf #用户配置文件，只对当前用户运行的程序有效 ...</pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/19/ubuntuzi-ti.html">read more</a></div>
     </div>	
 				
 
@@ -543,15 +362,15 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 
  </div>
         <div class="summary"><p>解法：二分法，分别讨论左边单调递增还是右边单调递增。当有重复元素时， A[l] == A[m] 的情况要单独拿出来考虑， 因为有[l,m] =&gt; [1,3,1]这种情况</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
-    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">A</span> <span class="n">a</span> <span class="n">list</span> <span class="n">of</span> <span class="n">integers</span>
-    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">target</span> <span class="n">an</span> <span class="n">integer</span>
-    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">a</span> <span class="n">boolean</span>
-    <span class="n">def</span> <span class="n">search</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span><span class="o">:</span>
-        <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">while</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="o">:</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-            <span class="k">if ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/16/search-in-rotated-sorted-array.html">read more</a></div>
+<div class="highlight"><pre><span class="k">class</span> <span class="n">Solution:</span>
+    <span class="c-Singleline"># @param A a list of integers</span>
+    <span class="c-Singleline"># @param target an integer</span>
+    <span class="c-Singleline"># @return a boolean</span>
+    <span class="n">def</span> <span class="n">search</span>(<span class="k">self</span>, <span class="n">A</span>, <span class="n">target</span>):
+        <span class="n">l</span>, <span class="n">r</span> = <span class="mi">0</span>, <span class="n">len</span>(<span class="n">A</span>) - <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">l</span> &lt;= <span class="n">r:</span>
+            <span class="sr">m = (l + r) / 2</span>
+<span class="sr">            if ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/16/search-in-rotated-sorted-array.html">read more</a></div>
     </div>	
 				
 
@@ -571,15 +390,15 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
  </div>
         <div class="summary"><p>题意： 给出括号序列，问最长的连续合法括号子序列长度是多少</p>
 <p>解法：用一个栈记录左括号, 右括号和在数组中的下标, 如果当前括号是右括号且栈顶是左括号, 则弹栈并更新答案</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
-    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span> <span class="n">string</span>
-    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
-    <span class="n">def</span> <span class="n">longestValidParentheses</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="o">:</span>
-        <span class="n">sLen</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="sc">&#39;)&#39;</span><span class="p">)],</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">sLen</span><span class="p">)</span><span class="o">:</span>
-            <span class="k">if</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;(&#39;</span> <span class="n">and</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;)&#39;</span><span class="o">:</span>
-                <span class="n">stack</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
-                <span class="n">ret</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight"><pre><span class="k">class</span> <span class="n">Solution:</span>
+    <span class="c-Singleline"># @param s, a string</span>
+    <span class="c-Singleline"># @return an integer</span>
+    <span class="n">def</span> <span class="n">longestValidParentheses</span>(<span class="k">self</span>, <span class="o">s</span>):
+        <span class="n">sLen</span>, <span class="n">stack</span>, <span class="n">ret</span> = <span class="n">len</span>(<span class="o">s</span>), [(-<span class="mi">1</span>, <span class="s">&#39;)&#39;</span>)], <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span>(<span class="n">sLen</span>):
+            <span class="k">if</span> <span class="n">stack</span>[-<span class="mi">1</span>][<span class="mi">1</span>] == <span class="s">&#39;(&#39;</span> <span class="o">and</span> <span class="o">s</span>[<span class="n">i</span>] == <span class="s">&#39;)&#39;</span>:
+                <span class="n">stack</span>.<span class="nb">pop</span>()
+                <span class="n">ret</span> = <span class="nb">max</span>(<span class="n">ret</span>, <span class="n">i</span> - <span class="n">stack</span>[-<span class="mi">1</span>][<span class="mi">0</span>])
             <span class="k">else ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/14/longest-valid-parentheses-leetcode.html">read more</a></div>
     </div>	
 				
@@ -603,11 +422,11 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <p>动态规划。</p>
 <p>初始化第一行和第一列时遇到障碍物就停止</p>
 <p>dp[i][j] = dp[i-1][j] + dp[i][j-1], 如果grid[i][j]有障碍物, dp[i][j] = 0</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
-    <span class="err">#</span> <span class="err">@</span><span class="n">param</span> <span class="n">obstacleGrid</span><span class="p">,</span> <span class="n">a</span> <span class="n">list</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">of</span> <span class="n">integers</span>
-    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
-    <span class="n">def</span> <span class="n">uniquePathsWithObstacles</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">obstacleGrid</span><span class="p">)</span><span class="o">:</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">obstacleGrid</span><span class="p">),</span> <span class="n">len</span><span class="p">(</span><span class="n">obstacleGrid ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/14/unique-paths-ii-leetcode.html">read more</a></div>
+<div class="highlight"><pre><span class="k">class</span> <span class="n">Solution:</span>
+    <span class="c-Singleline"># @param obstacleGrid, a list of lists of integers</span>
+    <span class="c-Singleline"># @return an integer</span>
+    <span class="n">def</span> <span class="n">uniquePathsWithObstacles</span>(<span class="k">self</span>, <span class="n">obstacleGrid</span>):
+        <span class="n">n</span>, <span class="sr">m = len(obstacleGrid), len(obstacleGrid ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/14/unique-paths-ii-leetcode.html">read more</a></div>
     </div>	
 				
 
@@ -628,46 +447,17 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
         <div class="summary"><p>题意：给定 1-n 共n个数， 问可以组成多少种不同的二分查找树。</p>
 <p>解法：动态规划。</p>
 <p>dp[n] 表示有n个数时，构成不同二分查找树的个数。转移方程为：
-$$
+</p>
+<div class="math">$$
 dp[n] = \sum_{i=0}^{n-1}dp[i]*dp[n-i-1]
-$$</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">Solution</span><span class="o">:</span>
-    <span class="err">#</span> <span class="err">@</span><span class="k">return</span> <span class="n">an</span> <span class="n">integer</span>
-    <span class="n">def</span> <span class="n">numTrees</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">:</span>
-        <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
-        <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span>
-            <span class="k">for ...</span></pre></div><script type= "text/javascript">
-    if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-        var mathjaxscript = document.createElement('script');
-        mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-        mathjaxscript.type = 'text/javascript';
-        mathjaxscript.src = 'https:' == document.location.protocol
-                ? 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
-                : 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-        mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-            "MathJax.Hub.Config({" +
-            "    config: ['MMLorHTML.js']," +
-            "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-            "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-            "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-            "    displayAlign: 'center'," +
-            "    displayIndent: '0em'," +
-            "    showMathMenu: true," +
-            "    tex2jax: { " +
-            "        inlineMath: [ ['$','$'] ], " +
-            "        displayMath: [ ['$$','$$'] ]," +
-            "        processEscapes: true," +
-            "        preview: 'TeX'," +
-            "    }, " +
-            "    'HTML-CSS': { " +
-            "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
-            "    } " +
-            "}); ";
-        (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-    }
-</script>
- <a class="btn btn-info xsmall" href="../pages/2014/08/13/unique-binary-search-trees-leetcode.html">read more</a></div>
+$$</div>
+<div class="highlight"><pre><span class="k">class</span> <span class="n">Solution:</span>
+    <span class="c-Singleline"># @return an integer</span>
+    <span class="n">def</span> <span class="n">numTrees</span>(<span class="k">self</span>, <span class="n">n</span>):
+        <span class="n">dp</span> = [<span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span>(<span class="n">n</span><span class="o">+</span><span class="mi">1</span>)]
+        <span class="n">dp</span>[<span class="mi">0</span>] = <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span>(<span class="mi">1</span>,<span class="n">n</span><span class="o">+</span><span class="mi">1</span>):
+            <span class="k">for ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/13/unique-binary-search-trees-leetcode.html">read more</a></div>
     </div>	
 				
 
@@ -688,7 +478,7 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
         <div class="summary"><p>Python中没有变量，只有对象和名字。万物皆对象。
 每个对象都包含一一个标准头,通过头部信息就可以明确知道其具体类型。
 头信息由 "引用用计数" 和 "类型指针"组成,前者在对象被引用用时增加,超出作用用域或手工释放后减小,等于 0 时会被虚拟机回收 (某些被缓存的对象计数器永远不会为 0)。用 </p>
-<div class="highlight"><pre><span class="n">sys</span><span class="p">.</span><span class="n">getrefcount</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre>sys.getrefcount(name)
 </pre></div>
 
 
@@ -700,49 +490,11 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 </ul>
 <h2>不可变对象</h2>
 <p>对于不可变对象，尽管对象本身不可变，但名字的对象引用是可变的。</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1005</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1006</span> <span class="err">#</span><span class="mi">1005</span><span class="err">的引用减</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1006</span><span class="err">的引用加 ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/13/python-ke-bian-dui-xiang-he-bu-ke-bian-dui-xiang.html">read more</a></div>
-    </div>	
-				
+<div class="highlight"><pre>&gt;&gt;&gt; a = 1005
+&gt;&gt;&gt; a = 1006 #1005的引用减1, 1006的引用加1,或者是创建的新的对象1006
 
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/08/10/stlbi-ji.html"><h2>STL笔记</h2></a>
-        <div class= "well small"> 2014-08-10
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><h2>priority_queue自定义比较函数</h2>
-<p>模板声明带有三个参数</p>
-<div class="highlight"><pre><span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">Type</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="n">Functional</span><span class="o">&gt;</span>
-</pre></div>
-
-
-<p>Type 为数据类型， Container 为保存数据的容器，Functional 为元素比较方式。
-Container 必须是用数组实现的容器，比如 vector, deque 但不能用 list.
-STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默认为小根堆。</p>
-<div class="highlight"><pre><span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">iostream</span> <span class="o">&gt;</span>
-<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">queue</span> <span class="o">&gt;</span>
-<span class="err">#</span><span class="nx">include</span> <span class="o">&lt;</span> <span class="nx">functional</span> <span class="o">&gt;</span>
-
-<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
-
-<span class="kr">class</span> <span class="nx">cmp</span> <span class="p">{</span>
-<span class="kr">public</span><span class="o">:</span>
-    <span class="nx">bool</span> <span class="nx">operator</span><span class="p">()</span> <span class="p">(</span><span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">a</span><span class="p">,</span> <span class="kr">const</span> <span class="kr">int</span><span class="o">&amp;</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="kr">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">priority_queue ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/10/stlbi-ji.html">read more</a></div>
+#不可变对象字符串
+&gt;&gt;&gt; str ...</pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/13/python-ke-bian-dui-xiang-he-bu-ke-bian-dui-xiang.html">read more</a></div>
     </div>	
 				
 <div class="pagination">
@@ -770,8 +522,12 @@ STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默�
             
                 <li><a href="../archives.html">Archives</a>
                 <li><a href="../tags.html">Tags</a>
-                <li><a href="http://www.philokey.com/" rel="alternate">Atom feed</a></li>
+
+
+
+                <li><a href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
                 <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+
             </ul>
             </div>
 
@@ -786,6 +542,7 @@ STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默�
                 <li><a href="../category/c.html">C++</a></li>
                 <li><a href="../category/leetcode.html">LeetCode</a></li>
                 <li><a href="../category/linux.html">Linux</a></li>
+                <li><a href="../category/lun-wen.html">论文</a></li>
                 <li><a href="../category/python.html">python</a></li>
                 <li><a href="../category/scala.html">Scala</a></li>
                 <li><a href="../category/za.html">杂</a></li>
@@ -824,12 +581,12 @@ STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默�
     </div>     </div> 
 <footer>
 <br />
-<p><a href="..">philokey的笔记</a> &copy; philokey 2012</p>
+<p><a href="..">philokey的笔记</a> &copy; philokey 2015</p>
 </footer>
 
 </div> <!-- /container -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+<script src="../theme/bootstrap-collapse.js"></script>
 <script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
  
 </body>

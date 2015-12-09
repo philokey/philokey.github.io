@@ -18,6 +18,10 @@
     <link href="../../../../theme/local.css" rel="stylesheet">
     <link href="../../../../theme/pygments.css" rel="stylesheet">
 
+    <!-- So Firefox can bookmark->"abo this site" -->
+        <link href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate" title="philokey的笔记" type="application/atom+xml">
+        <link href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate" title="philokey的笔记" type="application/rss+xml">
+
 </head>
 
 <body>
@@ -61,9 +65,9 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
         </div>
 	
         <div><h3>Hello World</h3>
-<div class="highlight"><pre><span class="vi">#include</span> <span class="o">&lt;</span><span class="nx">cstdio</span><span class="o">&gt;</span>
-<span class="nx">int</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">printf</span><span class="p">(</span><span class="s2">&quot;Hello World</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span class="cp">#include &lt;cstdio&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello World</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
@@ -99,8 +103,12 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
             
                 <li><a href="../../../../archives.html">Archives</a>
                 <li><a href="../../../../tags.html">Tags</a>
-                <li><a href="http://www.philokey.com/" rel="alternate">Atom feed</a></li>
+
+
+
+                <li><a href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
                 <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+
             </ul>
             </div>
 
@@ -115,6 +123,7 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
                 <li><a href="../../../../category/c.html">C++</a></li>
                 <li><a href="../../../../category/leetcode.html">LeetCode</a></li>
                 <li><a href="../../../../category/linux.html">Linux</a></li>
+                <li><a href="../../../../category/lun-wen.html">论文</a></li>
                 <li><a href="../../../../category/python.html">python</a></li>
                 <li><a href="../../../../category/scala.html">Scala</a></li>
                 <li><a href="../../../../category/za.html">杂</a></li>
@@ -153,12 +162,12 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
     </div>     </div> 
 <footer>
 <br />
-<p><a href="../../../..">philokey的笔记</a> &copy; philokey 2012</p>
+<p><a href="../../../..">philokey的笔记</a> &copy; philokey 2015</p>
 </footer>
 
 </div> <!-- /container -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+<script src="../../../../theme/bootstrap-collapse.js"></script>
 <script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
  
 </body>

@@ -18,6 +18,10 @@
     <link href="../theme/local.css" rel="stylesheet">
     <link href="../theme/pygments.css" rel="stylesheet">
 
+    <!-- So Firefox can bookmark->"abo this site" -->
+        <link href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate" title="philokey的笔记" type="application/atom+xml">
+        <link href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate" title="philokey的笔记" type="application/rss+xml">
+
 </head>
 
 <body>
@@ -88,10 +92,10 @@ continue, return.</li>
 </ul>
 <p>The most common informal way to understand imperative programs is as instruction sequences for a Von Neumann(冯诺依曼) computer.</p>
 <p>There’s a strong correspondence between</p>
-<div class="highlight"><pre><span class="n">Mutable</span> <span class="n">variables</span>  <span class="err">≈</span> <span class="n">memory</span> <span class="n">cells</span>
-<span class="n">Variable</span> <span class="n">dereferences</span> <span class="err">≈</span> <span class="n">load</span> <span class="n">instructions</span>
-<span class="n">Variable</span> <span class="n">assignments</span> <span class="err">≈</span> <span class="n">store</span> <span class="n">instructions</span>
-<span class="n">Control</span> <span class="n">structures</span> <span class="err">≈</span> <span class="n">jumps</span>
+<div class="highlight"><pre>Mutable variables  ≈ memory cells
+Variable dereferences ≈ load instructions
+Variable assignments ≈ store instructions
+Control structures ≈ jumps
 </pre></div>
 
 
@@ -116,25 +120,25 @@ functions</li>
 <ul>
 <li>
 <p>Call-by-value has the advantage that it evaluates every function argument only once.  <strong>(x: Int)</strong></p>
-<div class="highlight"><pre><span class="n">sumOfSquares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">sumOfSquares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">square</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span>
+<div class="highlight"><pre>sumOfSquares(3, 2+2)
+sumOfSquares(3, 4)
+square(3) + square(4)
+3 * 3 + square(4)
+9 + square(4)
+9 + 4 * 4
 </pre></div>
 
 
 </li>
 <li>
 <p>Call-by-name has the advantage that a function argument is not evaluated if the corresponding parameter is unused in the evaluation of the function body. <strong>(y: =&gt; Double)</strong></p>
-<div class="highlight"><pre><span class="n">sumOfSquares</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">square</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="n">square</span><span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">9</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span>
+<div class="highlight"><pre>sumOfSquares(3, 2+2)
+square(3) + square(2+2)
+3 * 3 + square(2+2)
+9 + square(2+2)
+9 + (2+2) * (2+2)
+9 + 4 * (2+2)
+9 + 4 * 4
 </pre></div>
 
 
@@ -194,7 +198,7 @@ functions as results are called <strong><em>higher order functions</em></strong>
 
 
 <p><strong>sum is now a function that returns another function.</strong></p>
-<div class="highlight"><pre><span class="n">sum</span> <span class="p">(</span><span class="n">cube</span><span class="p">)</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="highlight"><pre>sum (cube) (1, 10)
 </pre></div>
 
 
@@ -205,14 +209,14 @@ function.</li>
 <li>This function is next applied to the arguments (1, 10) .</li>
 </ul>
 <p>Generally, function application associates to the left:</p>
-<div class="highlight"><pre><span class="n">sum</span><span class="p">(</span><span class="n">cube</span><span class="p">)(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">sum</span> <span class="p">(</span><span class="n">cube</span><span class="p">))</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<div class="highlight"><pre>sum(cube)(1, 10) == (sum (cube)) (1, 10)
 
-<span class="n">def</span> <span class="n">f</span> <span class="p">(</span> <span class="n">args</span> <span class="mi">1</span> <span class="p">)...(</span> <span class="n">args</span> <span class="n">n</span> <span class="err">−</span> <span class="mi">1</span> <span class="p">)(</span> <span class="n">args</span> <span class="n">n</span> <span class="p">)</span> <span class="o">=</span> <span class="n">E</span>
+def f ( args 1 )...( args n − 1 )( args n ) = E
 </pre></div>
 
 
 <p>is shown to be equivalent to</p>
-<div class="highlight"><pre><span class="n">def</span> <span class="n">f</span> <span class="o">=</span> <span class="p">(</span> <span class="n">args</span> <span class="mi">1</span> <span class="err">⇒</span> <span class="p">(</span> <span class="n">args</span> <span class="mi">2</span> <span class="err">⇒</span> <span class="p">...(</span> <span class="n">args</span> <span class="n">n</span> <span class="err">⇒</span> <span class="n">E</span> <span class="p">)...))</span>
+<div class="highlight"><pre>def f = ( args 1 ⇒ ( args 2 ⇒ ...( args n ⇒ E )...))
 </pre></div>
 
 
@@ -236,7 +240,7 @@ function.</li>
 <p>We call the elements of a class type objects.</p>
 <p>We create an object by prefixing an application of the constructor of the class with the operator new .</p>
 <p><em>Example</em></p>
-<div class="highlight"><pre><span class="n">new</span> <span class="n">Rational</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight"><pre>new Rational(1, 2)
 </pre></div>
 
 
@@ -253,9 +257,9 @@ We select the members of an object with the infix operator ‘.’ (like in Java
 <h1>Evaluation and Operators</h1>
 <p><strong>1.Any method with a parameter can be used like an infix operator.</strong></p>
 <p>It is therefore possible to write</p>
-<div class="highlight"><pre><span class="n">r</span> <span class="n">add</span> <span class="n">s</span>                                             <span class="n">r</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="n">r</span> <span class="n">less</span> <span class="n">s</span>           <span class="cm">/* in place of */</span>          <span class="n">r</span><span class="p">.</span><span class="n">less</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="n">r</span> <span class="n">max</span> <span class="n">s</span>                                             <span class="n">r</span><span class="p">.</span><span class="n">max</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<div class="highlight"><pre>r add s                                             r.add(s)
+r less s           /* in place of */          r.less(s)
+r max s                                             r.max(s)
 </pre></div>
 
 
@@ -429,8 +433,12 @@ In programming it means that</p>
             
                 <li><a href="../archives.html">Archives</a>
                 <li><a href="../tags.html">Tags</a>
-                <li><a href="http://www.philokey.com/" rel="alternate">Atom feed</a></li>
+
+
+
+                <li><a href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
                 <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+
             </ul>
             </div>
 
@@ -445,6 +453,7 @@ In programming it means that</p>
                 <li><a href="../category/c.html">C++</a></li>
                 <li><a href="../category/leetcode.html">LeetCode</a></li>
                 <li><a href="../category/linux.html">Linux</a></li>
+                <li><a href="../category/lun-wen.html">论文</a></li>
                 <li><a href="../category/python.html">python</a></li>
                 <li><a href="../category/scala.html">Scala</a></li>
                 <li><a href="../category/za.html">杂</a></li>
@@ -483,12 +492,12 @@ In programming it means that</p>
     </div>     </div> 
 <footer>
 <br />
-<p><a href="..">philokey的笔记</a> &copy; philokey 2012</p>
+<p><a href="..">philokey的笔记</a> &copy; philokey 2014</p>
 </footer>
 
 </div> <!-- /container -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+<script src="../theme/bootstrap-collapse.js"></script>
 <script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
  
 </body>

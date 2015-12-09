@@ -18,6 +18,10 @@
     <link href="../../../../theme/local.css" rel="stylesheet">
     <link href="../../../../theme/pygments.css" rel="stylesheet">
 
+    <!-- So Firefox can bookmark->"abo this site" -->
+        <link href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate" title="philokey的笔记" type="application/atom+xml">
+        <link href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate" title="philokey的笔记" type="application/rss+xml">
+
 </head>
 
 <body>
@@ -63,7 +67,7 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
         <div><p>Python中没有变量，只有对象和名字。万物皆对象。
 每个对象都包含一一个标准头,通过头部信息就可以明确知道其具体类型。
 头信息由 "引用用计数" 和 "类型指针"组成,前者在对象被引用用时增加,超出作用用域或手工释放后减小,等于 0 时会被虚拟机回收 (某些被缓存的对象计数器永远不会为 0)。用 </p>
-<div class="highlight"><pre><span class="n">sys</span><span class="p">.</span><span class="n">getrefcount</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre>sys.getrefcount(name)
 </pre></div>
 
 
@@ -75,31 +79,31 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
 </ul>
 <h2>不可变对象</h2>
 <p>对于不可变对象，尽管对象本身不可变，但名字的对象引用是可变的。</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1005</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1006</span> <span class="err">#</span><span class="mi">1005</span><span class="err">的引用减</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1006</span><span class="err">的引用加</span><span class="mi">1</span><span class="p">,</span><span class="err">或者是创建的新的对象</span><span class="mi">1006</span>
+<div class="highlight"><pre>&gt;&gt;&gt; a = 1005
+&gt;&gt;&gt; a = 1006 #1005的引用减1, 1006的引用加1,或者是创建的新的对象1006
 
-<span class="cp">#不可变对象字符串</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">str</span> <span class="o">=</span> <span class="err">&#39;</span><span class="mi">12345678</span><span class="err">&#39;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">print</span> <span class="n">id</span><span class="p">(</span><span class="n">str</span><span class="p">),</span> <span class="n">id</span><span class="p">(</span><span class="n">str</span><span class="o">+</span><span class="sc">&#39;a&#39;</span><span class="p">)</span> <span class="err">#创建了新的对象</span>
-<span class="mi">139891756752160</span> <span class="mi">139891756752784</span>
+#不可变对象字符串
+&gt;&gt;&gt; str = &#39;12345678&#39;
+&gt;&gt;&gt; print id(str), id(str+&#39;a&#39;) #创建了新的对象
+139891756752160 139891756752784
 </pre></div>
 
 
 <p>不可变的对象的特征没有变，依然是不可变对象，变的只是创建了新对象，改变了变量的对象引用。
 不可变对象对于函数参数而已类似于传值调用</p>
 <h2>可变对象</h2>
-<div class="highlight"><pre><span class="cp">#浅拷贝,类似与传引用</span>
+<div class="highlight"><pre><span class="c">#浅拷贝,类似与传引用</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="cp">#深拷贝可以将名字指向新的对象</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">import</span> <span class="n">copy</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c">#深拷贝可以将名字指向新的对象</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">copy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 <span class="mi">4</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
@@ -135,8 +139,12 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
             
                 <li><a href="../../../../archives.html">Archives</a>
                 <li><a href="../../../../tags.html">Tags</a>
-                <li><a href="http://www.philokey.com/" rel="alternate">Atom feed</a></li>
+
+
+
+                <li><a href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
                 <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+
             </ul>
             </div>
 
@@ -151,6 +159,7 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
                 <li><a href="../../../../category/c.html">C++</a></li>
                 <li><a href="../../../../category/leetcode.html">LeetCode</a></li>
                 <li><a href="../../../../category/linux.html">Linux</a></li>
+                <li><a href="../../../../category/lun-wen.html">论文</a></li>
                 <li><a href="../../../../category/python.html">python</a></li>
                 <li><a href="../../../../category/scala.html">Scala</a></li>
                 <li><a href="../../../../category/za.html">杂</a></li>
@@ -189,12 +198,12 @@ by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
     </div>     </div> 
 <footer>
 <br />
-<p><a href="../../../..">philokey的笔记</a> &copy; philokey 2012</p>
+<p><a href="../../../..">philokey的笔记</a> &copy; philokey 2015</p>
 </footer>
 
 </div> <!-- /container -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+<script src="../../../../theme/bootstrap-collapse.js"></script>
 <script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
  
 </body>

@@ -18,6 +18,10 @@
     <link href="../theme/local.css" rel="stylesheet">
     <link href="../theme/pygments.css" rel="stylesheet">
 
+    <!-- So Firefox can bookmark->"abo this site" -->
+        <link href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate" title="philokey的笔记" type="application/atom+xml">
+        <link href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate" title="philokey的笔记" type="application/rss+xml">
+
 </head>
 
 <body>
@@ -75,35 +79,35 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <li>派生类过期时,先调用派生类的析构函数</li>
 </ul>
 <h3>基类和派生类的特殊关系</h3>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">private:</span>
-    <span class="n">string</span> <span class="n">name</span><span class="p">;</span>
-<span class="nl">public:</span>
-    <span class="kt">void</span> <span class="nf">print</span><span class="p">()</span> <span class="p">{</span>
-        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;A</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="n">A</span><span class="p">(</span><span class="n">string</span> <span class="n">st</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">st</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-<span class="n">class</span> <span class="n">B</span><span class="o">:</span> <span class="n">public</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">public:</span>
-    <span class="n">B</span><span class="p">(</span><span class="n">string</span> <span class="n">st</span><span class="p">)</span><span class="o">:</span><span class="n">A</span><span class="p">(</span><span class="n">st</span><span class="p">){}</span>
-<span class="p">};</span>
+<div class="highlight"><pre><span class="k">class</span> <span class="n">A</span> {
+<span class="n">private:</span>
+    <span class="n">string</span> <span class="nb">name</span>;
+<span class="n">public:</span>
+    <span class="nb">void</span> <span class="nb">print</span>() {
+        <span class="nb">printf</span>(<span class="s">&quot;A\n&quot;</span>);
+    }
+    <span class="n">A</span>(<span class="n">string</span> <span class="n">st</span>) {
+        <span class="nb">name</span> = <span class="n">st</span>;
+    }
+};
+<span class="k">class</span> <span class="n">B:</span> <span class="n">public</span> <span class="n">A</span> {
+<span class="n">public:</span>
+    <span class="n">B</span>(<span class="n">string</span> <span class="n">st</span>):<span class="n">A</span>(<span class="n">st</span>){}
+};
 </pre></div>
 
 
 <p>基类指针可以再不进行显示类型转换的情况下指向派生类的对象; 基类引用可以再不进行显式类型转换的情况下引用派生类对象</p>
-<div class="highlight"><pre><span class="n">B</span> <span class="nf">tp</span><span class="p">(</span><span class="s">&quot;abc&quot;</span><span class="p">);</span>
-<span class="n">A</span> <span class="o">&amp;</span><span class="n">rt</span> <span class="o">=</span> <span class="n">tp</span><span class="p">;</span> <span class="c1">//right</span>
-<span class="n">A</span> <span class="o">*</span><span class="n">pt</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tp</span><span class="p">;</span> <span class="c1">//right</span>
+<div class="highlight"><pre>B tp(&quot;abc&quot;);
+A &amp;rt = tp; //right
+A *pt = &amp;tp; //right
 </pre></div>
 
 
 <p>不能将基类对象和地址赋给派生类引用和指针</p>
-<div class="highlight"><pre><span class="n">A</span> <span class="nf">tp</span><span class="p">(</span><span class="s">&quot;abc&quot;</span><span class="p">);</span>
-<span class="n">B</span> <span class="o">&amp;</span><span class="n">rr</span> <span class="o">=</span> <span class="n">tp</span><span class="p">;</span> <span class="c1">//wrong</span>
-<span class="n">B</span> <span class="o">*</span><span class="n">pr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tp</span><span class="p">;</span><span class="c1">//wrong</span>
+<div class="highlight"><pre>A tp(&quot;abc&quot;);
+B &amp;rr = tp; //wrong
+B *pr = &amp;tp;//wrong
 </pre></div>
 
 
@@ -115,25 +119,25 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <li>使用虚函数（虚方法）</li>
 </ol>
 <p>如果方法是通过引用或指针而不是对象调用的，如果没有采用虚函数方法，则程序根据引用类型或指针类型选择方法，如果采用虚函数了，则程序根据引用或者指针指向的对象的类型来选择方法。</p>
-<div class="highlight"><pre><span class="c1">//behavior with non-virtual VieAcct()</span>
-<span class="c1">//method chosen according to reference type</span>
-<span class="n">Brass</span> <span class="n">dom</span><span class="p">();</span>
-<span class="n">BrassPlus</span> <span class="n">dot</span><span class="p">();</span>
-<span class="n">Brass</span> <span class="o">&amp;</span><span class="n">b1_ref</span> <span class="o">=</span> <span class="n">dom</span><span class="p">;</span>
-<span class="n">Brass</span> <span class="o">&amp;</span><span class="n">b2_ref</span> <span class="o">=</span> <span class="n">dot</span><span class="p">;</span>
-<span class="n">b1_ref</span><span class="p">.</span><span class="n">VeiAcct</span><span class="p">();</span> <span class="c1">//use Brass::VieAcct()</span>
-<span class="n">b2_ref</span><span class="p">.</span><span class="n">VeiAcct</span><span class="p">();</span> <span class="c1">//use Brass::VieAcct()</span>
+<div class="highlight"><pre>//behavior with non-virtual VieAcct()
+//method chosen according to reference type
+Brass dom();
+BrassPlus dot();
+Brass &amp;b1_ref = dom;
+Brass &amp;b2_ref = dot;
+b1_ref.VeiAcct(); //use Brass::VieAcct()
+b2_ref.VeiAcct(); //use Brass::VieAcct()
 </pre></div>
 
 
-<div class="highlight"><pre><span class="c1">//behavior with virtual VieAcct()</span>
-<span class="c1">//method chosen according to object type</span>
-<span class="n">Brass</span> <span class="n">dom</span><span class="p">();</span>
-<span class="n">BrassPlus</span> <span class="n">dot</span><span class="p">();</span>
-<span class="n">Brass</span> <span class="o">&amp;</span><span class="n">b1_ref</span> <span class="o">=</span> <span class="n">dom</span><span class="p">;</span>
-<span class="n">Brass</span> <span class="o">&amp;</span><span class="n">b2_ref</span> <span class="o">=</span> <span class="n">dot</span><span class="p">;</span>
-<span class="n">b1_ref</span><span class="p">.</span><span class="n">VeiAcct</span><span class="p">();</span> <span class="c1">//use Brass::VieAcct()</span>
-<span class="n">b2_ref</span><span class="p">.</span><span class="n">VeiAcct</span><span class="p">();</span> <span class="c1">//use BrassPluss::VieAcct()</span>
+<div class="highlight"><pre>//behavior with virtual VieAcct()
+//method chosen according to object type
+Brass dom();
+BrassPlus dot();
+Brass &amp;b1_ref = dom;
+Brass &amp;b2_ref = dot;
+b1_ref.VeiAcct(); //use Brass::VieAcct()
+b2_ref.VeiAcct(); //use BrassPluss::VieAcct()
 </pre></div>
 
 
@@ -169,20 +173,20 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <p>重新定义隐藏方法</p>
 </li>
 </ul>
-<div class="highlight"><pre><span class="n">calss</span> <span class="n">Dwelling</span> <span class="p">{</span>
-<span class="nl">public:</span>
-    <span class="n">virtual</span> <span class="kt">void</span> <span class="n">showperks</span> <span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-<span class="p">...</span>
-<span class="p">};</span>
-<span class="n">class</span> <span class="n">Houve</span><span class="o">:</span> <span class="n">public</span> <span class="n">Dwelling</span> <span class="p">{</span>
-<span class="nl">public:</span>
-    <span class="n">virtual</span> <span class="kt">void</span> <span class="n">showperks</span><span class="p">()</span><span class="k">const</span><span class="p">;</span>
-<span class="p">...</span>
-<span class="p">}</span>
+<div class="highlight"><pre>calss Dwelling {
+public:
+    virtual void showperks (int a) const;
+...
+};
+class Houve: public Dwelling {
+public:
+    virtual void showperks()const;
+...
+}
 
-<span class="n">Hovel</span> <span class="n">trump</span><span class="p">;</span>
-<span class="n">trump</span><span class="p">.</span><span class="n">showperks</span><span class="p">();</span> <span class="c1">//valid</span>
-<span class="n">trump</span><span class="p">.</span><span class="n">showperks</span><span class="p">();</span> <span class="c1">//invalid</span>
+Hovel trump;
+trump.showperks(); //valid
+trump.showperks(); //invalid
 </pre></div>
 
 
@@ -234,8 +238,8 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <h2>class中的静态成员</h2>
 <h3>定义</h3>
 <p>对于类中的非静态成员，每个对象都有自己的该成员。而静态成员只创建一个副本。静态成员可以是函数。</p>
-<div class="highlight"><pre><span class="n">class</span> <span class="n">A</span> <span class="p">{</span>
-<span class="nl">private ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/09/01/czhong-de-static.html">read more</a></div>
+<div class="highlight"><pre><span class="k">class</span> <span class="n">A</span> {
+<span class="n">private ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/09/01/czhong-de-static.html">read more</a></div>
     </div>	
 				
 <div class="pagination">
@@ -262,8 +266,12 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
             
                 <li><a href="../archives.html">Archives</a>
                 <li><a href="../tags.html">Tags</a>
-                <li><a href="http://www.philokey.com/" rel="alternate">Atom feed</a></li>
+
+
+
+                <li><a href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
                 <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+
             </ul>
             </div>
 
@@ -278,6 +286,7 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
                 <li><a href="../category/c.html">C++</a></li>
                 <li><a href="../category/leetcode.html">LeetCode</a></li>
                 <li><a href="../category/linux.html">Linux</a></li>
+                <li><a href="../category/lun-wen.html">论文</a></li>
                 <li><a href="../category/python.html">python</a></li>
                 <li><a href="../category/scala.html">Scala</a></li>
                 <li><a href="../category/za.html">杂</a></li>
@@ -316,12 +325,12 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
     </div>     </div> 
 <footer>
 <br />
-<p><a href="..">philokey的笔记</a> &copy; philokey 2012</p>
+<p><a href="..">philokey的笔记</a> &copy; philokey 2014</p>
 </footer>
 
 </div> <!-- /container -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-collapse.js"></script>
+<script src="../theme/bootstrap-collapse.js"></script>
 <script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
  
 </body>
