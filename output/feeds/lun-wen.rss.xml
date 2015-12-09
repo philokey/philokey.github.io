@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>philokey的笔记</title><link>http://www.philokey.com/</link><description></description><atom:link href="http://www.philokey.com/feeds/lun-wen.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 09 Dec 2015 00:00:00 +0800</lastBuildDate><item><title>论文笔记：Rich feature hierarchies for accurate object detection and semantic segmentation</title><link>http://www.philokey.com/pages/2015/12/09/lun-wen-bi-ji-rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation.html</link><description>&lt;h2&gt;Object detection with R-CNN&lt;/h2&gt;
+&lt;h3&gt;Module design&lt;/h3&gt;
+&lt;p&gt;先用selective search生成category-independent region proposals，然后从每个region proposal中用CNN提取出4096维的特征向量。&lt;/p&gt;
+&lt;h3&gt;Test time detection&lt;/h3&gt;
+&lt;p&gt;每张测试图片用selective search 的fast mode大概提取出2000个region proposal. 对每个region，用训练好的CNN提取特征，再用SVM分类，打分。如果region有重叠(IoU)，保留分最高的，舍弃其它。&lt;/p&gt;
+&lt;p&gt;由于&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;CNN共享参数&lt;/li&gt;
+&lt;li&gt;the feature vectors computed by the CNN
+are low-dimensional when compared to other common approaches&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;所以速度比较快。 13s/image on a GPU or 53s/image on a CPU&lt;/p&gt;
+&lt;h3&gt;Training&lt;/h3&gt;
+&lt;p&gt;用ILSVRC 2012数据集做pre-training，得到粗略的模型,但效果实际上比Alex他们差一点点，作者认为是自己的训练过程比较简单导致的。&lt;/p&gt;
+&lt;p&gt;微调：将粗略模型的1000分类变成了现在的21分类（20种类+1背景）和ground truth的box重叠超过50%(IoU = 0.5)算正例，否则是负例。&lt;/p&gt;
+&lt;p&gt;每次mini-batch的size为128，其中32个positive windows，96 backrgound windows。&lt;/p&gt;
+&lt;p&gt;对positive windows 做 bias&lt;/p&gt;
+&lt;p&gt;物体种类分类器：region里面有物体的部分，看物体的IoU是否达到阈值，达到才认为是正样本。IoU的设置很重要，这个IoU和上面的不一样，是SVM的，文中设置为0.3，会有好几个百分点的差别。分类用的是hard negative mining svm（然而并不知道这是什么，查查）&lt;/p&gt;
+&lt;h3&gt;Results on PASCAL VOC 201012&lt;/h3&gt;
+&lt;p&gt;53.3% mAP，比之前的高了10%以上&lt;/p&gt;
+&lt;h2&gt;Visualization, ablation, and modes of error&lt;/h2&gt;
+&lt;h3&gt;Visualizing learned features&lt;/h3&gt;
+&lt;p&gt;核心思想是在pool5中一个神经元对应回去原图的227 * 227中的195 * 195个像素(术语是pool5神经元的感受野是195 * 195)。这个可以用公式&lt;/p&gt;
+&lt;div class="math"&gt;$$
+r_i = s_i*(r_(i+1)-1) + k_i
+$$&lt;/div&gt;
+&lt;p&gt;其中&lt;span class="math"&gt;\(r_i\)&lt;/span&gt;是表示第&lt;span class="math"&gt;\(i\)&lt;/span&gt;层layer的输入的区域的大小，&lt;span class="math"&gt;\(s_i\)&lt;/span&gt;表示第&lt;span class="math"&gt;\(i\)&lt;/span&gt;层layer的stride，&lt;span class="math"&gt;\(ki_\)&lt;/span&gt;表示kernel size，注意，不需要考虑padding size。&lt;/p&gt;
+&lt;p&gt;可视化的方法是将10M的region在训练好的网络中FP，然后看某个pool5中特定的神经元(central pool5 unit)的激活程度并且给一个rank。&lt;/p&gt;
+&lt;h3&gt;Ablation studies&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Performance layer-by-layer, without fine-tuning&lt;/strong&gt; 对没有经过微调，只用PASCAL数据集训练的的网络，用pool5，fc6，fc7的特征做SVM分类，出来的效果都差不多。作者得到的结论是：CNN的特征表达能力大部分是在卷积层。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Performance layer-by-layer, with fine-tuning&lt;/strong&gt; pool5经过finetuning之后，mAP的提高不明显，所以卷积层提取出来的特征是具有普遍性的，而fc7经过finetuning后得到很大的提升，说明finetuning的效果主要是在全连接层上。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Comparison to recent feature learning methods&lt;/strong&gt; 和DPM(Discriminatively trained deformable part models, release 5)方法对比，说明R-CNN的优越性，有更强的学习能力。&lt;/p&gt;
+&lt;h3&gt;Detection error analysis&lt;/h3&gt;
+&lt;p&gt;一个误差分析工具。把错误分成四类：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Loc—poor localization (a detection with an IoU overlap with the correct class between 0.1 and 0.5, or a duplicate);&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Sim—confusion with a similar category;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Oth—confusion with a dissimilar object category;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;BG—a FP that fired on background.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;错误主要是由Loc导致的，加上BB的方法可以有效的减少这类错误&lt;/p&gt;
+&lt;h3&gt;Bounding box regression&lt;/h3&gt;
+&lt;p&gt;为了解决Loc的问题，在pool5的结构上，用线性回归来进一步定位物体的位置，这样子使得mAP提高了4个点。&lt;/p&gt;
+&lt;h2&gt;Semantic segmentation&lt;/h2&gt;
+&lt;p&gt;在开源的切分框架O2P上做的&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CNN features for segmentation&lt;/strong&gt; &lt;/p&gt;
+&lt;p&gt;提出3种策略计算CPMC region的评分&lt;/p&gt;
+&lt;p&gt;把CPMC regions变成227*227，然后计算特征&lt;/p&gt;
+&lt;p&gt;策略1(full)：忽略region的形状，直接计算矩形regions上的特征&lt;/p&gt;
+&lt;p&gt;策略2(fg)：只在region的前景上计算特征&lt;/p&gt;
+&lt;p&gt;策略3(fg+full)： 把前两个特征合并&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">philokey</dc:creator><pubDate>Wed, 09 Dec 2015 00:00:00 +0800</pubDate><guid>tag:www.philokey.com,2015-12-09:pages/2015/12/09/lun-wen-bi-ji-rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation.html</guid></item></channel></rss>

@@ -60,6 +60,47 @@
  
 
     <div class='article'>
+        <a href="./pages/2014/08/10/stlbi-ji.html"><h2>STL笔记</h2></a>
+        <div class= "well small"> 2014-08-10
+
+by <a class="url fn" href="./author/philokey.html">philokey</a>
+ 
+
+
+ </div>
+        <div class="summary"><h2>priority_queue自定义比较函数</h2>
+<p>模板声明带有三个参数</p>
+<div class="highlight"><pre>priority_queue&lt;Type, Container, Functional&gt;
+</pre></div>
+
+
+<p>Type 为数据类型， Container 为保存数据的容器，Functional 为元素比较方式。
+Container 必须是用数组实现的容器，比如 vector, deque 但不能用 list.
+STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以默认为小根堆。</p>
+<div class="highlight"><pre><span class="cp">#include &lt; iostream &gt;</span>
+<span class="cp">#include &lt; queue &gt;</span>
+<span class="cp">#include &lt; functional &gt;</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">cmp</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">bool</span> <span class="k">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">priority_queue ...</span></pre></div> <a class="btn btn-info xsmall" href="./pages/2014/08/10/stlbi-ji.html">read more</a></div>
+    </div>	
+				
+
+ 
+        
+
+ 
+
+    <div class='article'>
         <a href="./pages/2014/08/01/bo-ke-da-jian-ji-lu.html"><h2>博客搭建记录</h2></a>
         <div class= "well small"> 2014-08-01
 
@@ -169,6 +210,7 @@ by <a class="url fn" href="./author/philokey.html">philokey</a>
                 <li><a href="./category/c.html">C++</a></li>
                 <li><a href="./category/leetcode.html">LeetCode</a></li>
                 <li><a href="./category/linux.html">Linux</a></li>
+                <li><a href="./category/lun-wen.html">论文</a></li>
                 <li><a href="./category/python.html">python</a></li>
                 <li><a href="./category/scala.html">Scala</a></li>
                 <li><a href="./category/za.html">杂</a></li>
@@ -207,7 +249,7 @@ by <a class="url fn" href="./author/philokey.html">philokey</a>
     </div>     </div> 
 <footer>
 <br />
-<p><a href=".">philokey的笔记</a> &copy; philokey 2014</p>
+<p><a href=".">philokey的笔记</a> &copy; philokey 2015</p>
 </footer>
 
 </div> <!-- /container -->

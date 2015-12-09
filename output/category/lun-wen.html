@@ -9,14 +9,14 @@
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
-    <script src="../../../../theme/html5.js"></script>
+    <script src="../theme/html5.js"></script>
     <![endif]-->
 
     <!-- Le styles -->
-    <link href="../../../../theme/bootstrap.min.css" rel="stylesheet">
-    <link href="../../../../theme/bootstrap.min.responsive.css" rel="stylesheet">
-    <link href="../../../../theme/local.css" rel="stylesheet">
-    <link href="../../../../theme/pygments.css" rel="stylesheet">
+    <link href="../theme/bootstrap.min.css" rel="stylesheet">
+    <link href="../theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="../theme/local.css" rel="stylesheet">
+    <link href="../theme/pygments.css" rel="stylesheet">
 
     <!-- So Firefox can bookmark->"abo this site" -->
         <link href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate" title="philokey的笔记" type="application/atom+xml">
@@ -36,7 +36,7 @@
              <span class="icon-bar"></span>
          </a>
 
-        <a class="brand" href="../../../..">philokey的笔记</a>
+        <a class="brand" href="..">philokey的笔记</a>
 
         <div class="nav-collapse">
         <ul class="nav">
@@ -53,36 +53,82 @@
     <div class="row">
 
         <div class="span9">
+        
+
+        
+
+
     <div class='article'>
         <div class="content-title">
-            <h1>Unique Binary Search Trees @ LeetCode</h1>
-2014-08-13
+            <a href="../pages/2015/12/09/lun-wen-bi-ji-rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation.html"><h1>论文笔记：Rich feature hierarchies for accurate object detection and semantic segmentation</h1></a>
+2015-12-09
 
-by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
+by <a class="url fn" href="../author/philokey.html">philokey</a>
  
 
 
+ 
         </div>
-	
-        <div><p>题意：给定 1-n 共n个数， 问可以组成多少种不同的二分查找树。</p>
-<p>解法：动态规划。</p>
-<p>dp[n] 表示有n个数时，构成不同二分查找树的个数。转移方程为：
-</p>
+        
+        <div><h2>Object detection with R-CNN</h2>
+<h3>Module design</h3>
+<p>先用selective search生成category-independent region proposals，然后从每个region proposal中用CNN提取出4096维的特征向量。</p>
+<h3>Test time detection</h3>
+<p>每张测试图片用selective search 的fast mode大概提取出2000个region proposal. 对每个region，用训练好的CNN提取特征，再用SVM分类，打分。如果region有重叠(IoU)，保留分最高的，舍弃其它。</p>
+<p>由于</p>
+<ol>
+<li>CNN共享参数</li>
+<li>the feature vectors computed by the CNN
+are low-dimensional when compared to other common approaches</li>
+</ol>
+<p>所以速度比较快。 13s/image on a GPU or 53s/image on a CPU</p>
+<h3>Training</h3>
+<p>用ILSVRC 2012数据集做pre-training，得到粗略的模型,但效果实际上比Alex他们差一点点，作者认为是自己的训练过程比较简单导致的。</p>
+<p>微调：将粗略模型的1000分类变成了现在的21分类（20种类+1背景）和ground truth的box重叠超过50%(IoU = 0.5)算正例，否则是负例。</p>
+<p>每次mini-batch的size为128，其中32个positive windows，96 backrgound windows。</p>
+<p>对positive windows 做 bias</p>
+<p>物体种类分类器：region里面有物体的部分，看物体的IoU是否达到阈值，达到才认为是正样本。IoU的设置很重要，这个IoU和上面的不一样，是SVM的，文中设置为0.3，会有好几个百分点的差别。分类用的是hard negative mining svm（然而并不知道这是什么，查查）</p>
+<h3>Results on PASCAL VOC 201012</h3>
+<p>53.3% mAP，比之前的高了10%以上</p>
+<h2>Visualization, ablation, and modes of error</h2>
+<h3>Visualizing learned features</h3>
+<p>核心思想是在pool5中一个神经元对应回去原图的227 * 227中的195 * 195个像素(术语是pool5神经元的感受野是195 * 195)。这个可以用公式</p>
 <div class="math">$$
-dp[n] = \sum_{i=0}^{n-1}dp[i]*dp[n-i-1]
+r_i = s_i*(r_(i+1)-1) + k_i
 $$</div>
-<div class="highlight"><pre><span class="k">class</span> <span class="n">Solution:</span>
-    <span class="c-Singleline"># @return an integer</span>
-    <span class="n">def</span> <span class="n">numTrees</span>(<span class="k">self</span>, <span class="n">n</span>):
-        <span class="n">dp</span> = [<span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span>(<span class="n">n</span><span class="o">+</span><span class="mi">1</span>)]
-        <span class="n">dp</span>[<span class="mi">0</span>] = <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span>(<span class="mi">1</span>,<span class="n">n</span><span class="o">+</span><span class="mi">1</span>):
-            <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">range</span>(<span class="n">i</span>):
-                <span class="n">dp</span>[<span class="n">i</span>] += <span class="n">dp</span>[<span class="n">j</span>] * <span class="n">dp</span>[<span class="n">i</span> - <span class="n">j</span> - <span class="mi">1</span>]
-        <span class="k">return</span> <span class="n">dp</span>[<span class="n">n</span>]
-</pre></div>
-
-
+<p>其中<span class="math">\(r_i\)</span>是表示第<span class="math">\(i\)</span>层layer的输入的区域的大小，<span class="math">\(s_i\)</span>表示第<span class="math">\(i\)</span>层layer的stride，<span class="math">\(ki_\)</span>表示kernel size，注意，不需要考虑padding size。</p>
+<p>可视化的方法是将10M的region在训练好的网络中FP，然后看某个pool5中特定的神经元(central pool5 unit)的激活程度并且给一个rank。</p>
+<h3>Ablation studies</h3>
+<p><strong>Performance layer-by-layer, without fine-tuning</strong> 对没有经过微调，只用PASCAL数据集训练的的网络，用pool5，fc6，fc7的特征做SVM分类，出来的效果都差不多。作者得到的结论是：CNN的特征表达能力大部分是在卷积层。</p>
+<p><strong>Performance layer-by-layer, with fine-tuning</strong> pool5经过finetuning之后，mAP的提高不明显，所以卷积层提取出来的特征是具有普遍性的，而fc7经过finetuning后得到很大的提升，说明finetuning的效果主要是在全连接层上。</p>
+<p><strong>Comparison to recent feature learning methods</strong> 和DPM(Discriminatively trained deformable part models, release 5)方法对比，说明R-CNN的优越性，有更强的学习能力。</p>
+<h3>Detection error analysis</h3>
+<p>一个误差分析工具。把错误分成四类：</p>
+<ol>
+<li>
+<p>Loc—poor localization (a detection with an IoU overlap with the correct class between 0.1 and 0.5, or a duplicate);</p>
+</li>
+<li>
+<p>Sim—confusion with a similar category;</p>
+</li>
+<li>
+<p>Oth—confusion with a dissimilar object category;</p>
+</li>
+<li>
+<p>BG—a FP that fired on background.</p>
+</li>
+</ol>
+<p>错误主要是由Loc导致的，加上BB的方法可以有效的减少这类错误</p>
+<h3>Bounding box regression</h3>
+<p>为了解决Loc的问题，在pool5的结构上，用线性回归来进一步定位物体的位置，这样子使得mAP提高了4个点。</p>
+<h2>Semantic segmentation</h2>
+<p>在开源的切分框架O2P上做的</p>
+<p><strong>CNN features for segmentation</strong> </p>
+<p>提出3种策略计算CPMC region的评分</p>
+<p>把CPMC regions变成227*227，然后计算特征</p>
+<p>策略1(full)：忽略region的形状，直接计算矩形regions上的特征</p>
+<p>策略2(fg)：只在region的前景上计算特征</p>
+<p>策略3(fg+full)： 把前两个特征合并</p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
@@ -140,23 +186,21 @@ $$</div>
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 </script></div>
-	
-        <hr>
-
-        <h2>Comments</h2>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'philokeygithubio'; 
-    var disqus_title = 'Unique Binary Search Trees @ LeetCode';
-
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <hr />
     </div>
+		
+<div class="pagination">
+<ul>
+    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
+
+    <li class="active"><a href="../category/lun-wen.html">1</a></li>
+
+    <li class="next disabled"><a href="#">&rarr; Next</a></li>
+
+</ul>
+</div>
+ 
+  
         </div>
         
         <div class="span3">
@@ -167,8 +211,8 @@ $$</div>
                 Site
                 </li>
             
-                <li><a href="../../../../archives.html">Archives</a>
-                <li><a href="../../../../tags.html">Tags</a>
+                <li><a href="../archives.html">Archives</a>
+                <li><a href="../tags.html">Tags</a>
 
 
 
@@ -185,14 +229,14 @@ $$</div>
                 Categories
                 </li>
                 
-                <li><a href="../../../../category/bi-ji.html">笔记</a></li>
-                <li><a href="../../../../category/c.html">C++</a></li>
-                <li><a href="../../../../category/leetcode.html">LeetCode</a></li>
-                <li><a href="../../../../category/linux.html">Linux</a></li>
-                <li><a href="../../../../category/lun-wen.html">论文</a></li>
-                <li><a href="../../../../category/python.html">python</a></li>
-                <li><a href="../../../../category/scala.html">Scala</a></li>
-                <li><a href="../../../../category/za.html">杂</a></li>
+                <li><a href="../category/bi-ji.html">笔记</a></li>
+                <li><a href="../category/c.html">C++</a></li>
+                <li><a href="../category/leetcode.html">LeetCode</a></li>
+                <li><a href="../category/linux.html">Linux</a></li>
+                <li><a href="../category/lun-wen.html">论文</a></li>
+                <li><a href="../category/python.html">python</a></li>
+                <li><a href="../category/scala.html">Scala</a></li>
+                <li><a href="../category/za.html">杂</a></li>
                    
             </ul>
             </div>
@@ -228,12 +272,12 @@ $$</div>
     </div>     </div> 
 <footer>
 <br />
-<p><a href="../../../..">philokey的笔记</a> &copy; philokey 2015</p>
+<p><a href="..">philokey的笔记</a> &copy; philokey 2015</p>
 </footer>
 
 </div> <!-- /container -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="../../../../theme/bootstrap-collapse.js"></script>
+<script src="../theme/bootstrap-collapse.js"></script>
 <script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
  
 </body>
