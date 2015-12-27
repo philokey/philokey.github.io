@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.philokey.com/</loc>
-<lastmod>2015-12-27T14:10:39-00:00</lastmod>
+<lastmod>2015-12-27T14:12:12-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.philokey.com/archives.html</loc>
-<lastmod>2015-12-27T14:10:39-00:00</lastmod>
+<lastmod>2015-12-27T14:12:12-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.philokey.com/tags.html</loc>
-<lastmod>2015-12-27T14:10:39-00:00</lastmod>
+<lastmod>2015-12-27T14:12:12-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.philokey.com/categories.html</loc>
-<lastmod>2015-12-27T14:10:39-00:00</lastmod>
+<lastmod>2015-12-27T14:12:12-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -179,8 +179,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://www.philokey.com/tag/dp.html</loc>
-<lastmod>2014-08-14T00:20:00+08:06</lastmod>
+<loc>http://www.philokey.com/tag/blog.html</loc>
+<lastmod>2014-08-01T21:20:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -200,20 +200,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://www.philokey.com/tag/c.html</loc>
-<lastmod>2014-08-10T18:12:00+08:06</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://www.philokey.com/tag/blog.html</loc>
-<lastmod>2014-08-01T21:20:00+08:06</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
 <loc>http://www.philokey.com/tag/python.html</loc>
 <lastmod>2014-08-13T15:40:00+08:06</lastmod>
 <changefreq>daily</changefreq>
@@ -221,8 +207,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://www.philokey.com/tag/stack.html</loc>
-<lastmod>2014-08-14T10:02:00+08:06</lastmod>
+<loc>http://www.philokey.com/tag/c.html</loc>
+<lastmod>2014-08-10T18:12:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -230,6 +216,20 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://www.philokey.com/tag/stl.html</loc>
 <lastmod>2014-08-10T18:12:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.philokey.com/tag/dp.html</loc>
+<lastmod>2014-08-14T00:20:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://www.philokey.com/tag/stack.html</loc>
+<lastmod>2014-08-14T10:02:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
