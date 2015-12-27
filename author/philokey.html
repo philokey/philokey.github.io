@@ -60,8 +60,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="../pages/2015/12/09/lun-wen-bi-ji-rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation.html"><h1>论文笔记：Rich feature hierarchies for accurate object detection and semantic segmentation</h1></a>
-2015-12-09
+            <a href="../pages/2015/12/27/caffe-mxnet-fast-rcnn-xue-xi-bi-ji.html"><h1>caffe & mxnet & fast-rcnn 学习笔记</h1></a>
+2015-12-27
 
 by <a class="url fn" href="../author/philokey.html">philokey</a>
  
@@ -70,7 +70,101 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
  
         </div>
         
-        <div><h2>Object detection with R-CNN</h2>
+        <div><p>未完成版本。</p>
+<h2>背景</h2>
+<p>CV课的大作业，内容是做物体检测，一开始选择做dog detection，后来顺手又把猫加上了。挣扎了好久，觉得用hog或者其他什么特征是在太过时了，决定用cnn。之前读过rcnn的论文，但是代码是用matlab写的，出于某种偏见，不想读，抑制不住的想要自己实现一个Python版的。</p>
+<p>接着是训练工具的选择，首先看了caffe，花了一天半配环境，然后发现不能用Python3，于是吐槽的好久愤然放弃。然后发现mxnet是个好东西，配置方便，文档齐全，跑跑classification的example觉得很开心，支持Python3。但是，用mxnet做detection简直是个噩梦，大概因为是新东西，还没人用来做detection。又冷静思考了一下实现rcnn的工作量，各种零零碎碎的东西加起来，我估计今年过完我都实现不了。所以向现实低头，还是用现成点的东西吧。</p>
+<p>回去又看了眼rbg的github，好在ICCV2015上的fast-rcnn不仅又快又好，还是用python写的，还内置了修订版的caffe，于是拜读了代码，觉得人家一个科学家，代码还写这么好，真是不知道比我们高到哪里去了。所以最后的决定是：直接用fast-rcnn + caffe，调整已有的网络，训练猫狗检测模型。</p>
+<h2>fast-rcnn论文概述</h2>
+<p><a href="http://arxiv.org/pdf/1504.08083v2.pdf">论文</a></p>
+<p><a href="http://tutorial.caffe.berkeleyvision.org/caffe-cvpr15-detection.pdf">Slides</a></p>
+<p>感觉slides读起来很清晰，网络结构说的很清楚。</p>
+<p>fast-rcnn是rcnn的升级版，mAP提高了4个点左右，训练速度提高了9倍，测试速度提高了213倍，能做到0.3s一张图。</p>
+<h3>整体架构</h3>
+<p><img alt="整体框架" src="https://lh3.googleusercontent.com/-hTZgHdAZaZA/Vn9eXkrvzdI/AAAAAAAAG8g/QBt_wR1vvbM/s912-Ic42/%2525E5%2525B1%25258F%2525E5%2525B9%252595%2525E5%2525BF%2525AB%2525E7%252585%2525A7%2525202015-12-27%252520%2525E4%2525B8%25258A%2525E5%25258D%25258811.42.36.png" />
+网络的整体框架如上图所示，以AlexNet为例。输入分两部分，第一部分是一张原图，先通过5个卷积层，第二部分是selective search生成的2000个ROI，两部分一起通过一个ROIPooling layer，生成长度固定的特征，再进过两个全连接层。作者之前分析了rcnn等方法慢得原因之一是因为采用了pipeline模式，为了加快速度，作者直接搞了连个平行的输出层，也就是说有两个损失函数。一个输出bounding box的predict，用的还是逻辑斯蒂回归，一个输出softmax分类的结果。两个损失函数具体怎么做梯度下降还要再看看源代码吧。</p>
+<h3>ROI Pooling layer</h3>
+<p>ROI Pooling layer是一个特殊的单层的SPP layer，文中的解释没有看的很懂（大概是因为SPP net没读懂）。这一层的作用就是就是把每个ROI变成H*W个grid，然后得到固定大小的feature传入全连接层。
+总的来说，还是不太懂作者的意图。</p>
+<h2>fast-rcnn代码阅读和修改</h2>
+<h3>概述</h3>
+<div class="highlight"><pre>├── caffe-fast-rcnn
+├── lib
+│   ├── datasets
+│   ├── fast_rcnn
+│   ├── roi_data_layer
+│   ├── setup.py
+│   └── utils
+├── models
+│   ├── CaffeNet
+│   ├── VGG16
+│   └── VGG_CNN_M_1024
+└── tools
+    ├── _init_paths.py
+    ├── compress_net.py
+    ├── demo.py
+    ├── reval.py
+    ├── test_net.py
+    ├── train_net.py
+    └── train_svms.py
+</pre></div>
+
+
+<p>fast-rcnn核心代码框架如上所示，其中caffe进过作者的改造，增加了两个层，一个是本文提出的Pooling Layer，另一个是做bounding box回归的Smooth L1 Loss Layer。lib基本包含了论文里面所有的核心代码，modle对应了论文中提到的三个规模的进过pretraining的网络模型，CaffeNet是S，VGG_CNN_M_1024是M，VGG16是L。tools是一些有用的示例代码，在上面改改基本就能训练自己的模型。</p>
+<h3>datasets</h3>
+<div class="highlight"><pre>├── datasets
+│   ├── __init__.py
+│   ├── factory.py
+│   ├── imdb.py
+│   └── pascal_voc.py```
+</pre></div>
+
+
+<p>先从输入数据说起。</p>
+<p>输入数据的处理在datasets这个模块中完成。imdb.py定义了输入数据的基本类imdb，全称是Image database。使用者可以继承这个类，训练自己的数据，pascal_voc.py给出了很好的例子。调用factory.py里面的函数可以生成和使用imdb。</p>
+<p>接下来看要怎么生成自己的输入imdb,其实主要工作量也集中在了处理数据和生成数据上，都是体力活。</p>
+<p>比如说我们创建一个新的类，叫做catdog</p>
+<h3>roi_data_layer</h3>
+<div class="highlight"><pre>├── roi_data_layer
+│   ├── __init__.py
+│   ├── layer.py
+│   ├── minibatch.py
+│   └── roidb.py
+</pre></div>
+
+
+<h2>用mxnet做图像分类</h2>
+<h3>概述</h3>
+<p>看到kaggle上有个cat vs dog的比赛，于是顺手做了个猫狗分类。考虑到用fast-rcnn做分类有点杀鸡用牛刀，而且训练数据并没有标出区域，而且用selective search生成bounding box略麻烦，所以就直接用mxnet来作。</p>
+<p>一开始还很naive的想用kaggle给的25000张图的训练数据来做，结果用Alexnet跑了十几个epochs发现validate的准确率还在50%徘徊，然后意识到了数据量的重要新，于是直接上了pretraining好的模型，果然是效果拔群。跑完第一个epoch，准确率是75%，跑完第二个88%，第三个93%，第四个95%。跑到第十几个的时候，训练数据的准确率已经到了99.6%,validate的数据准确率到96.2%，感觉还是有点overfitting了。交到kaggle上，跑出了96.1%的结果，然而第一名的98%多，如果没有pretraining的数据，能跑到那么高么，总之觉得好厉害。</p>
+<h3>mxnet使用细节</h3>
+<p>TO BE UPDATE</p>
+<h2>总结</h2>
+<p>这次project的主要收获</p>
+<ul>
+<li>学习了两个深度学习的工具，caffe，mxnet。个人很看好mxnet。</li>
+<li>拜读了Fast R-CNN的部分代码，写的好优雅，思路清晰好读，值得学习。</li>
+<li>稍微跟进了CV领域比较前沿的论文，虽然因为缺少先验知识，没有特别懂。</li>
+</ul></div>
+        <hr />
+    </div>
+		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="../pages/2015/12/09/lun-wen-bi-ji-rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation.html"><h2>论文笔记：Rich feature hierarchies for accurate object detection and semantic segmentation</h2></a>
+        <div class= "well small"> 2015-12-09
+
+by <a class="url fn" href="../author/philokey.html">philokey</a>
+ 
+
+
+ </div>
+        <div class="summary"><h2>Object detection with R-CNN</h2>
 <h3>Module design</h3>
 <p>先用selective search生成category-independent region proposals，然后从每个region proposal中用CNN提取出4096维的特征向量。网络是用alex net 摘掉softmax层。</p>
 <h3>Test time detection</h3>
@@ -81,114 +175,9 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
 <li>the feature vectors computed by the CNN
 are low-dimensional when compared to other common approaches</li>
 </ol>
-<p>所以速度比较快。 13s/image on a GPU or 53s/image on a CPU</p>
-<h3>Training</h3>
-<p>用ILSVRC 2012数据集做pre-training，得到粗略的模型,但效果实际上比Alex他们差一点点，作者认为是自己的训练过程比较简单导致的。</p>
-<p>微调：将粗略模型的1000分类变成了现在的21分类（20种类+1背景）和ground truth的box重叠超过50%(IoU = 0.5)算正例，否则是负例。</p>
-<p>每次mini-batch的size为128，其中32个positive windows，96 backrgound windows。</p>
-<p>对positive windows 做 bias</p>
-<p>物体种类分类器：这是训练K个svm分类器，region里面有物体的部分，看物体的IoU是否达到阈值，达到才认为是正样本。IoU的设置很重要，这个IoU和上面的不一样，是SVM的，文中设置为0.3，会有好几个百分点的差别。分类用的是hard negative mining svm</p>
-<h3>Results on PASCAL VOC 201012</h3>
-<p>53.3% mAP，比之前的高了10%以上</p>
-<h2>Visualization, ablation, and modes of error</h2>
-<h3>Visualizing learned features</h3>
-<p>核心思想是在pool5中一个神经元对应回去原图的227 * 227中的195 * 195个像素(术语是pool5神经元的感受野是195 * 195)。这个可以用公式</p>
-<div class="math">$$
-r_i = s_i*(r_(i+1)-1) + k_i
-$$</div>
-<p>其中<span class="math">\(r_i\)</span>是表示第<span class="math">\(i\)</span>层layer的输入的区域的大小，<span class="math">\(s_i\)</span>表示第<span class="math">\(i\)</span>层layer的stride，<span class="math">\(ki_\)</span>表示kernel size，注意，不需要考虑padding size。</p>
-<p>可视化的方法是将10M的region在训练好的网络中FP，然后看某个pool5中特定的神经元(central pool5 unit)的激活程度并且给一个rank。</p>
-<h3>Ablation studies</h3>
-<p><strong>Performance layer-by-layer, without fine-tuning</strong> 对没有经过微调，只用PASCAL数据集训练的的网络，用pool5，fc6，fc7的特征做SVM分类，出来的效果都差不多。作者得到的结论是：CNN的特征表达能力大部分是在卷积层。</p>
-<p><strong>Performance layer-by-layer, with fine-tuning</strong> pool5经过finetuning之后，mAP的提高不明显，所以卷积层提取出来的特征是具有普遍性的，而fc7经过finetuning后得到很大的提升，说明finetuning的效果主要是在全连接层上。</p>
-<p><strong>Comparison to recent feature learning methods</strong> 和DPM(Discriminatively trained deformable part models, release 5)方法对比，说明R-CNN的优越性，有更强的学习能力。</p>
-<h3>Detection error analysis</h3>
-<p>一个误差分析工具。把错误分成四类：</p>
-<ol>
-<li>
-<p>Loc—poor localization (a detection with an IoU overlap with the correct class between 0.1 and 0.5, or a duplicate);</p>
-</li>
-<li>
-<p>Sim—confusion with a similar category;</p>
-</li>
-<li>
-<p>Oth—confusion with a dissimilar object category;</p>
-</li>
-<li>
-<p>BG—a FP that fired on background.</p>
-</li>
-</ol>
-<p>错误主要是由Loc导致的，加上BB的方法可以有效的减少这类错误</p>
-<h3>Bounding box regression</h3>
-<p>为了解决Loc的问题，在pool5的结构上，用线性回归来进一步定位物体的位置，这样子使得mAP提高了4个点。</p>
-<h2>Semantic segmentation</h2>
-<p>在开源的切分框架O2P上做的</p>
-<p><strong>CNN features for segmentation</strong> </p>
-<p>提出3种策略计算CPMC region的评分</p>
-<p>把CPMC regions变成227*227，然后计算特征</p>
-<p>策略1(full)：忽略region的形状，直接计算矩形regions上的特征</p>
-<p>策略2(fg)：只在region的前景上计算特征</p>
-<p>策略3(fg+full)： 把前两个特征合并</p>
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script></div>
-        <hr />
-    </div>
-		
+<p>所以速度比较快。 13s ...</p> <a class="btn btn-info xsmall" href="../pages/2015/12/09/lun-wen-bi-ji-rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation.html">read more</a></div>
+    </div>	
+				
 
  
         
@@ -460,43 +449,6 @@ $$</div>
             <span class="k">for ...</span></pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/13/unique-binary-search-trees-leetcode.html">read more</a></div>
     </div>	
 				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="../pages/2014/08/13/python-ke-bian-dui-xiang-he-bu-ke-bian-dui-xiang.html"><h2>python 可变对象和不可变对象</h2></a>
-        <div class= "well small"> 2014-08-13
-
-by <a class="url fn" href="../author/philokey.html">philokey</a>
- 
-
-
- </div>
-        <div class="summary"><p>Python中没有变量，只有对象和名字。万物皆对象。
-每个对象都包含一一个标准头,通过头部信息就可以明确知道其具体类型。
-头信息由 "引用用计数" 和 "类型指针"组成,前者在对象被引用用时增加,超出作用用域或手工释放后减小,等于 0 时会被虚拟机回收 (某些被缓存的对象计数器永远不会为 0)。用 </p>
-<div class="highlight"><pre>sys.getrefcount(name)
-</pre></div>
-
-
-<p>可以对象查看被引用次数</p>
-<p>Python在heap中分配的对象分成两类：可变对象和不可变对象。所谓可变对象是指，对象的内容是可变的，例如list。而不可变的对象则相反，表示其内容不可变。</p>
-<ul>
-<li>不可变对象：int，string，float，tuple</li>
-<li>可变对象   ：list，dictionary</li>
-</ul>
-<h2>不可变对象</h2>
-<p>对于不可变对象，尽管对象本身不可变，但名字的对象引用是可变的。</p>
-<div class="highlight"><pre>&gt;&gt;&gt; a = 1005
-&gt;&gt;&gt; a = 1006 #1005的引用减1, 1006的引用加1,或者是创建的新的对象1006
-
-#不可变对象字符串
-&gt;&gt;&gt; str ...</pre></div> <a class="btn btn-info xsmall" href="../pages/2014/08/13/python-ke-bian-dui-xiang-he-bu-ke-bian-dui-xiang.html">read more</a></div>
-    </div>	
-				
 <div class="pagination">
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
@@ -543,6 +495,7 @@ by <a class="url fn" href="../author/philokey.html">philokey</a>
                 <li><a href="../category/leetcode.html">LeetCode</a></li>
                 <li><a href="../category/linux.html">Linux</a></li>
                 <li><a href="../category/lun-wen.html">论文</a></li>
+                <li><a href="../category/lun-wen-caffemxnet.html">论文,caffe,mxnet</a></li>
                 <li><a href="../category/python.html">python</a></li>
                 <li><a href="../category/scala.html">Scala</a></li>
                 <li><a href="../category/za.html">杂</a></li>

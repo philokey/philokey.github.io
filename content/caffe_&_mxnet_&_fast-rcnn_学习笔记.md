@@ -1,4 +1,8 @@
-#caffe & mxnet & fast-rcnn 学习笔记
+Title: caffe & mxnet & fast-rcnn 学习笔记
+Date: 2015-12-27
+Category: 论文,caffe,mxnet
+Tag: CNN
+
 
 未完成版本。
 

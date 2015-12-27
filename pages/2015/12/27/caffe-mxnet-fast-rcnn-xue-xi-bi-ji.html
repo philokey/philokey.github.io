@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>philokey的笔记</title>
+    <meta name="description" content="">
+    <meta name="author" content="philokey">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../theme/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="../../../../theme/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../../theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="../../../../theme/local.css" rel="stylesheet">
+    <link href="../../../../theme/pygments.css" rel="stylesheet">
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+        <link href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate" title="philokey的笔记" type="application/atom+xml">
+        <link href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate" title="philokey的笔记" type="application/rss+xml">
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="navbar-inner">
+    <div class="container">
+
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </a>
+
+        <a class="brand" href="../../../..">philokey的笔记</a>
+
+        <div class="nav-collapse">
+        <ul class="nav">
+            
+        </ul>
+        </div>
+        
+    </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="content">
+    <div class="row">
+
+        <div class="span9">
+    <div class='article'>
+        <div class="content-title">
+            <h1>caffe & mxnet & fast-rcnn 学习笔记</h1>
+2015-12-27
+
+by <a class="url fn" href="../../../../author/philokey.html">philokey</a>
+ 
+
+
+        </div>
+	
+        <div><p>未完成版本。</p>
+<h2>背景</h2>
+<p>CV课的大作业，内容是做物体检测，一开始选择做dog detection，后来顺手又把猫加上了。挣扎了好久，觉得用hog或者其他什么特征是在太过时了，决定用cnn。之前读过rcnn的论文，但是代码是用matlab写的，出于某种偏见，不想读，抑制不住的想要自己实现一个Python版的。</p>
+<p>接着是训练工具的选择，首先看了caffe，花了一天半配环境，然后发现不能用Python3，于是吐槽的好久愤然放弃。然后发现mxnet是个好东西，配置方便，文档齐全，跑跑classification的example觉得很开心，支持Python3。但是，用mxnet做detection简直是个噩梦，大概因为是新东西，还没人用来做detection。又冷静思考了一下实现rcnn的工作量，各种零零碎碎的东西加起来，我估计今年过完我都实现不了。所以向现实低头，还是用现成点的东西吧。</p>
+<p>回去又看了眼rbg的github，好在ICCV2015上的fast-rcnn不仅又快又好，还是用python写的，还内置了修订版的caffe，于是拜读了代码，觉得人家一个科学家，代码还写这么好，真是不知道比我们高到哪里去了。所以最后的决定是：直接用fast-rcnn + caffe，调整已有的网络，训练猫狗检测模型。</p>
+<h2>fast-rcnn论文概述</h2>
+<p><a href="http://arxiv.org/pdf/1504.08083v2.pdf">论文</a></p>
+<p><a href="http://tutorial.caffe.berkeleyvision.org/caffe-cvpr15-detection.pdf">Slides</a></p>
+<p>感觉slides读起来很清晰，网络结构说的很清楚。</p>
+<p>fast-rcnn是rcnn的升级版，mAP提高了4个点左右，训练速度提高了9倍，测试速度提高了213倍，能做到0.3s一张图。</p>
+<h3>整体架构</h3>
+<p><img alt="整体框架" src="https://lh3.googleusercontent.com/-hTZgHdAZaZA/Vn9eXkrvzdI/AAAAAAAAG8g/QBt_wR1vvbM/s912-Ic42/%2525E5%2525B1%25258F%2525E5%2525B9%252595%2525E5%2525BF%2525AB%2525E7%252585%2525A7%2525202015-12-27%252520%2525E4%2525B8%25258A%2525E5%25258D%25258811.42.36.png" />
+网络的整体框架如上图所示，以AlexNet为例。输入分两部分，第一部分是一张原图，先通过5个卷积层，第二部分是selective search生成的2000个ROI，两部分一起通过一个ROIPooling layer，生成长度固定的特征，再进过两个全连接层。作者之前分析了rcnn等方法慢得原因之一是因为采用了pipeline模式，为了加快速度，作者直接搞了连个平行的输出层，也就是说有两个损失函数。一个输出bounding box的predict，用的还是逻辑斯蒂回归，一个输出softmax分类的结果。两个损失函数具体怎么做梯度下降还要再看看源代码吧。</p>
+<h3>ROI Pooling layer</h3>
+<p>ROI Pooling layer是一个特殊的单层的SPP layer，文中的解释没有看的很懂（大概是因为SPP net没读懂）。这一层的作用就是就是把每个ROI变成H*W个grid，然后得到固定大小的feature传入全连接层。
+总的来说，还是不太懂作者的意图。</p>
+<h2>fast-rcnn代码阅读和修改</h2>
+<h3>概述</h3>
+<div class="highlight"><pre>├── caffe-fast-rcnn
+├── lib
+│   ├── datasets
+│   ├── fast_rcnn
+│   ├── roi_data_layer
+│   ├── setup.py
+│   └── utils
+├── models
+│   ├── CaffeNet
+│   ├── VGG16
+│   └── VGG_CNN_M_1024
+└── tools
+    ├── _init_paths.py
+    ├── compress_net.py
+    ├── demo.py
+    ├── reval.py
+    ├── test_net.py
+    ├── train_net.py
+    └── train_svms.py
+</pre></div>
+
+
+<p>fast-rcnn核心代码框架如上所示，其中caffe进过作者的改造，增加了两个层，一个是本文提出的Pooling Layer，另一个是做bounding box回归的Smooth L1 Loss Layer。lib基本包含了论文里面所有的核心代码，modle对应了论文中提到的三个规模的进过pretraining的网络模型，CaffeNet是S，VGG_CNN_M_1024是M，VGG16是L。tools是一些有用的示例代码，在上面改改基本就能训练自己的模型。</p>
+<h3>datasets</h3>
+<div class="highlight"><pre>├── datasets
+│   ├── __init__.py
+│   ├── factory.py
+│   ├── imdb.py
+│   └── pascal_voc.py```
+</pre></div>
+
+
+<p>先从输入数据说起。</p>
+<p>输入数据的处理在datasets这个模块中完成。imdb.py定义了输入数据的基本类imdb，全称是Image database。使用者可以继承这个类，训练自己的数据，pascal_voc.py给出了很好的例子。调用factory.py里面的函数可以生成和使用imdb。</p>
+<p>接下来看要怎么生成自己的输入imdb,其实主要工作量也集中在了处理数据和生成数据上，都是体力活。</p>
+<p>比如说我们创建一个新的类，叫做catdog</p>
+<h3>roi_data_layer</h3>
+<div class="highlight"><pre>├── roi_data_layer
+│   ├── __init__.py
+│   ├── layer.py
+│   ├── minibatch.py
+│   └── roidb.py
+</pre></div>
+
+
+<h2>用mxnet做图像分类</h2>
+<h3>概述</h3>
+<p>看到kaggle上有个cat vs dog的比赛，于是顺手做了个猫狗分类。考虑到用fast-rcnn做分类有点杀鸡用牛刀，而且训练数据并没有标出区域，而且用selective search生成bounding box略麻烦，所以就直接用mxnet来作。</p>
+<p>一开始还很naive的想用kaggle给的25000张图的训练数据来做，结果用Alexnet跑了十几个epochs发现validate的准确率还在50%徘徊，然后意识到了数据量的重要新，于是直接上了pretraining好的模型，果然是效果拔群。跑完第一个epoch，准确率是75%，跑完第二个88%，第三个93%，第四个95%。跑到第十几个的时候，训练数据的准确率已经到了99.6%,validate的数据准确率到96.2%，感觉还是有点overfitting了。交到kaggle上，跑出了96.1%的结果，然而第一名的98%多，如果没有pretraining的数据，能跑到那么高么，总之觉得好厉害。</p>
+<h3>mxnet使用细节</h3>
+<p>TO BE UPDATE</p>
+<h2>总结</h2>
+<p>这次project的主要收获</p>
+<ul>
+<li>学习了两个深度学习的工具，caffe，mxnet。个人很看好mxnet。</li>
+<li>拜读了Fast R-CNN的部分代码，写的好优雅，思路清晰好读，值得学习。</li>
+<li>稍微跟进了CV领域比较前沿的论文，虽然因为缺少先验知识，没有特别懂。</li>
+</ul></div>
+	
+        <hr>
+
+        <h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'philokeygithubio'; 
+    var disqus_title = 'caffe & mxnet & fast-rcnn 学习笔记';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+        </div>
+        
+        <div class="span3">
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Site
+                </li>
+            
+                <li><a href="../../../../archives.html">Archives</a>
+                <li><a href="../../../../tags.html">Tags</a>
+
+
+
+                <li><a href="http://www.philokey.com/feeds/all.atom.xml" rel="alternate">Atom feed</a></li>
+                <li><a href="http://www.philokey.com/feeds/all.rss.xml" rel="alternate">RSS feed</a></li>
+
+            </ul>
+            </div>
+
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Categories
+                </li>
+                
+                <li><a href="../../../../category/bi-ji.html">笔记</a></li>
+                <li><a href="../../../../category/c.html">C++</a></li>
+                <li><a href="../../../../category/leetcode.html">LeetCode</a></li>
+                <li><a href="../../../../category/linux.html">Linux</a></li>
+                <li><a href="../../../../category/lun-wen.html">论文</a></li>
+                <li><a href="../../../../category/lun-wen-caffemxnet.html">论文,caffe,mxnet</a></li>
+                <li><a href="../../../../category/python.html">python</a></li>
+                <li><a href="../../../../category/scala.html">Scala</a></li>
+                <li><a href="../../../../category/za.html">杂</a></li>
+                   
+            </ul>
+            </div>
+
+
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Links
+                </li>
+            
+                <li><a href="http://getpelican.com/">Pelican</a></li>
+                <li><a href="http://python.org/">Python.org</a></li>
+                <li><a href="https://www.google.com/ncr">Google</a></li>
+            </ul>
+            </div>
+
+
+            <div class="social">
+            <div class="well" style="padding: 8px 0; background-color: #FBFBFB;">
+            <ul class="nav nav-list">
+                <li class="nav-header"> 
+                Social
+                </li>
+           
+                <li><a href="https://github.com/philokey">Github</a></li>
+                <li><a href="http://weibo.com/u/1690959514/">微博</a></li>
+            </ul>
+            </div>
+            </div>
+
+        </div>  
+    </div>     </div> 
+<footer>
+<br />
+<p><a href="../../../..">philokey的笔记</a> &copy; philokey 2015</p>
+</footer>
+
+</div> <!-- /container -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="../../../../theme/bootstrap-collapse.js"></script>
+<script>var _gaq=[['_setAccount','UA-53439918-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+ 
+</body>
+</html>
