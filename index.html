@@ -72,7 +72,7 @@ by <a class="url fn" href="./author/philokey.html">philokey</a>
         
         <div><h2>Object detection with R-CNN</h2>
 <h3>Module design</h3>
-<p>先用selective search生成category-independent region proposals，然后从每个region proposal中用CNN提取出4096维的特征向量。</p>
+<p>先用selective search生成category-independent region proposals，然后从每个region proposal中用CNN提取出4096维的特征向量。网络是用alex net 摘掉softmax层。</p>
 <h3>Test time detection</h3>
 <p>每张测试图片用selective search 的fast mode大概提取出2000个region proposal. 对每个region，用训练好的CNN提取特征，再用SVM分类，打分。如果region有重叠(IoU)，保留分最高的，舍弃其它。</p>
 <p>由于</p>
@@ -87,7 +87,7 @@ are low-dimensional when compared to other common approaches</li>
 <p>微调：将粗略模型的1000分类变成了现在的21分类（20种类+1背景）和ground truth的box重叠超过50%(IoU = 0.5)算正例，否则是负例。</p>
 <p>每次mini-batch的size为128，其中32个positive windows，96 backrgound windows。</p>
 <p>对positive windows 做 bias</p>
-<p>物体种类分类器：region里面有物体的部分，看物体的IoU是否达到阈值，达到才认为是正样本。IoU的设置很重要，这个IoU和上面的不一样，是SVM的，文中设置为0.3，会有好几个百分点的差别。分类用的是hard negative mining svm（然而并不知道这是什么，查查）</p>
+<p>物体种类分类器：这是训练K个svm分类器，region里面有物体的部分，看物体的IoU是否达到阈值，达到才认为是正样本。IoU的设置很重要，这个IoU和上面的不一样，是SVM的，文中设置为0.3，会有好几个百分点的差别。分类用的是hard negative mining svm</p>
 <h3>Results on PASCAL VOC 201012</h3>
 <p>53.3% mAP，比之前的高了10%以上</p>
 <h2>Visualization, ablation, and modes of error</h2>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>philokey的笔记</title><link href="http://www.philokey.com/" rel="alternate"></link><link href="http://www.philokey.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://www.philokey.com/</id><updated>2015-12-09T00:00:00+08:00</updated><entry><title>论文笔记：Rich feature hierarchies for accurate object detection and semantic segmentation</title><link href="http://www.philokey.com/pages/2015/12/09/lun-wen-bi-ji-rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation.html" rel="alternate"></link><updated>2015-12-09T00:00:00+08:00</updated><author><name>philokey</name></author><id>tag:www.philokey.com,2015-12-09:pages/2015/12/09/lun-wen-bi-ji-rich-feature-hierarchies-for-accurate-object-detection-and-semantic-segmentation.html</id><summary type="html">&lt;h2&gt;Object detection with R-CNN&lt;/h2&gt;
 &lt;h3&gt;Module design&lt;/h3&gt;
-&lt;p&gt;先用selective search生成category-independent region proposals，然后从每个region proposal中用CNN提取出4096维的特征向量。&lt;/p&gt;
+&lt;p&gt;先用selective search生成category-independent region proposals，然后从每个region proposal中用CNN提取出4096维的特征向量。网络是用alex net 摘掉softmax层。&lt;/p&gt;
 &lt;h3&gt;Test time detection&lt;/h3&gt;
 &lt;p&gt;每张测试图片用selective search 的fast mode大概提取出2000个region proposal. 对每个region，用训练好的CNN提取特征，再用SVM分类，打分。如果region有重叠(IoU)，保留分最高的，舍弃其它。&lt;/p&gt;
 &lt;p&gt;由于&lt;/p&gt;
@@ -16,7 +16,7 @@ are low-dimensional when compared to other common approaches&lt;/li&gt;
 &lt;p&gt;微调：将粗略模型的1000分类变成了现在的21分类（20种类+1背景）和ground truth的box重叠超过50%(IoU = 0.5)算正例，否则是负例。&lt;/p&gt;
 &lt;p&gt;每次mini-batch的size为128，其中32个positive windows，96 backrgound windows。&lt;/p&gt;
 &lt;p&gt;对positive windows 做 bias&lt;/p&gt;
-&lt;p&gt;物体种类分类器：region里面有物体的部分，看物体的IoU是否达到阈值，达到才认为是正样本。IoU的设置很重要，这个IoU和上面的不一样，是SVM的，文中设置为0.3，会有好几个百分点的差别。分类用的是hard negative mining svm（然而并不知道这是什么，查查）&lt;/p&gt;
+&lt;p&gt;物体种类分类器：这是训练K个svm分类器，region里面有物体的部分，看物体的IoU是否达到阈值，达到才认为是正样本。IoU的设置很重要，这个IoU和上面的不一样，是SVM的，文中设置为0.3，会有好几个百分点的差别。分类用的是hard negative mining svm&lt;/p&gt;
 &lt;h3&gt;Results on PASCAL VOC 201012&lt;/h3&gt;
 &lt;p&gt;53.3% mAP，比之前的高了10%以上&lt;/p&gt;
 &lt;h2&gt;Visualization, ablation, and modes of error&lt;/h2&gt;
