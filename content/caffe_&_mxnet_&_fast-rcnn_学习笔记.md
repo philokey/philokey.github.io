@@ -1,7 +1,7 @@
 Title: caffe & mxnet & fast-rcnn 学习笔记
 Date: 2015-12-27
-Category: 论文,caffe,mxnet
-Tag: CNN
+Category: 论文 
+Tag: CNN caffe mxnet
 
 
 未完成版本。
@@ -58,9 +58,11 @@ ROI Pooling layer是一个特殊的单层的SPP layer，文中的解释没有看
     ├── train_net.py
     └── train_svms.py
 ```
-fast-rcnn核心代码框架如上所示，其中caffe进过作者的改造，增加了两个层，一个是本文提出的Pooling Layer，另一个是做bounding box回归的Smooth L1 Loss Layer。lib基本包含了论文里面所有的核心代码，modle对应了论文中提到的三个规模的进过pretraining的网络模型，CaffeNet是S，VGG_CNN_M_1024是M，VGG16是L。tools是一些有用的示例代码，在上面改改基本就能训练自己的模型。
+fast-rcnn核心代码框架如上所示，其中caffe进过作者的改造，增加了两个层，一个是本文提出的Pooling Layer，另一个是做bounding box回归的Smooth L1 Loss Layer。lib基本包含了论文里面所有的核心代码，modle对应了论文中提到的三个规模的网络模型，就是网络的连接方式，CaffeNet是S，VGG_CNN_M_1024是M，VGG16是L,可以下载经过pretraining的模型。tools是一些有用的示例代码，在上面改改基本就能训练自己的模型。
 
-###datasets
+###lib
+
+####datasets
 ```
 ├── datasets
 │   ├── __init__.py
@@ -74,9 +76,15 @@ fast-rcnn核心代码框架如上所示，其中caffe进过作者的改造，增
 
 接下来看要怎么生成自己的输入imdb,其实主要工作量也集中在了处理数据和生成数据上，都是体力活。
 
-比如说我们创建一个新的类，叫做catdog
+首先要准备好的数据是
 
-###roi_data_layer
+1. 训练图片，及其对应的nameList.txt
+2. 训练数据对应的roi，作者给出了voc2007和voc2012数据用selective search生成的roi
+3. ground truth，对于voc数据集，就是Annotations对应的xml
+
+我抽取了voc2007和voc2012的训练数据中有cat和dog的图片做训练数据，然后创建一个新的类，叫做catdog,继承imdb. 修改self._classes 为三类，'background', 'cat', 'dog'。接着还要按照代码里的注释，修改各种输入路径。值得一提的是，selective search并不是直接生成图片，而是吧roi的box存到imdb里面。
+
+####roi_data_layer
 
 ```
 ├── roi_data_layer
@@ -86,6 +94,60 @@ fast-rcnn核心代码框架如上所示，其中caffe进过作者的改造，增
 │   └── roidb.py
 ```
 
+这是一个python的输入层，是caffe比较高级的用法，是继承caffe.Layer，自己定义一个层，主要职能是提供训练数据和minibatch选取数据，如下图所示。设计一个新的层要修改的接口还要看看caffe的代码。
+![image](https://lh3.googleusercontent.com/-LJyVi8LWXNw/Vn-iEquUXoI/AAAAAAAAG80/maAL-AEZycU/s912-Ic42/%2525E5%2525B1%25258F%2525E5%2525B9%252595%2525E5%2525BF%2525AB%2525E7%252585%2525A7%2525202015-12-27%252520%2525E4%2525B8%25258B%2525E5%25258D%2525884.31.38.png)
+####fast_rcnn
+
+```
+├── fast_rcnn
+│   ├── __init__.py
+│   ├── config.py
+│   ├── test.py
+│   └── train.py
+```
+这个模块提供了训练和测试的接口，封装的不错。
+
+####utils
+
+```
+└── utils
+    ├── __init__.py
+    ├── bbox.pyx
+    ├── blob.py
+    ├── nms.py
+    ├── nms.pyx
+    └── timer.py
+```
+顾名思义，一些小工具，代码挺值得学习的。bbox.pyx是用cython写成的，用来算bounding box重叠的面积，因为这个计算将大量被应用，所以就调用c了。nms.pyx是非局部极大值抑制，也用c写。timer.py是一个计时器。
+
+###tools
+我只读了两份代码，demo.py和train.py。仿照demo.py可以用个训练模型的到图片的检测结果，train.py改改路径和参数就能直接训练了。作者是在太人性化了，把我想写的都写好了，所以实在没有工作量。
+
+###实验结果
+fine tunning了两个网络，CaffeNet和VGG_CNN_M_1024。
+iter = 40000的结果：
+
+```
+CaffeNet
+dog:
+ Precision:  0.994  Recall:  0.481  F1:  0.649
+cat:
+ Precision:  0.998  Recall:  0.515  F1:  0.679
+ 
+vgg
+dog:
+ Precision:  0.981  Recall:  0.500  F1:  0.663
+cat:
+ Precision:  0.994  Recall:  0.510  F1:  0.674
+```
+iter = 70000
+
+```
+dog:
+ Precision: 0.984  Recall: 0.459  F1: 0.626
+cat:
+ Precision: 1.000  Recall: 0.522  F1: 0.686
+```
 
 ##用mxnet做图像分类
 
