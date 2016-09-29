@@ -6,16 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="ico/favicon.ico">
+    <!--link rel="shortcut icon" href="ico/favicon.ico" -->
 
     <title>SReN: Comic storyboard extraction via Shape Regression Network -- Zheqi He</title>
 
-    <!-- Le styles -->
-    <link href="./theme/bootstrap.min.css" rel="stylesheet">
-    <link href="./theme/bootstrap.min.responsive.css" rel="stylesheet">
-    <link href="./theme/local.css" rel="stylesheet">
-    <link href="./theme/pygments.css" rel="stylesheet">
-
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -26,6 +22,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- Custom styles for this template -->
     <!-- Custom styles for this template -->
     <link href="css/custom.css" rel="stylesheet">
   </head>
@@ -55,9 +52,130 @@
             </div>
             <div class="col-sm-6">
                 <p> . </p>
-                <p> . </p>
+                <p> Tel: +86 18810543960 </p>
                 <p>Email: hezheqi@pku.edu.cn</p>
                 <p>GitHub: <a href="https://github.com/philokey"> philokey </a> </p>
+            </div>
+        </div>
+        <div class="row">
+            <h3> BACKGROUND </h3>
+            <hr/>
+            <div class="col-sm-12">
+                <p>
+                    Comics, defined as “juxtaposed pictorial and other images in deliberat esequence, intended to convey
+                    information and/or to produce anaesthetic response in theviewer”, have gained increasing popularity
+                    since it sappearance in the 19th century. In this era, Comic is a kind of entertainment publication popular
+                    among people of different ages around the world.
+                    The storyboard is the basic semantic unit of a comic, as shown in Fig.1,
+                    hence, decomposing the comic image into several storyboards is the fundamental step to understand
+                    content of comic.
+                </p>
+                <div class="row">
+                    <div class="col-xs-6 ">
+                        <img src="img/page1.png" height=500px>
+                        <div align="center">
+                            (a)Source:Kazuma Kamachi, A Certain Scientific Railgun,vol.1, p.34
+                        </div>
+                  </div>
+                  <div class="col-xs-6">
+                      <img src="img/page2.png" height=500px>
+                      <div align="center">
+                          (b)Source:Hiromu Arakawa,Fullmetal Alchemist,vol.26, p.6
+                      </div>
+                 </div>
+              </div>
+              <div align="center" >
+                  Fig.1 Typical comic storyboards
+              </div>
+              <br/>
+              <br/>
+              <p>
+                  In addition, decomposing the comic image into several storyboards is the key technique
+                  to produce digital comic documents suitable for reading on mobile devices with small screen.
+                  Fig.2 gives an example.
+              </p>
+              <div class="row">
+                  <div align="center">
+                      <img src="img/mobile_read.png" width=900px>
+                      <div class="caption">
+                      </div>
+                  </div>
+             </div>
+             <div align="center" >
+                 Fig. 2 Read comic on mobile device
+             </div>
+        </div>
+        </div>
+        <div class="row">
+            <h3> MOTIVATION </h3>
+            <hr/>
+            <div class="col-sm-12">
+                <p>
+                    Most of previous storyboard extraction methods [<b>Wang, Zhou, and Tang 2015; Li et al. 2015</b>] use only hand
+                    crafted low-level visual patterns, such as edge segments, line segments or connected component.
+                    These methods analyze the relationship between low-level visual patterns and combine them into
+                    storyboard. These methods work effectively under certain assumptions, but they may fail to handle
+                    the comic image with complex layout. For example, when storyboards missing borderlines, these methods
+                    cannot handle them well; or when there are complex overlaps between storyboards, these methods are
+                    tend to fail. The most important reason is low-level visual patterns can not represent image content well.
+                </p>
+                <p>
+                    Recently, deep learning methods[<b>Girshick 2015; Liu et al. 2015</b>] have been applied to object detection
+                    and gain the state-of-the-art performances. The effective feature learning capability of deep neural network
+                    make great contribution to high-level vision tasks. However, these methods can only obtain rectangle bounding
+                    box of objects, which are not precise enough for many application tasks. For example, for the tasks of comic
+                    storyboard detection or traffic sign detection. It is better to use parameterized shape like triangle,
+                    quadrangle or ellipse to express detected results.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <h3> METHOD </h3>
+            <hr/>
+            <div class="col-sm-12">
+                <p>
+                    In this paper, we propose a novel architecture based on deep convolutional neural network namely
+                    SReN to detect storyboards within comic images. Fig.3 illustrate the  architecture of SReN, which
+                    consists of two main steps: generate storyboard proposals and train shape regression network.
+                </p>
+            </div>
+            <img src="http://latex.codecogs.com/gif.latex?L(\vec{t_i}, \vec{s_i}) = \sum_{i=1}^n smooth_{L_1}(t_{ix} - s_{ix})+ smooth_{L_1}(t_{iy} - s_{iy})" border="0"/>
+            <div class="row">
+                <div align="center">
+                    <img src="img/net_new.png" width=600px>
+                    <div class="caption">
+                    </div>
+                </div>
+           </div>
+           <div align="center" >
+               Fig.3 The architecture of SReN
+           </div>
+        </div>
+        <div class="row">
+            <h3> EXPERIMENT </h3>
+            <hr/>
+            <div class="col-sm-12">
+                <p>
+                    We construct a dataset with 29845 labeled comic pages (contain 169421 storyboards) from 103
+                    different comic books, which come from different Japanese and Hong Kong comics. We randomly
+                    select 15087 of the labeled comic pages to train SReN, we use another 7375 comic pages to
+                    validate the training result and conduct experiments on the remaining 7382 comic pages.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <h3> DISCUSSION </h3>
+            <hr/>
+            <div class="col-sm-12">
+                <p>
+                    In this paper, we propose a novel deep architecture to detect storyboards within comic images,
+                     namely SReN. The main contribution is to use a shape regression network to regress the vertexes
+                     of quadrilateral storyboards in comic pages. Experimental results demonstrate that SReN performs
+                     better than two state-of-the-art storyboards extraction methods and object detection methods.
+                    In the future, we will test our idea on other shapes, like ellipse and triangle, which can be used in
+                    traffic sign detection and other applications. We also want to investigate how to design an end-to-end
+                    model to automatically detect and regression the target shape.
+                </p>
             </div>
         </div>
         <div class="row">
@@ -65,10 +183,29 @@
             <hr/>
             <div class="col-sm-12">
                 <dl class="dl-horizontal">
-                  <dt>test</dt>
-                  <dd>author.</dd>
+                    <dt>wang2015comic</dt>
+                    <dd>Wang Y, Zhou Y, Tang Z. Comic frame extraction via line segments combination[C]//Document Analysis and Recognition (ICDAR), 2015 13th International Conference on. IEEE, 2015: 856-860.</dd>
                 </dl>
-
+                <dl class="dl-horizontal">
+                    <dt>li2015tree</dt>
+                    <dd>Li L, Wang Y, Suen C Y, et al. A tree conditional random field model for panel detection in comic images[J]. Pattern Recognition, 2015, 48(7): 2129-2140.</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>liu2015ssd</dt>
+                    <dd>Liu W, Anguelov D, Erhan D, et al. SSD: Single Shot MultiBox Detector[J]. arXiv preprint arXiv:1512.02325, 2015.</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>girshick2015fast</dt>
+                    <dd>Girshick R. Fast r-cnn[C]//Proceedings of the IEEE International Conference on Computer Vision. 2015: 1440-1448.</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>simonyan2015very</dt>
+                    <dd>Simonyan K, Zisserman A. Very deep convolutional networks for large-scale image recognition[J]. arXiv preprint arXiv:1409.1556, 2014.</dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt></dt>
+                    <dd></dd>
+                </dl>
             </div>
         </div>
     </div>
@@ -84,6 +221,5 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/docs.min.js"></script>
   </body>
 </html>
