@@ -161,13 +161,11 @@
             <h4>Generating storyboard proposals</h4>
             <p>
                 We use comic images to train a Fast R-CNN model to detect storyboard rectangle bounding boxes <i>r</i>.
-                Since
-                Fast R-CNN can only generate rectangle bounding boxes, we use corresponding exterior rectangles as ground
-                truth
-                for storyboards. But these bounding boxes often miss some parts of a storyboard, in order to obtain the
-                complete
-                storyboard, we enlarge <i>r</i> by a factor of 1.1 to generate storyboard proposal <i>p</i> as the input of
-                our SReN.
+                The reason we use Fast R-CNN rather than Faster R-CNN [<b>Ren et al. 2015</b>], which performs better than Fast R-CNN
+                in many challenges like Pascal VOC or COCO, is that Faster R-CNN has bad performance when we require high localization accuracy.
+                Since Fast R-CNN can only generate rectangle bounding boxes, we use corresponding exterior rectangles as ground
+                truth for storyboards. But these bounding boxes often miss some parts of a storyboard, in order to obtain the
+                complete storyboard, we enlarge <i>r</i> by a factor of 1.1 to generate storyboard proposal <i>p</i> as the input of our SReN.
                 Another problem is that storyboards are often various in sizes, to reduce the interference of this, we
                 normalize
                 the vertexes of storyboard proposals into <i>[-1, 1]</i>, that is
@@ -396,6 +394,10 @@
                 </dd>
             </dl>
              <dl class="dl-horizontal">
+                <dt>ren2015faster</dt>
+                <dd>Ren S, He K, Girshick R, et al. Faster R-CNN: Towards real-time object detection with region proposal networks[C]//Advances in neural information processing systems. 2015: 91-99.</dd>
+            </dl>
+            <dl class="dl-horizontal">
                 <dt></dt>
                 <dd></dd>
             </dl>
